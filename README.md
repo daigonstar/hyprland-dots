@@ -5,6 +5,7 @@
 
 ---
 
+
 ## ✨ Features
 
 - 🧠 **Hyprland** - dynamic tiling Wayland compositor
