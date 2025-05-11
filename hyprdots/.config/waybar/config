@@ -25,7 +25,7 @@
     "format": ""
   },
   "custom/powermenu": {
-    "on-click": "~/.config/wofi/scripts/wofipowermenu.py",
+    "on-click": "~/.config/rofi/powermenu/powermenu.sh",
     "format": "",
     "tooltip": false
   },
