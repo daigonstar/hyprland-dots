@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+#test
 # Application variables
 req="hyprland rofi-wayland waybar nwg-displays nwg-look hyprshot swaync libnotify hyprlock hypridle hyprpaper ttf-cascadia-code-nerd pavucontrol playerctl xorg-xwayland wayland-protocols hyprpolkitagent"
 opt="ghostty flatpak buah firefox thunar stow starship plymouth"
