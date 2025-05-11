@@ -1,0 +1,16 @@
+List of required apps:
+hyprland, rofi-wayland, waybar, nwg-displays, nwg-look, hyprshot, swaync, libnotify, hyprlock, hypridle,  hyprpaper, ttf-cascadia-code-nerd, pavucontrol, playerctl, xorg-xwayland, wayland-protocols, hyprpolkitagent
+
+
+Optional:
+ghostty, flatpak, buah, firefox, thunar, stow, starship, plymouth
+
+Nvidia specific:
+nvidia-dkms, linux-headers, nvidia-utils, libva-nvidia-driver
+ 
+Rofi themes
+https://github.com/newmanls/rofi-themes-collection?tab=readme-ov-file
+Launchpad!
+Hyprland Wiki:
+
+https://wiki.hyprland.org/Getting-Started/
