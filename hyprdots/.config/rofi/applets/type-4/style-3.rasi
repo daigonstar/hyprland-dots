@@ -15,16 +15,16 @@ configuration {
 /*****----- Global Properties -----*****/
 * {
     font:                        "JetBrains Mono Nerd Font 10";
-    background:                  #2D1B14;
-    background-alt:              #462D23;
+    background:                  #131D1F;
+    background-alt:              #183A43;
     foreground:                  #FFFFFF;
-    selected:                    #E25F3E;
-    active:                      #716251;
-    urgent:                      #934A1C;
+    selected:                    #649094;
+    active:                      #E9CC9D;
+    urgent:                      #FEA861;
 }
 
 /*
-USE_BUTTONS=YES
+USE_ICON=YES
 */
 
 /*****----- Main Window -----*****/
@@ -33,13 +33,13 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       1000px;
+    width:                       800px;
     x-offset:                    0px;
     y-offset:                    0px;
-
+    margin:                      0px;
     padding:                     0px;
     border:                      0px solid;
-    border-radius:               24px;
+    border-radius:               50px;
     border-color:                @selected;
     cursor:                      "default";
     background-color:            @background;
@@ -47,55 +47,57 @@ window {
 
 /*****----- Main Box -----*****/
 mainbox {
-    background-color:            transparent;
-    orientation:                 horizontal;
-    children:                    [ "imagebox", "listview" ];
-}
-
-/*****----- Imagebox -----*****/
-imagebox {
+    enabled:                     true;
     spacing:                     20px;
+    margin:                      0px;
     padding:                     20px;
     background-color:            transparent;
-    background-image:            url("~/.config/rofi/images/d.png", height);
-    children:                    [ "inputbar", "dummy", "message" ];
-}
-
-/*****----- User -----*****/
-userimage {
-    margin:                      0px 0px;
-    border:                      10px;
-    border-radius:               10px;
-    border-color:                @background-alt;
-    background-color:            transparent;
-    background-image:            url("~/.config/rofi/images/d.png", height);
+    children:                    [ "inputbar", "message", "listview" ];
 }
 
 /*****----- Inputbar -----*****/
 inputbar {
-    padding:                     15px;
-    border-radius:               100%;
-    background-color:            @urgent;
+    enabled:                     true;
+    spacing:                     25px;
+    padding:                     100px 50px;
+    border:                      0px;
+    border-radius:               40px;
+    border-color:                @selected;
+    background-color:            transparent;
+    background-image:            url("~/.config/rofi/images/i.jpg", width);
     text-color:                  @foreground;
-    children:                    [ "dummy", "prompt", "dummy"];
+    children:                    [ "textbox-prompt-colon", "dummy", "prompt"];
 }
 
-dummy {
+dummy{
     background-color:            transparent;
 }
-
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "";
+    padding:                     10px 13px;
+    border-radius:               100%;
+    background-color:            @urgent;
+    text-color:                  @background;
+}
 prompt {
-    background-color:            inherit;
-    text-color:                  inherit;
+    enabled:                     true;
+    padding:                     10px;
+    border-radius:               100%;
+    background-color:            @active;
+    text-color:                  @background;
 }
 
 /*****----- Message -----*****/
 message {
     enabled:                     true;
     margin:                      0px;
-    padding:                     15px;
+    padding:                     10px;
+    border:                      0px solid;
     border-radius:               100%;
-    background-color:            @active;
+    border-color:                @selected;
+    background-color:            @background-alt;
     text-color:                  @foreground;
 }
 textbox {
@@ -108,18 +110,13 @@ textbox {
 /*****----- Listview -----*****/
 listview {
     enabled:                     true;
-    columns:                     3;
-    lines:                       2;
+    columns:                     6;
+    lines:                       1;
     cycle:                       true;
-    dynamic:                     true;
     scrollbar:                   false;
     layout:                      vertical;
-    reverse:                     false;
-    fixed-height:                true;
-    fixed-columns:               true;
     
     spacing:                     20px;
-    margin:                      20px;
     background-color:            transparent;
     cursor:                      "default";
 }
@@ -127,19 +124,39 @@ listview {
 /*****----- Elements -----*****/
 element {
     enabled:                     true;
-    padding:                     40px 10px;
+    padding:                     30px 10px;
+    border:                      0px solid;
     border-radius:               100%;
-    background-color:            @background-alt;
+    border-color:                @selected;
+    background-color:            transparent;
     text-color:                  @foreground;
     cursor:                      pointer;
 }
 element-text {
-    font:                        "feather bold 32";
+    font:                        "feather 28";
     background-color:            transparent;
     text-color:                  inherit;
     cursor:                      inherit;
     vertical-align:              0.5;
     horizontal-align:            0.5;
+}
+
+element normal.normal,
+element alternate.normal {
+    background-color:            var(background-alt);
+    text-color:                  var(foreground);
+}
+element normal.urgent,
+element alternate.urgent,
+element selected.active {
+    background-color:            var(urgent);
+    text-color:                  var(background);
+}
+element normal.active,
+element alternate.active,
+element selected.urgent {
+    background-color:            var(active);
+    text-color:                  var(background);
 }
 element selected.normal {
     background-color:            var(selected);

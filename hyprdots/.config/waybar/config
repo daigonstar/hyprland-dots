@@ -2,9 +2,10 @@
         "layer": "top",
         "position": "top",
         "reload_style_on_change": true,
-        "modules-left": ["custom/notification","custom/separator","clock","custom/separator","custom/pacman","custom/separator","tray"],
-        "modules-center": ["hyprland/workspaces"],
-        "modules-right": ["group/expand","bluetooth","network"],
+        "spacing": 8,
+        "modules-left": ["hyprland/workspaces","custom/pacman","tray"],
+        "modules-center": ["clock"],
+        "modules-right": ["group/expand","pulseaudio","bluetooth","network","custom/notification","custom/power"],
 
 
         "hyprland/workspaces": {
@@ -25,7 +26,7 @@
             "escape": true
         },
         "clock": {
-            "format": "{:%I:%M:%S %p} ",
+            "format": "{:%I:%M %p} ",
             "interval": 1,   
             "tooltip-format": "<tt>{calendar}</tt>",
             "calendar": {
@@ -103,7 +104,7 @@
                 "transition-to-left": true,
                 "click-to-reveal": true
             },
-            "modules": ["custom/expand", "custom/colorpicker","cpu","memory","temperature","custom/endpoint"],
+            "modules": ["custom/expand", "custom/colorpicker","cpu","memory","temperature","custom/separator"],
         },
         "custom/colorpicker": {
             "format": "{}",
@@ -132,6 +133,29 @@
             "format": "|",
             "interval": "once",
             "tooltip": false
+        },
+        "custom/power": {
+            "format": " ",
+            "on-click": "~/.config/rofi/powermenu/powermenu.sh",
+            "tooltip":false
+	    },
+        "pulseaudio": {
+            "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1%",
+            "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1%",
+            "format": "{volume}% {icon}  {format_source}",
+            "format-muted": " {format_source}",
+            "format-source": "{volume}% ",
+            "format-source-muted": "",
+            "format-icons": {
+                "headphone": "",
+                "hands-free": "",
+                "headset": "",
+                "phone": "",
+                "portable": "",
+                "car": "",
+                "default": ["", "", ""]
+            },
+            "on-click": "pavucontrol -t 3"
         },
 } 
 
