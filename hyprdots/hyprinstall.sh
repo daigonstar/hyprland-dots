@@ -3,7 +3,7 @@
 
 #test
 # Application variables
-req="hyprland rofi-wayland waybar nwg-displays nwg-look hyprshot swaync libnotify hyprlock hypridle hyprpaper ttf-cascadia-code-nerd pavucontrol playerctl xorg-xwayland wayland-protocols hyprpolkitagent"
+req="hyprland rofi-wayland waybar nwg-displays nwg-look hyprshot swaync libnotify hyprlock hypridle hyprpaper ttf-cascadia-code-nerd pavucontrol playerctl xorg-xwayland wayland-protocols hyprpolkitagent xdg-desktop-portal-gtk xdg-desktop-portal-hyprland gnome-themes-extra"
 opt="ghostty flatpak buah firefox thunar stow starship plymouth"
 nvidia="nvidia-dkms linux-headers nvidia-utils libva-nvidia-driver"
 

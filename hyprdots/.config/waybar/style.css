@@ -1,77 +1,50 @@
 * {
-  border: none;
-  font-family: "Hack", "Font Awesome 6 Pro";
-  font-size: 14px;
-  font-weight: 600;
-  background: none;
+    font-size:15px;
+    font-family: "CodeNewRoman Nerd Font Propo";
 }
-
-window#waybar {
-  color: #a5adcb;
-}
-.modules-left,
-.modules-right,
-.modules-center {
-  border-radius: 6px;
-  background: #181926;
-  padding: 12px 0;
-}
-tooltip {
-  color: #a5adcb;
-  background-color: #181926;
-  text-shadow: none;
-}
-
-tooltip * {
-  color: #a5adcb;
-  text-shadow: none;
+window#waybar{
+    all:unset;
 }
 .modules-center {
-}
-
-#custom-sep {
-  color: #494d64;
-  margin: 4px 0;
-}
-#workspaces,
-#clock,
-#custom-bluetooth_devices,
-#custom-powermenu,
-#pulseaudio,
-#tray {
+    padding:5px;
+    margin:5 0 5 0;
+    border-radius:10px;
+    background: alpha(@background,.6);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
 }
 #workspaces {
-  border-radius: 4px;
+    padding: 0px 5px;
 }
 #workspaces button {
-  color: #5b6078;
-  background: none;
-  padding: 0;
+    all:unset;
+    padding: 0px 7px;
+    color: alpha(@color9,.4);
+    transition: all .2s ease;
 }
 #workspaces button:hover {
-  color: #a6da95;
+    color:rgba(167, 91, 190, 0);
+    border: none;
+    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, .5);
+    transition: all 1s ease;
 }
 #workspaces button.active {
-  color: #f5bde6;
+    color: @color9;
+    border: none;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
 }
-#temperature {
-  color: #eed49f;
+#workspaces button.empty {
+    color: rgba(0,0,0,0);
+    border: none;
+    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, .2);
 }
-#clock {
-  font-weight: 600;
-  color: #8bd5ca;
+#workspaces button.empty:hover {
+    color: rgba(0,0,0,0);
+    border: none;
+    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, .5);
+    transition: all 1s ease;
 }
-#custom-bluetooth_devices {
-  color: #8aadf4;
-}
-#pulseaudio {
-  color: #a6da95;
-}
-#pulseaudio.muted {
-  color: #ed8796;
-}
-
-#custom-powermenu {
-  margin: 12px 0 0 0;
-  color: #6e738d;
+#workspaces button.empty.active {
+    color: @color9;
+    border: none;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
 }
