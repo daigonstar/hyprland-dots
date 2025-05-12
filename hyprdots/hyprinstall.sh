@@ -3,7 +3,7 @@
 
 #test
 # Application variables
-req="hyprland rofi-wayland waybar nwg-displays nwg-look hyprshot swaync libnotify hyprlock hypridle hyprpaper ttf-cascadia-code-nerd pavucontrol playerctl xorg-xwayland wayland-protocols hyprpolkitagent xdg-desktop-portal-gtk xdg-desktop-portal-hyprland gnome-themes-extra"
+req="hyprland rofi-wayland waybar nwg-displays nwg-look hyprshot swaync libnotify hyprlock hypridle hyprpaper ttf-cascadia-code-nerd pavucontrol playerctl xorg-xwayland wayland-protocols hyprpolkitagent xdg-desktop-portal-gtk xdg-desktop-portal-hyprland gnome-themes-extra ffmpegthumbnailer tumbler"
 opt="ghostty flatpak buah firefox thunar stow starship plymouth"
 nvidia="nvidia-dkms linux-headers nvidia-utils libva-nvidia-driver"
 
@@ -32,6 +32,3 @@ read -rp "Install NVIDIA packages? [y/N]: " install_nvidia
 if [[ "$install_nvidia" =~ ^[Yy]$ ]]; then
   paru -S --noconfirm $nvidia
 fi
-
-
-test
