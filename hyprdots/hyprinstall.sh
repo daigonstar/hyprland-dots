@@ -34,3 +34,4 @@ if [[ "$install_nvidia" =~ ^[Yy]$ ]]; then
 fi
 
 
+test
