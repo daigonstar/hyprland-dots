@@ -27,7 +27,7 @@ if [ -f "$cache_file" ]; then
         ln_success=true  # Set the flag to true upon successful execution
     fi
     # copy the wallpaper for wallpaper effects
-	cp -r "$wallpaper_path" "$HOME/.config/hypr/wallpaper_effects/.wallpaper_current"
+	cp -r "$wallpaper_path" "$HOME/.config/rofi/.wallpaper_current"
 fi
 
 # Check the flag before executing further commands

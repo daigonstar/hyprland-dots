@@ -26,7 +26,7 @@ if ! command -v bc &>/dev/null; then
 fi
 
 # Variables
-rofi_theme="$HOME/.config/rofi/config-wallpaper.rasi"
+rofi_theme="$HOME/.config/rofi/wallpaper/wallpaper.rasi"
 focused_monitor=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
 
 # Ensure focused_monitor is detected
@@ -171,9 +171,9 @@ apply_image_wallpaper() {
   swww img -o "$focused_monitor" "$image_path" $SWWW_PARAMS
 
   # Run additional scripts
-  "$SCRIPTSDIR/allust.sh"
+  "$SCRIPTSDIR/wallust.sh"
   sleep 2
-  "$SCRIPTSDIR/Refresh.sh"
+  "$SCRIPTSDIR/refresh.sh"
   sleep 1
 
   set_sddm_wallpaper

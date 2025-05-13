@@ -3,11 +3,22 @@
         "position": "top",
         "reload_style_on_change": true,
         "spacing": 8,
-        "modules-left": ["hyprland/workspaces","custom/pacman","tray"],
-        "modules-center": ["clock"],
+        "modules-left": ["clock"],
+        "modules-center": ["hyprland/workspaces"],
         "modules-right": ["group/expand","pulseaudio","bluetooth","network","custom/notification","custom/power"],
 
 
+
+         "group/expand": {
+            "orientation": "horizontal",
+            "drawer": {
+                "transition-duration": 600,
+                "transition-to-left": true,
+                "click-to-reveal": true,
+                "spacing": 10
+            },
+            "modules": ["custom/expand","tray"]
+        },
         "hyprland/workspaces": {
             "format": "{icon}",
             "format-icons": {
@@ -80,15 +91,6 @@
             "󰁹"
             ],
         },
-        "custom/pacman": {
-            "format": "󰅢 {}",
-            "interval": 30,   
-            "exec": "checkupdates | wc -l",
-            "exec-if": "exit 0",
-            "on-click": "kitty sh -c 'paru -Syu && flatpak update; echo Done - Press enter to exit; read'; pkill -SIGRTMIN+8 waybar",
-            "signal": 8,
-            "tooltip": false,
-        },
         "custom/expand": {
             "format": "",
             "tooltip": false
@@ -96,15 +98,6 @@
         "custom/endpoint":{
             "format": "|",
             "tooltip": false
-        },
-        "group/expand": {
-            "orientation": "horizontal",
-            "drawer": {
-                "transition-duration": 600,
-                "transition-to-left": true,
-                "click-to-reveal": true
-            },
-            "modules": ["custom/expand", "custom/colorpicker","cpu","memory","temperature","custom/separator"],
         },
         "custom/colorpicker": {
             "format": "{}",
