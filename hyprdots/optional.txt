@@ -1,0 +1,8 @@
+ghostty
+flatpak
+buah
+firefox
+thunar
+stow
+starship
+plymouth
