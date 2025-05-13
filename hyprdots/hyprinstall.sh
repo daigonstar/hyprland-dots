@@ -32,3 +32,8 @@ read -rp "Install NVIDIA packages? [y/N]: " install_nvidia
 if [[ "$install_nvidia" =~ ^[Yy]$ ]]; then
   paru -S --noconfirm $nvidia
 fi
+
+ln -s ~/hyprland-dots/.config/hypr ~/.config/hypr
+ln -s ~/hyprland-dots/.config/rofi ~/.config/rofi
+ln -s ~/hyprland-dots/.config/waybar ~/.config/waybar
+ln -s ~/hyprland-dots/.config/swaync ~/.config/sawync
