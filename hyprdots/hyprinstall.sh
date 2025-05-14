@@ -96,17 +96,36 @@ for dir in "${config_targets[@]}"; do
   fi
 done
 
-#Install cursor
+# Install cursor
 echo "Installing cursor"
-run_cmd "sudo cp $gitdir/icons/Future-cursors /usr/share/icons
-hyprctl setcursor Future-cursors 24
+run_cmd "sudo cp -r \"$gitdir/icons/Future-cursors\" /usr/share/icons"
+run_cmd "hyprctl setcursor Future-cursors 24"
 
+# Install wallpapers
 read -rp "Install wallpapers? [y/N] " install_wallpaper
 if [[ "$install_wallpaper" =~ ^[Yy]$ ]]; then
   run_cmd "mkdir -p ~/Pictures"
   run_cmd "cp -r \"$gitdir/wallpapers\" ~/Pictures"
 else
   echo "Skipping wallpaper installation."
+fi
+
+# Update .bashrc
+echo "🔧 Updating .bashrc with aliases and startup commands..."
+bashrc_addition=$(cat <<'EOF'
+
+# Custom Aliases and Tools
+alias update='paru -Syu && flatpak update'
+eval "$(starship init bash)"
+fastfetch
+EOF
+)
+
+if $DRY_RUN; then
+  echo "[DRY RUN] Would append the following to ~/.bashrc:"
+  echo "$bashrc_addition"
+else
+  echo "$bashrc_addition" >> ~/.bashrc
 fi
 
 echo "✅ Setup complete."
