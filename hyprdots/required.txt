@@ -24,3 +24,4 @@ bc
 gvfs
 wallust
 blueman
+vlc
