@@ -3,7 +3,7 @@
         "position": "top",
         "reload_style_on_change": true,
         "spacing": 8,
-        "modules-left": ["clock"],
+        "modules-left": ["clock", "hyperland/window"],
         "modules-center": ["hyprland/workspaces"],
         "modules-right": ["group/expand","pulseaudio","bluetooth","network","custom/notification","custom/power"],
 
@@ -14,11 +14,13 @@
             "drawer": {
                 "transition-duration": 600,
                 "transition-to-left": true,
-                "click-to-reveal": true,
-                "spacing": 10
+                "click-to-reveal": true
             },
-            "modules": ["custom/expand","tray"]
+            "modules": ["custom/expand"," ","tray"]
         },
+        
+        
+
         "hyprland/workspaces": {
             "format": "{icon}",
             "format-icons": {
@@ -37,7 +39,7 @@
             "escape": true
         },
         "clock": {
-            "format": "{:%I:%M %p} ",
+            "format": "{:%I:%M }",
             "interval": 1,   
             "tooltip-format": "<tt>{calendar}</tt>",
             "calendar": {
@@ -63,7 +65,7 @@
             "format-on": "󰂯",
             "format-off": "BT-off",
             "format-disabled": "󰂲",
-            "format-connected-battery": "{device_battery_percentage}% 󰂯",
+            "format-connected": "󰂱",
             "format-alt": "{device_alias} 󰂯",
             "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
             "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
@@ -132,23 +134,21 @@
             "on-click": "~/.config/rofi/powermenu/powermenu.sh",
             "tooltip":false
 	    },
-        "pulseaudio": {
-            "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1%",
-            "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1%",
-            "format": "{volume}% {icon}  {format_source}",
-            "format-muted": " {format_source}",
-            "format-source": "{volume}% ",
-            "format-source-muted": "",
-            "format-icons": {
-                "headphone": "",
-                "hands-free": "",
-                "headset": "",
-                "phone": "",
-                "portable": "",
-                "car": "",
-                "default": ["", "", ""]
-            },
-            "on-click": "pavucontrol -t 3"
+         "pulseaudio": {
+        //"scroll-step": 1,
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{icon} {volume}%",
+        "format-muted": "",
+        "format-icons": {
+            "headphones": "",
+            "handsfree": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", ""]
+        },
+        "on-click": "pavucontrol"
         },
 } 
 

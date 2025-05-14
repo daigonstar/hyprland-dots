@@ -23,3 +23,4 @@ tumbler
 bc
 gvfs
 wallust
+blueman
