@@ -4,7 +4,7 @@ This is the configuration I am currently using for Hyprland
 I have tried many dots in the past and I liked them but not ALL of what each one offered so I decided to make my own config
 I have borrowed some code from the dots I like (especially JaKoolIt) but have also added my own spin on some things
 
-I have also made an install sctipt that should install everything nicely (I even left in the dry-run command just so you can see exactly what it is doing)
+I have also made an install script that should install everything nicely (I even left in the dry-run command just so you can see exactly what it is doing)
 
 I have added some wallpapers I've collected (will probably add more as I go)
 
