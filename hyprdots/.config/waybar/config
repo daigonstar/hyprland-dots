@@ -3,7 +3,7 @@
         "position": "top",
         "reload_style_on_change": true,
         "spacing": 8,
-        "modules-left": ["clock", "hyperland/window"],
+        "modules-left": ["clock", "hyprland/window"],
         "modules-center": ["hyprland/workspaces"],
         "modules-right": ["group/expand","pulseaudio","bluetooth","network","custom/notification","custom/power"],
 
@@ -16,10 +16,14 @@
                 "transition-to-left": true,
                 "click-to-reveal": true
             },
-            "modules": ["custom/expand"," ","tray"]
+            "modules": ["custom/expand","tray"]
         },
         
-        
+        "hyprland/window": {
+            "max-length": 100, // Characters count
+            "separate-outputs": true,
+            "icon": true
+        },
 
         "hyprland/workspaces": {
             "format": "{icon}",
@@ -39,7 +43,7 @@
             "escape": true
         },
         "clock": {
-            "format": "{:%I:%M }",
+            "format": " 󰥔 {:%I:%M }",
             "interval": 1,   
             "tooltip-format": "<tt>{calendar}</tt>",
             "calendar": {
@@ -94,7 +98,7 @@
             ],
         },
         "custom/expand": {
-            "format": "",
+            "format": "󰳝 ",
             "tooltip": false
         },
         "custom/endpoint":{
