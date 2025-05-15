@@ -69,7 +69,7 @@ fi
 
 #Install fonts
 echo "Please install all fonts to ensure this works"
-wait
+sleep 2
 run_cmd "sudo pacman -S nerd-fonts"
 
 # Copy config directories
@@ -132,7 +132,7 @@ run_cmd "sudo systemctl enable sddm.service"
 
 echo "✅ Setup complete. Reboot required"
 
-wait 5
+sleep 3
 
 run_cmd "reboot"
 
