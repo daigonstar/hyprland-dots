@@ -3,7 +3,7 @@
         "position": "top",
         "reload_style_on_change": true,
         "spacing": 8,
-        "modules-left": ["clock", "hyprland/window"],
+        "modules-left": ["clock","custom/chatgpt", "hyprland/window"],
         "modules-center": ["hyprland/workspaces"],
         "modules-right": ["group/expand","pulseaudio","bluetooth","network","custom/notification","custom/power"],
 
@@ -43,7 +43,7 @@
             "escape": true
         },
         "clock": {
-            "format": " 󰥔 {:%I:%M }",
+            "format": " &#xf017; {:%I:%M }",
             "interval": 1,   
             "tooltip-format": "<tt>{calendar}</tt>",
             "calendar": {
@@ -134,7 +134,7 @@
             "tooltip": false
         },
         "custom/power": {
-            "format": " ",
+            "format": "&#xf011; ",
             "on-click": "~/.config/rofi/powermenu/powermenu.sh",
             "tooltip":false
 	    },
@@ -153,6 +153,12 @@
             "default": ["", ""]
         },
         "on-click": "pavucontrol"
+        },
+
+        "custom/chatgpt": {
+        "format": " ",
+        "on-click": "~/.config/hypr/scripts/ai.sh",
+        "tooltip-format": "AI Support"
         },
 } 
 
