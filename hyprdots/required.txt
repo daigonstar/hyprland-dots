@@ -8,6 +8,7 @@ swaync
 libnotify
 hyprlock
 hypridle
+sddm
 hyprpaper
 ttf-cascadia-code-nerd
 pavucontrol
