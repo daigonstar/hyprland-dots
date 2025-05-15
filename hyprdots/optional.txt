@@ -1,5 +1,4 @@
 ghostty
 firefox
-thunar
 starship
 plymouth
