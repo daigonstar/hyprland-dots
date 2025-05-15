@@ -1,0 +1,4 @@
+ghostty
+firefox
+starship
+plymouth

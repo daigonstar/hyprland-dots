@@ -1,93 +1,164 @@
 {
-  "layer": "top",
-  "position": "left",
-  "width": 28,
-  "margin": "2 0 2 2",
-  "spacing": 2,
-  "modules-left": [
-    "clock",
-    "custom/sep",
-    "tray"
-  ],
-  "modules-center": [
-    "hyprland/workspaces"
-  ],
-  "modules-right": [
-    "custom/bluetooth_devices",
-    "custom/sep",
-    "temperature",
-    "custom/sep",
-    "pulseaudio",
-    "custom/powermenu"
-  ],
-  "custom/sep": {
-    //    "format": "──"
-    "format": ""
-  },
-  "custom/powermenu": {
-    "on-click": "~/.config/rofi/powermenu/powermenu.sh",
-    "format": "",
-    "tooltip": false
-  },
-  "custom/bluetooth_devices": {
-    "exec": "$HOME/.config/waybar/custom_modules/bluetooth_devices.sh",
-    "return-type": "json",
-    "format": "{}",
-    "justify": "center",
-    "rotate": 90,
-    "interval": 5,
-    "on-click": "blueman-manager"
-  },
-  "hyprland/workspaces": {
-    "format": "{icon}",
-    "on-click": "activate",
-    "on-scroll-up": "hyprctl dispatch workspace e-1",
-    "on-scroll-down": "hyprctl dispatch workspace e+1",
-    "format-icons": {
-      "active": "",
-      "urgent": "",
-      "default": ""
-    }
-  },
-  "clock": {
-    "tooltip": true,
-    "format": "{:%H\n%M}",
-    "tooltip-format": "{:%Y-%m-%d}",
-  },
-  "tray": {
-    "icon-size": 18,
-    "show-passive-items": "true"
-  },
-  "temperature": {
-    "rotate": 90,
-    "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
-    "critical-threshold": 80,
-    "format": "{icon} {temperatureC}°C",
-    "format-icons": [
-      "",
-      "",
-      ""
-    ]
-  },
-  "pulseaudio": {
-    "rotate": 90,
-    "format": "{icon} {volume}%",
-    "format-bluetooth": "{icon} {volume}%",
-    "format-muted": "MUTE ",
-    "format-icons": {
-      "headphones": "",
-      "handsfree": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
-      "default": [
-        "",
-        ""
-      ]
-    },
-    "scroll-step": 3,
-    "on-click": "pavucontrol",
-    "on-click-right": "pactl set-source-mute @DEFAULT_SOURCE@ toggle"
-  }
-}
+        "layer": "top",
+        "position": "top",
+        "reload_style_on_change": true,
+        "spacing": 8,
+        "modules-left": ["clock","custom/chatgpt", "hyprland/window"],
+        "modules-center": ["hyprland/workspaces"],
+        "modules-right": ["group/expand","pulseaudio","bluetooth","network","custom/notification","custom/power"],
+
+
+
+         "group/expand": {
+            "orientation": "horizontal",
+            "drawer": {
+                "transition-duration": 600,
+                "transition-to-left": true,
+                "click-to-reveal": true
+            },
+            "modules": ["custom/expand","tray"]
+        },
+        
+        "hyprland/window": {
+            "max-length": 100, // Characters count
+            "separate-outputs": true,
+            "icon": true
+        },
+
+        "hyprland/workspaces": {
+            "format": "{icon}",
+            "format-icons": {
+                "active": "",
+                "default": "",
+                "empty": ""
+            },
+            "persistent-workspaces": {
+                "*": [ 1,2,3,4,5 ]
+            }
+        },
+        "custom/notification": {
+            "tooltip": false,
+            "format": "",
+            "on-click": "swaync-client -t -sw",
+            "escape": true
+        },
+        "clock": {
+            "format": " &#xf017; {:%I:%M }",
+            "interval": 1,   
+            "tooltip-format": "<tt>{calendar}</tt>",
+            "calendar": {
+                "format": {
+                    "today": "<span color='#fAfBfC'><b>{}</b></span>"
+                }
+            },
+            "actions": {
+                "on-click-right": "shift_down",
+                "on-click": "shift_up"
+            }
+        },
+        "network": {
+            "format-wifi": "",
+            "format-ethernet":"",
+            "format-disconnected": "",
+            "tooltip-format-disconnected": "Error",
+            "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
+            "tooltip-format-ethernet": "{ifname} 🖧 ",
+            "on-click": "kitty nmtui"
+        },
+        "bluetooth": {
+            "format-on": "󰂯",
+            "format-off": "BT-off",
+            "format-disabled": "󰂲",
+            "format-connected": "󰂱",
+            "format-alt": "{device_alias} 󰂯",
+            "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+            "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+            "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
+            "tooltip-format-enumerate-connected-battery": "{device_alias}\n{device_address}\n{device_battery_percentage}%",
+            "on-click-right": "blueman-manager",
+        }, 
+        "battery": {
+            "interval":30,
+            "states": {
+                "good": 95,
+                "warning": 30,
+                "critical": 20
+            },
+            "format": "{capacity}% {icon}",
+            "format-charging": "{capacity}% 󰂄",
+            "format-plugged": "{capacity}% 󰂄 ",
+            "format-alt": "{time} {icon}",
+            "format-icons": [
+                "󰁻",
+            "󰁼",
+            "󰁾",
+            "󰂀",
+            "󰂂",
+            "󰁹"
+            ],
+        },
+        "custom/expand": {
+            "format": "󰳝 ",
+            "tooltip": false
+        },
+        "custom/endpoint":{
+            "format": "|",
+            "tooltip": false
+        },
+        "custom/colorpicker": {
+            "format": "{}",
+            "return-type": "json",
+            "interval": "once",
+            "exec": "~/.config/waybar/scripts/colorpicker.sh -j",
+            "on-click": "~/.config/waybar/scripts/colorpicker.sh",
+            "signal": 1
+        },
+        "cpu": {
+            "format": "󰻠",
+            "tooltip": true
+        },
+        "memory": {
+            "format": ""
+        },
+        "temperature": {
+            "critical-threshold": 80,
+            "format": "",
+        },
+        "tray": {
+            "icon-size": 14,
+            "spacing": 10
+        },
+        "custom/separator": {
+            "format": "|",
+            "interval": "once",
+            "tooltip": false
+        },
+        "custom/power": {
+            "format": "&#xf011; ",
+            "on-click": "~/.config/rofi/powermenu/powermenu.sh",
+            "tooltip":false
+	    },
+         "pulseaudio": {
+        //"scroll-step": 1,
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{icon} {volume}%",
+        "format-muted": "",
+        "format-icons": {
+            "headphones": "",
+            "handsfree": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", ""]
+        },
+        "on-click": "pavucontrol"
+        },
+
+        "custom/chatgpt": {
+        "format": " ",
+        "on-click": "~/.config/hypr/scripts/ai.sh",
+        "tooltip-format": "AI Support"
+        },
+} 
+

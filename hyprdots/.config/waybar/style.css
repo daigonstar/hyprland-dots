@@ -1,77 +1,82 @@
+@import url('colors/colors.css');
+
 * {
-  border: none;
-  font-family: "Hack", "Font Awesome 6 Pro";
-  font-size: 14px;
-  font-weight: 600;
-  background: none;
+    font-size:15px;
+    font-family: "CodeNewRoman Nerd Font Propo";
 }
-
-window#waybar {
-  color: #a5adcb;
+window#waybar{
+    all:unset;
 }
-.modules-left,
-.modules-right,
-.modules-center {
-  border-radius: 6px;
-  background: #181926;
-  padding: 12px 0;
-}
-tooltip {
-  color: #a5adcb;
-  background-color: #181926;
-  text-shadow: none;
-}
-
-tooltip * {
-  color: #a5adcb;
-  text-shadow: none;
+.expand {
+    margin-left: 2px;
+    margin-right: 2px;
 }
 .modules-center {
+    padding:5px;
+    margin:5 0 0 0;
+    border-radius:20px;
+    background: alpha(@color6,.6);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
 }
-
-#custom-sep {
-  color: #494d64;
-  margin: 4px 0;
+.modules-left {
+    padding:5px;
+    margin:5 0 0 0;
+    border-radius:10px;
+    background: alpha(@color8,.6);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
 }
-#workspaces,
-#clock,
-#custom-bluetooth_devices,
-#custom-powermenu,
-#pulseaudio,
-#tray {
+.modules-right {
+    padding:5px;
+    margin:5 0 0 0;
+    border-radius:10px;
+    background: alpha(@color8,.6);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
+}
+#bluetooth-connected-battery {
+    color: #5254e9;
 }
 #workspaces {
-  border-radius: 4px;
+    padding: 0px 5px;
 }
 #workspaces button {
-  color: #5b6078;
-  background: none;
-  padding: 0;
+    all:unset;
+    padding: 0px 7px;
+    color: alpha(@color4,.8);
+    transition: all .2s ease;
 }
 #workspaces button:hover {
-  color: #a6da95;
+    color:rgba(167, 91, 190, 0);
+    border: none;
+    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, .5);
+    transition: all 1s ease;
 }
 #workspaces button.active {
-  color: #f5bde6;
+    color: @color6;
+    border: none;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
 }
-#temperature {
-  color: #eed49f;
+#workspaces button.empty {
+    color: alpha(@color5,.6);
+    border: none;
+    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, .2);
 }
-#clock {
-  font-weight: 600;
-  color: #8bd5ca;
+#workspaces button.empty:hover {
+    color: rgba(0,0,0,0);
+    border: none;
+    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, .5);
+    transition: all 1s ease;
 }
-#custom-bluetooth_devices {
-  color: #8aadf4;
+#workspaces button.empty.active {
+    color: @color6;
+    border: none;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
 }
-#pulseaudio {
-  color: #a6da95;
-}
-#pulseaudio.muted {
-  color: #ed8796;
-}
-
-#custom-powermenu {
-  margin: 12px 0 0 0;
-  color: #6e738d;
+#custom-chatgpt {
+    background-image: url("assets/openai-white.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    padding-right: 18px;
+    opacity: 0.8;
+    color: @iconcolor;
 }

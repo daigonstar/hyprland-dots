@@ -1,0 +1,4 @@
+nvidia-dkms
+linux-headers
+nvidia-utils
+libva-nvidia-driver
