@@ -29,3 +29,5 @@ git pull https://github.com/daigonstar/hyprland-dots.git
 cd hyprland-dots/hyprdots
 ./hyprinstall.sh
 ```
+For my SDDM Greeter I use [SDDM Astronaut Theme](https://github.com/Keyitdev/sddm-astronaut-theme)
+Please install that for a better greeter theme

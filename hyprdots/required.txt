@@ -29,6 +29,6 @@ gvfs
 wallust
 blueman
 vlc
-thunar-archiver-plugin
+thunar-archive-plugin
 gnome-system-monitor
 cava
