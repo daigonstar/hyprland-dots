@@ -29,3 +29,5 @@ wallust
 blueman
 vlc
 thunar-archiver-plugin
+gnome-system-monitor
+cava
