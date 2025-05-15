@@ -4,14 +4,13 @@ waybar
 thunar
 nwg-displays
 nwg-look
-hyprshot
+hyprshot-git
 swaync
 libnotify
 hyprlock
 hypridle
 sddm
 flatpak
-buah
 hyprpaper
 ttf-cascadia-code-nerd
 pavucontrol
@@ -26,7 +25,7 @@ ffmpegthumbnailer
 tumbler
 bc
 gvfs
-wallust
+wallust-git
 blueman
 vlc
 thunar-archive-plugin

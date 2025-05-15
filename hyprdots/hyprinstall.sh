@@ -99,7 +99,6 @@ done
 # Install cursor
 echo "Installing cursor"
 run_cmd "sudo cp -r \"$gitdir/icons/Future-cursors\" /usr/share/icons"
-run_cmd "hyprctl setcursor Future-cursors 24"
 
 # Install wallpapers
 read -rp "Install wallpapers? [y/N] " install_wallpaper
