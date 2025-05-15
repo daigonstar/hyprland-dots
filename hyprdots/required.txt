@@ -9,6 +9,8 @@ libnotify
 hyprlock
 hypridle
 sddm
+flatpak
+buah
 hyprpaper
 ttf-cascadia-code-nerd
 pavucontrol
