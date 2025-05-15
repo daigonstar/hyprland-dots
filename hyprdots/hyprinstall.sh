@@ -127,5 +127,13 @@ if $DRY_RUN; then
 else
   echo "$bashrc_addition" >> ~/.bashrc
 fi
+echo "enabling SDDM"
+sudo systemctl enable sddm.service
+
+echo "✅ Setup complete. Reboot required"
+
+wait 5
+
+reboot
 
 echo "✅ Setup complete."
