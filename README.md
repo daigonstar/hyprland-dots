@@ -25,7 +25,7 @@ Powermenu (JaKoolIt)
 
 Install:
 ```bash
-git pull https://github.com/daigonstar/hyprland-dots.git
+git clone https://github.com/daigonstar/hyprland-dots.git
 cd hyprland-dots/hyprdots
 ./hyprinstall.sh
 ```
