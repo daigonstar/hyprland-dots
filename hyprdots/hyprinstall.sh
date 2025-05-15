@@ -128,12 +128,12 @@ else
   echo "$bashrc_addition" >> ~/.bashrc
 fi
 echo "enabling SDDM"
-sudo systemctl enable sddm.service
+run_cmd "sudo systemctl enable sddm.service"
 
 echo "✅ Setup complete. Reboot required"
 
 wait 5
 
-reboot
+run_cmd "reboot"
 
 echo "✅ Setup complete."
