@@ -1,6 +1,7 @@
 hyprland
 rofi-wayland
 waybar
+thunar
 nwg-displays
 nwg-look
 hyprshot
