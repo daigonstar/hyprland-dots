@@ -26,3 +26,4 @@ gvfs
 wallust
 blueman
 vlc
+thunar-archiver-plugin
