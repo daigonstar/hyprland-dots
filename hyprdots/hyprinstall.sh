@@ -31,7 +31,6 @@ read_packages() {
 
 # Read package lists
 req=$(read_packages "required.txt")
-opt=$(read_packages "optional.txt")
 nvidia=$(read_packages "nvidia.txt")
 
 # Install git and paru
