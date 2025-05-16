@@ -30,6 +30,7 @@ gvfs
 wallust-git
 blueman
 vlc
+cosmic-store
 starship
 thunar-archive-plugin
 gnome-system-monitor

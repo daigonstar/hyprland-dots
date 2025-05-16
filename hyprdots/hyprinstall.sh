@@ -88,16 +88,16 @@ for dir in "${config_targets[@]}"; do
   fi
 done
 
-chmod +x ~/.config/hypr/scripts/ai.sh
-chmod +x ~/.config/hypr/scripts/browser.sh
-chmod +x ~/.config/hypr/scripts/gamemode.sh
-chmod +x ~/.config/hypr/scripts/pywall.sh
-chmod +x ~/.config/hypr/scripts/rainbowb.sh
-chmod +x ~/.config/hypr/scripts/refresh.sh
-chmod +x ~/.config/hypr/scripts/wallust.sh
-chmod +x ~/.config/rofi/powermenu/powermenu.sh
-chmod +x ~/.config/rofi/launcher/launcher.sh
-chmod +x ~/.config/rofi/wallpaper/wallpaper.sh
+#chmod +x ~/.config/hypr/scripts/ai.sh
+#chmod +x ~/.config/hypr/scripts/browser.sh
+#chmod +x ~/.config/hypr/scripts/gamemode.sh
+#chmod +x ~/.config/hypr/scripts/pywall.sh
+#chmod +x ~/.config/hypr/scripts/rainbowb.sh
+#chmod +x ~/.config/hypr/scripts/refresh.sh
+#chmod +x ~/.config/hypr/scripts/wallust.sh
+#chmod +x ~/.config/rofi/powermenu/powermenu.sh
+#chmod +x ~/.config/rofi/launcher/launcher.sh
+#chmod +x ~/.config/rofi/wallpaper/wallpaper.sh
 
 # Install cursor
 echo "Installing cursor"
