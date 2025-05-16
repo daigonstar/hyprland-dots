@@ -1,4 +1,0 @@
-ghostty
-firefox
-starship
-plymouth

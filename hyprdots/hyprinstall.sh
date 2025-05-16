@@ -53,13 +53,6 @@ echo "✅ Paru installed."
 echo "📦 Installing required packages..."
 run_cmd "paru -S --noconfirm $req"
 
-# Optional packages
-echo "Optional packages: $opt"
-read -rp "Install optional packages? [y/N]: " install_opt
-if [[ "$install_opt" =~ ^[Yy]$ ]]; then
-  run_cmd "paru -S --noconfirm $opt"
-fi
-
 # NVIDIA packages
 echo "NVIDIA packages: $nvidia"
 read -rp "Install NVIDIA packages? [y/N]: " install_nvidia
@@ -98,7 +91,7 @@ done
 
 # Install cursor
 echo "Installing cursor"
-run_cmd "sudo cp -r \"$gitdir/icons/Future-cursors\" /usr/share/icons"
+run_cmd "sudo cp -r "$gitdir/icons/Future-cursors" /usr/share/icons"
 
 # Install wallpapers
 read -rp "Install wallpapers? [y/N] " install_wallpaper
@@ -134,5 +127,3 @@ echo "✅ Setup complete. Reboot required"
 sleep 3
 
 run_cmd "reboot"
-
-echo "✅ Setup complete."

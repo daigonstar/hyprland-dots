@@ -10,6 +10,8 @@ libnotify
 hyprlock
 hypridle
 sddm
+fastfetch
+swww
 flatpak
 hyprpaper
 ttf-cascadia-code-nerd
@@ -28,6 +30,12 @@ gvfs
 wallust-git
 blueman
 vlc
+starship
 thunar-archive-plugin
 gnome-system-monitor
+ghostty
+zen-browser-bin
 cava
+sif-git
+papirus-icon-theme-git
+material-black-colors-theme 
