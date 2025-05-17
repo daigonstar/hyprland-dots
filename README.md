@@ -27,6 +27,7 @@ Install:
 ```bash
 git clone https://github.com/daigonstar/hyprland-dots.git
 cd hyprland-dots/hyprdots
+chmod +x hyprinstall.sh
 ./hyprinstall.sh
 ```
 For my SDDM Greeter I use [SDDM Astronaut Theme](https://github.com/Keyitdev/sddm-astronaut-theme)
