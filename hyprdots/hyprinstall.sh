@@ -66,23 +66,36 @@ run_cmd "sudo pacman -S nerd-fonts"
 
 # Copy config directories
 dotfiles_dir=~/hyprland-dots/hyprdots/.config
-config_targets=(hypr fastfetch rofi waybar swaync)
+config_targets=(hypr fastfetch rofi waybar swaync wallust)
 gitdir=~/hyprland-dots/hyprdots
 
 run_cmd "mkdir -p ~/.config"
+
+# Ask user about backup
+read -rp "Do you want to back up your existing config directories before replacing them? [y/N]: " backup_configs
+if [[ "$backup_configs" =~ ^[Yy]$ ]]; then
+  backup_dir="$HOME/.config-backup-$(date +%Y%m%d%H%M%S)"
+  mkdir -p "$backup_dir"
+  echo "Backing up configs to $backup_dir"
+fi
 
 for dir in "${config_targets[@]}"; do
   target="$HOME/.config/$dir"
   source="$dotfiles_dir/$dir"
 
-  if [[ -d "$target" ]]; then
+  if [[ -d "$target" || -L "$target" ]]; then
+    if [[ "$backup_configs" =~ ^[Yy]$ ]]; then
+      echo "Backing up $target to $backup_dir/"
+      run_cmd "cp -r \"$target\" \"$backup_dir/\""
+    fi
     echo "Removing existing config: $target"
     run_cmd "rm -rf \"$target\""
   fi
 
   if [[ -d "$source" ]]; then
-    echo "Copying $source to $target"
-    run_cmd "cp -r \"$source\" \"$target\""
+    echo "Symlinking $source to $target"
+    run_cmd "ln -sfn \"$source\" \"$target\""
+    run_cmd "ln -s $dotfiles_dir/starship.toml ~/.config/starship.toml"
   else
     echo "⚠️ Warning: Source directory $source does not exist, skipping..."
   fi
@@ -103,6 +116,9 @@ done
 echo "Installing cursor"
 run_cmd "sudo cp -r "$gitdir/icons/Future-cursors" /usr/share/icons"
 
+flatpak --user override --filesystem=/home/$USER/.icons/:ro
+flatpak --user override --filesystem=/usr/share/icons/:ro 
+
 # Install wallpapers
 read -rp "Install wallpapers? [y/N] " install_wallpaper
 if [[ "$install_wallpaper" =~ ^[Yy]$ ]]; then
@@ -118,6 +134,7 @@ bashrc_addition=$(cat <<'EOF'
 
 # Custom Aliases and Tools
 alias update='paru -Syu && flatpak update'
+alias hyprupdate='~/hyprland-dots/hyprdots/update.sh'
 eval "$(starship init bash)"
 fastfetch
 EOF
