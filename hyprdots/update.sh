@@ -50,6 +50,8 @@ done
 # Update starship.toml symlink
 if [[ -f "$dotfiles_dir/starship.toml" ]]; then
   echo "Updating starship.toml and wallpapers symlink"
+  run_cmd "rm ~.config/starship.toml"
+  run_cmd "rm -rf ~/Pictures/wallpapers"
   run_cmd "ln -sfn \"$dotfiles_dir/starship.toml\" ~/.config/starship.toml"
   run_cmd "ln -sfn \"$wsource\" ~/Pictures/wallpapers"
 fi
