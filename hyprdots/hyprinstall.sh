@@ -95,7 +95,7 @@ for dir in "${config_targets[@]}"; do
   if [[ -d "$source" ]]; then
     echo "Symlinking $source to $target"
     run_cmd "ln -sfn \"$source\" \"$target\""
-    run_cmd "rm ~/.config/starshup.toml"
+    run_cmd "rm ~/.config/starship.toml"
     run_cmd "ln -s $dotfiles_dir/starship.toml ~/.config/starship.toml"
   else
     echo "⚠️ Warning: Source directory $source does not exist, skipping..."
