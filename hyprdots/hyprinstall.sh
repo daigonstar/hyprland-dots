@@ -8,13 +8,28 @@ if [[ "$1" == "--dry-run" ]]; then
   DRY_RUN=true
   echo "🧪 Dry run mode enabled. No changes will be made."
 fi
-
+VERBOSE=false
+for arg in "$@"; do
+  [[ "$arg" == "--verbose" ]] && VERBOSE=true
+done
 # Helper to run or simulate commands
 run_cmd() {
   if $DRY_RUN; then
     echo "[DRY RUN] $*"
   else
-    eval "$@"
+    if $VERBOSE; then
+      echo "[VERBOSE] $*"
+      bash -c "$@"
+    else
+      bash -c "$@" > /dev/null 2>&1 &
+      pid=$!
+      while kill -0 $pid 2>/dev/null; do
+        echo -n "."
+        sleep 0.7
+      done
+      wait $pid
+      echo " done"
+    fi
   fi
 }
 
@@ -32,8 +47,10 @@ read_packages() {
 # Read package lists
 req=$(read_packages "required.txt")
 nvidia=$(read_packages "nvidia.txt")
-
+flatpak=$(read_packages "$HOME/hyprland-dots/hyprdots/flatpak.txt")
 # Install git and paru
+
+echo "📦 Installing git and paru..."
 run_cmd "sudo pacman -Syu --noconfirm git"
 
 if [[ ! -d "paru" ]]; then
@@ -52,6 +69,16 @@ echo "✅ Paru installed."
 echo "📦 Installing required packages..."
 run_cmd "paru -S --noconfirm $req"
 
+# Install flatpak packages
+echo "📦 Installing flatpak packages..."
+while IFS= read -r pkg; do
+  [[ -z "$pkg" || "$pkg" =~ ^# || "$pkg" =~ ^// ]] && continue
+  flatpak install -y --noninteractive --or-update flathub "$pkg"
+done < "$HOME/hyprland-dots/hyprdots/flatpak.txt"
+
+# Enable flatpak services
+run_cmd "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo"
+
 # NVIDIA packages
 echo "NVIDIA packages: $nvidia"
 read -rp "Install NVIDIA packages? [y/N]: " install_nvidia
@@ -59,10 +86,20 @@ if [[ "$install_nvidia" =~ ^[Yy]$ ]]; then
   run_cmd "paru -S --noconfirm $nvidia"
 fi
 
-#Install fonts
-echo "Please install all fonts to ensure this works"
-sleep 2
-run_cmd "sudo pacman -S nerd-fonts"
+# Install Dual Boot tools
+echo "📦 Dual Boot"
+read -rp "Do you want to install refind? [y/N]: " install_dual_boot
+if [[ "$install_dual_boot" =~ ^[Yy]$ ]]; then
+
+  run_cmd "sudo pacman -S --noconfirm refind"
+  echo "Installing rEFInd..."
+  run_cmd "sudo refind-install"
+  run_cmd "sudo mkdir -p /boot/EFI/refind/themes"
+  run_cmd "sudo git clone https://github.com/catppuccin/refind.git /boot/EFI/refind/themes/catppuccin"
+  echo 'include themes/catppuccin/mocha.conf' | sudo tee -a /boot/EFI/refind/refind.conf > /dev/null
+else
+  echo "Skipping rEFInd installation."
+fi
 
 # Copy config directories
 dotfiles_dir=~/hyprland-dots/hyprdots/.config

@@ -1,0 +1,7 @@
+com.valvesoftware.Steam
+com.heroicgameslauncher.hgl
+com.nextcloud.desktopclient.nextcloud
+com.discordapp.Discord
+net.retrodeck.retrodeck
+org.remmina.Remmina
+org.filezillaproject.Filezilla

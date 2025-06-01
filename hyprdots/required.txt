@@ -1,5 +1,6 @@
 hyprland
 rofi-wayland
+kitty
 waybar
 thunar
 nwg-displays
@@ -39,4 +40,6 @@ zen-browser-bin
 cava
 sif-git
 papirus-icon-theme-git
-material-black-colors-theme 
+material-black-colors-theme
+ttf-cascadia-mono-nerd
+ttf-cascadia-mono-nerd
