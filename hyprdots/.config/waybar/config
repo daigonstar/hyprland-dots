@@ -2,10 +2,10 @@
         "layer": "top",
         "position": "top",
         "reload_style_on_change": true,
-        "spacing": 8,
-        "modules-left": ["clock","custom/chatgpt", "hyprland/window"],
+        "spacing": 10,
+        "modules-left": ["custom/notification","clock","custom/chatgpt", "hyprland/window"],
         "modules-center": ["hyprland/workspaces"],
-        "modules-right": ["group/expand","pulseaudio","bluetooth","battery","network","custom/notification","custom/power"],
+        "modules-right": ["group/expand","pulseaudio","bluetooth","battery","network","custom/power"],
 
 
 
@@ -37,12 +37,12 @@
         },
         "custom/notification": {
             "tooltip": false,
-            "format": "",
+            "format": "󰎟",
             "on-click": "swaync-client -t -sw",
             "escape": true
         },
         "clock": {
-            "format": " &#xf017; {:%I:%M }",
+            "format": "󱑃  {:%I:%M }",
             "interval": 1,   
             "tooltip-format": "<tt>{calendar}</tt>",
             "calendar": {
@@ -56,7 +56,7 @@
             }
         },
         "network": {
-            "format-wifi": "",
+            "format-wifi": "󰖩",
             "format-ethernet":"",
             "format-disconnected": "",
             "tooltip-format-disconnected": "Error",
