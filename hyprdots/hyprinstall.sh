@@ -134,6 +134,10 @@ for dir in "${config_targets[@]}"; do
     run_cmd "ln -sfn \"$source\" \"$target\""
     run_cmd "rm ~/.config/starship.toml"
     run_cmd "ln -s $dotfiles_dir/starship.toml ~/.config/starship.toml"
+    run_cmd "rm -rf ~/Pictures/wallpapers"
+    run_cmd "ln -sfn $gitdir/wallpapers ~/Pictures/wallpapers"
+    run_cmd "rm ~/.bashrc"
+    run_cmd "ln -s $gitdir/bash/.bashrc ~/.bashrc"
   else
     echo "⚠️ Warning: Source directory $source does not exist, skipping..."
   fi
@@ -157,14 +161,6 @@ run_cmd "sudo cp -r "$gitdir/icons/Future-cursors" /usr/share/icons"
 flatpak --user override --filesystem=/home/$USER/.icons/:ro
 flatpak --user override --filesystem=/usr/share/icons/:ro 
 
-# Install wallpapers
-read -rp "Install wallpapers? [y/N] " install_wallpaper
-if [[ "$install_wallpaper" =~ ^[Yy]$ ]]; then
-  run_cmd "mkdir -p ~/Pictures"
-  run_cmd "cp -r \"$gitdir/wallpapers\" ~/Pictures"
-else
-  echo "Skipping wallpaper installation."
-fi
 
 # Update .bashrc
 echo "🔧 Updating .bashrc with aliases and startup commands..."
