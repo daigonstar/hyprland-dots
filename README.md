@@ -2,11 +2,6 @@
 
 ### This readme requires the installation of a nerd font to display correctly
 
-<h3 align="center">
-	<img src="/hyprdots/screens/tux.svg" alt="Tux" width="38" height="38" />
-	
-	<img src="/hyprdots/screens/tux.svg" alt="Tux" width="38" height="38" />
-</h3>
 
 This is the configuration I am currently using for Hyprland
 I have tried many dots in the past and I liked them but not ALL of what each one offered so I decided to make my own config
@@ -18,7 +13,7 @@ I have added some wallpapers I've collected (will probably add more as I go)
 
 ### **Keybinds**
 
-SUPER + Space = Launcher  
+<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + Space = Launcher  
 SUPER + Q = Quit app  
 SUPER + T = Terminal (Ghostty as default)  
 SUPER + E = File Manager (Thunar is default)  
