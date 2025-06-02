@@ -174,8 +174,8 @@ flatpak --user override --filesystem=/usr/share/icons/:ro
 
 
 # Bashrc
-        echo "🔧 Updating .bashrc with aliases and startup commands..."
-        bashrc_addition=$(cat <<'EOF'
+echo "🔧 Updating .bashrc with aliases and startup commands..."
+bashrc_addition=$(cat <<'EOF'
 
 # Custom Aliases and Tools
 alias update='paru -Syu && flatpak update'
@@ -185,30 +185,57 @@ fastfetch
 EOF
 )
 
-        if $DRY_RUN; then
-            echo "[DRY RUN] Would ensure the following lines exist in ~/.bashrc:"
-            echo "$bashrc_addition"
-        else
-            while IFS= read -r line; do
-                # Skip empty lines to avoid appending unnecessary blanks
-                [[ -z "$line" ]] && continue
-                if ! grep -Fxq "$line" "$HOME/.bashrc"; then
-                    echo "$line" >> "$HOME/.bashrc"
-                fi
-            done <<< "$bashrc_addition"
+if $DRY_RUN; then
+    echo "[DRY RUN] Would ensure the following lines exist in ~/.bashrc:"
+    echo "$bashrc_addition"
+else
+    while IFS= read -r line; do
+        # Skip empty lines to avoid appending unnecessary blanks
+        [[ -z "$line" ]] && continue
+        if ! grep -Fxq "$line" "$HOME/.bashrc"; then
+            echo "$line" >> "$HOME/.bashrc"
         fi
+    done <<< "$bashrc_addition"
+fi
+
+# Hide unwanted apps from launcher
+echo "🔧 Hiding unwanted apps from launcher..."
+APPS_FILE="$HOME/hyprland-dots/hyprdots/hide.txt"
+
+if [[ ! -f "$APPS_FILE" ]]; then
+    echo "❌ App list file not found: $APPS_FILE"
+    exit 1
+fi
+
+while IFS= read -r app; do
+    [[ -z "$app" || "$app" =~ ^# ]] && continue
+    desktop_file="/usr/share/applications/$app.desktop"
+    user_desktop_file="$HOME/.local/share/applications/$app.desktop"
+
+    if [[ -f "$desktop_file" ]]; then
+        mkdir -p "$HOME/.local/share/applications"
+        cp "$desktop_file" "$user_desktop_file"
+        if grep -q '^NoDisplay=true' "$user_desktop_file"; then
+            echo "$app is already hidden."
+        else
+            echo "Hiding $app.desktop"
+            echo "NoDisplay=true" >> "$user_desktop_file"
+        fi
+    else
+        echo "Could not find $desktop_file"
     fi
-done
+done < "$APPS_FILE"
 
 echo "enabling SDDM"
 run_cmd "sudo systemctl enable sddm.service"
 
-echo "✅ Setup complete. Reboot required"
-
-echo "enabling bluetooth
-
-sudo systemctl enable bluetooth
-
+echo "enabling bluetooth"
+run_cmd "sudo systemctl enable bluetooth"
 sleep 3
-
-run_cmd "reboot"
+echo "✅ Setup complete. Reboot required"
+read -rp "Reboot now? [y/N]: " reboot_now
+if [[ "$reboot_now" =~ ^[Yy]$ ]]; then
+    run_cmd "reboot"
+else
+    echo "Reboot skipped. Please reboot manually to apply all changes."
+fi
