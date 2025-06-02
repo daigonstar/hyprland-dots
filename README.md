@@ -8,6 +8,11 @@ I have also made an install script that should install everything nicely (I even
 
 I have added some wallpapers I've collected (will probably add more as I go)
 
+**Keybinds**
+
+ + Space = Launcher
+ + T = Terminal (Ghostty as default)
+
 Default Desktop
 ![image](/hyprdots/screens/desktop.png)
 
