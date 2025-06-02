@@ -144,20 +144,23 @@
         "on-click": "~/.config/hypr/scripts/ai.sh",
         "tooltip-format": "AI Support"
         },
-        "pulseaudio": {
-        "max-volume": 150,
-        "scroll-step": 10,
-        "format": "{icon}",
-        "tooltip-format": "{volume}%",
-        "format-muted": " ",
+         "pulseaudio": {
+        "format": "{icon}   {volume}%  ",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": "0% {icon} ",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
         "format-icons": {
-            "default": [
-                " ",
-                " ",
-                " "
-            ]
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
         },
-        "on-click": "pwvucontrol"
-    }
+        "on-click": "pavucontrol"
+    },
 } 
 
