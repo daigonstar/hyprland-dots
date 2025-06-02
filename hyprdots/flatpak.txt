@@ -1,5 +1,6 @@
 com.valvesoftware.Steam
 com.heroicgameslauncher.hgl
+io.github.flattool.Warehouse
 com.nextcloud.desktopclient.nextcloud
 com.discordapp.Discord
 net.retrodeck.retrodeck

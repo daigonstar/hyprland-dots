@@ -1,8 +1,5 @@
 # <img src="/hyprdots/screens/hypr.svg" alt="hypr" width="25" height="25" /> Hyprland Dotfiles <img src="/hyprdots/screens/hypr.svg" alt="hypr" width="25" height="25" />
 
-### This readme requires the installation of a nerd font to display correctly
-
-
 This is the configuration I am currently using for Hyprland
 I have tried many dots in the past and I liked them but not ALL of what each one offered so I decided to make my own config
 I have borrowed some code from the dots I like (especially JaKoolIt) but have also added my own spin on some things
@@ -20,7 +17,8 @@ I have added some wallpapers I've collected (will probably add more as I go)
 <img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + B = Browser (Zen is default)  
 <img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + A = App Store (Cosmic is default)   
 <img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + N = Refresh waybar  
-<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> SHIFT + N = Launch waybar (used if waybar crashes)
+<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> SHIFT + N = Launch waybar (used if waybar crashes)  
+<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> SHIFT + W = Launch wallpaper selecter  
 
 ### Default Desktop
 ![image](/hyprdots/screens/desktop.png)
