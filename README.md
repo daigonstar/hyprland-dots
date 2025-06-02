@@ -4,7 +4,7 @@
 
 <h3 align="center">
 	<img src="/hyprdots/screens/tux.svg" alt="Tux" width="38" height="38" />
-	KooL Hyprland-Dotfiles Showcase 
+	
 	<img src="/hyprdots/screens/tux.svg" alt="Tux" width="38" height="38" />
 </h3>
 
