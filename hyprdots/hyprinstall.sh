@@ -101,12 +101,10 @@ else
   echo "Skipping rEFInd installation."
 fi
 
-# Copy config directories
+# Symlink config directories
 dotfiles_dir=~/hyprland-dots/hyprdots/.config
 config_targets=(hypr fastfetch rofi waybar swaync wallust)
 gitdir=~/hyprland-dots/hyprdots
-
-run_cmd "mkdir -p ~/.config"
 
 # Ask user about backup
 read -rp "Do you want to back up your existing config directories before replacing them? [y/N]: " backup_configs
@@ -150,7 +148,6 @@ for dir in "${config_targets[@]}"; do
         fi
    
 done
-
 
 # Enable scripts
 echo "🔧 Enabling scripts..."
