@@ -14,13 +14,13 @@ I have added some wallpapers I've collected (will probably add more as I go)
 ### **Keybinds**
 
 <img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + Space = Launcher  
-SUPER + Q = Quit app  
-SUPER + T = Terminal (Ghostty as default)  
-SUPER + E = File Manager (Thunar is default)  
-SUPER + B = Browser (Zen is default)  
-SUPER + A = App Store (Cosmic is default)   
-SUPER + N = Refresh waybar  
-SUPER SHIFT + N = Launch waybar (used if waybar crashes)
+<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + Q = Quit app  
+<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + T = Terminal (Ghostty as default)  
+<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + E = File Manager (Thunar is default)  
+<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + B = Browser (Zen is default)  
+<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + A = App Store (Cosmic is default)   
+<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + N = Refresh waybar  
+<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> SHIFT + N = Launch waybar (used if waybar crashes)
 
 ### Default Desktop
 ![image](/hyprdots/screens/desktop.png)
