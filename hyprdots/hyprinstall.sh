@@ -132,27 +132,43 @@ for dir in "${config_targets[@]}"; do
   if [[ -d "$source" ]]; then
     echo "Symlinking $source to $target"
     run_cmd "ln -sfn \"$source\" \"$target\""
-    run_cmd "rm ~/.config/starship.toml"
-    run_cmd "ln -s $dotfiles_dir/starship.toml ~/.config/starship.toml"
-    run_cmd "rm -rf ~/Pictures/wallpapers"
-    run_cmd "ln -sfn $gitdir/wallpapers ~/Pictures/wallpapers"
-    run_cmd "rm ~/.bashrc"
-    run_cmd "ln -s $gitdir/bash/.bashrc ~/.bashrc"
+
+    # Starship config
+    if [[ -e "$HOME/.config/starship.toml" || -L "$HOME/.config/starship.toml" ]]; then
+      run_cmd "rm \"$HOME/.config/starship.toml\""
+    fi
+    run_cmd "ln -sfn \"$dotfiles_dir/starship.toml\" \"$HOME/.config/starship.toml\""
+
+    # Wallpapers
+    if [[ -e \"$HOME/Pictures/wallpapers\" || -L \"$HOME/Pictures/wallpapers\" ]]; then
+      run_cmd "rm -rf \"$HOME/Pictures/wallpapers\""
+    fi
+    run_cmd "cp \"$gitdir/wallpapers\" \"$HOME/Pictures/wallpapers\""
+
+    # Bashrc
+    if [[ -e \"$HOME/.bashrc\" || -L \"$HOME/.bashrc\" ]]; then
+      run_cmd "cp \"$HOME/.bashrc\" \"$HOME/.bashrc.bak\""
+      run_cmd "rm \"$HOME/.bashrc\""
+    fi
+    run_cmd "ln -sfn \"$gitdir/bash/.bashrc\" \"$HOME/.bashrc\""
   else
     echo "⚠️ Warning: Source directory $source does not exist, skipping..."
   fi
 done
 
-#chmod +x ~/.config/hypr/scripts/ai.sh
-#chmod +x ~/.config/hypr/scripts/browser.sh
-#chmod +x ~/.config/hypr/scripts/gamemode.sh
-#chmod +x ~/.config/hypr/scripts/pywall.sh
-#chmod +x ~/.config/hypr/scripts/rainbowb.sh
-#chmod +x ~/.config/hypr/scripts/refresh.sh
-#chmod +x ~/.config/hypr/scripts/wallust.sh
-#chmod +x ~/.config/rofi/powermenu/powermenu.sh
-#chmod +x ~/.config/rofi/launcher/launcher.sh
-#chmod +x ~/.config/rofi/wallpaper/wallpaper.sh
+
+# Enable scripts
+echo "🔧 Enabling scripts..."
+chmod +x $dotfiles_dir/hypr/scripts/ai.sh
+chmod +x $dotfiles_dir/hypr/scripts/browser.sh
+chmod +x $dotfiles_dir/hypr/scripts/gamemode.sh
+chmod +x $dotfiles_dir/hypr/scripts/pywall.sh
+chmod +x $dotfiles_dir/hypr/scripts/rainbowb.sh
+chmod +x $dotfiles_dir/hypr/scripts/refresh.sh
+chmod +x $dotfiles_dir/hypr/scripts/wallust.sh
+chmod +x $dotfiles_dir/rofi/powermenu/powermenu.sh
+chmod +x $dotfiles_dir/rofi/launchers/launcher.sh
+chmod +x $dotfiles_dir/rofi/wallpaper/wallpaper.sh
 
 # Install cursor
 echo "Installing cursor"
@@ -174,16 +190,14 @@ fastfetch
 EOF
 )
 
-if $DRY_RUN; then
-  echo "[DRY RUN] Would append the following to ~/.bashrc:"
-  echo "$bashrc_addition"
-else
-  echo "$bashrc_addition" >> ~/.bashrc
-fi
 echo "enabling SDDM"
 run_cmd "sudo systemctl enable sddm.service"
 
 echo "✅ Setup complete. Reboot required"
+
+echo "enabling bluetooth
+
+sudo systemctl enable bluetooth
 
 sleep 3
 
