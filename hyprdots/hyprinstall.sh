@@ -140,20 +140,15 @@ for dir in "${config_targets[@]}"; do
     run_cmd "ln -sfn \"$dotfiles_dir/starship.toml\" \"$HOME/.config/starship.toml\""
 
     # Wallpapers
-    if [[ -e \"$HOME/Pictures/wallpapers\" || -L \"$HOME/Pictures/wallpapers\" ]]; then
-      run_cmd "rm -rf \"$HOME/Pictures/wallpapers\""
-    fi
-    run_cmd "cp \"$gitdir/wallpapers\" \"$HOME/Pictures/wallpapers\""
-
-    # Bashrc
-    if [[ -e \"$HOME/.bashrc\" || -L \"$HOME/.bashrc\" ]]; then
-      run_cmd "cp \"$HOME/.bashrc\" \"$HOME/.bashrc.bak\""
-      run_cmd "rm \"$HOME/.bashrc\""
-    fi
-    run_cmd "ln -sfn \"$gitdir/bash/.bashrc\" \"$HOME/.bashrc\""
-  else
-    echo "⚠️ Warning: Source directory $source does not exist, skipping..."
-  fi
+        if [[ -e "$HOME/Pictures/wallpapers" || -L "$HOME/Pictures/wallpapers" ]]; then
+            run_cmd "rm -rf \"$HOME/Pictures/wallpapers\""
+        fi
+        if [[ -d "$gitdir/hyprdots/wallpapers" ]]; then
+            run_cmd "cp -r \"$gitdir/hyprdots/wallpapers\" \"$HOME/Pictures/wallpapers\""
+        else
+            echo "⚠️ Warning: $gitdir/hyprdots/wallpapers does not exist, skipping wallpapers copy."
+        fi
+   
 done
 
 
@@ -178,9 +173,9 @@ flatpak --user override --filesystem=/home/$USER/.icons/:ro
 flatpak --user override --filesystem=/usr/share/icons/:ro 
 
 
-# Update .bashrc
-echo "🔧 Updating .bashrc with aliases and startup commands..."
-bashrc_addition=$(cat <<'EOF'
+# Bashrc
+        echo "🔧 Updating .bashrc with aliases and startup commands..."
+        bashrc_addition=$(cat <<'EOF'
 
 # Custom Aliases and Tools
 alias update='paru -Syu && flatpak update'
@@ -189,6 +184,21 @@ eval "$(starship init bash)"
 fastfetch
 EOF
 )
+
+        if $DRY_RUN; then
+            echo "[DRY RUN] Would ensure the following lines exist in ~/.bashrc:"
+            echo "$bashrc_addition"
+        else
+            while IFS= read -r line; do
+                # Skip empty lines to avoid appending unnecessary blanks
+                [[ -z "$line" ]] && continue
+                if ! grep -Fxq "$line" "$HOME/.bashrc"; then
+                    echo "$line" >> "$HOME/.bashrc"
+                fi
+            done <<< "$bashrc_addition"
+        fi
+    fi
+done
 
 echo "enabling SDDM"
 run_cmd "sudo systemctl enable sddm.service"
