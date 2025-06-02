@@ -1,4 +1,4 @@
-#  Hyprland Dotfiles
+# <img src="/hyprdots/screens/hypr.svg" alt="hypr" width="25" height="25" /> Hyprland Dotfiles <img src="/hyprdots/screens/hypr.svg" alt="hypr" width="25" height="25" />
 
 ### This readme requires the installation of a nerd font to display correctly
 
