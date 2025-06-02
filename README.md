@@ -1,8 +1,12 @@
 #  Hyprland Dotfiles
 
-### This readme requires the installation of a ned font to display correctly
+### This readme requires the installation of a nerd font to display correctly
 
-## <font "color=red">I am aware of the volume indicator clipping and am working to fix it</font>
+<h3 align="center">
+	<img src="/hyprdots/screens/tux.svg" alt="Tux" width="38" height="38" />
+	KooL Hyprland-Dotfiles Showcase 
+	<img src="/hyprdots/screens/tux.svg" alt="Tux" width="38" height="38" />
+</h3>
 
 This is the configuration I am currently using for Hyprland
 I have tried many dots in the past and I liked them but not ALL of what each one offered so I decided to make my own config
