@@ -146,6 +146,7 @@ for dir in "${config_targets[@]}"; do
         else
             echo "⚠️ Warning: $gitdir/hyprdots/wallpapers does not exist, skipping wallpapers copy."
         fi
+  fi      
    
 done
 
