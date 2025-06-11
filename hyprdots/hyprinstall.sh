@@ -67,7 +67,13 @@ echo "✅ Paru installed."
 
 # Install required packages
 echo "📦 Installing required packages..."
-run_cmd "paru -S --noconfirm $req"
+for pkg in $req; do
+  if pacman -Qq "$pkg" &>/dev/null; then
+    echo "✅ $pkg is already installed, skipping."
+  else
+    run_cmd "paru -S --noconfirm $pkg"
+  fi
+done
 
 # Install flatpak packages
 echo "📦 Installing flatpak packages..."
@@ -77,13 +83,25 @@ while IFS= read -r pkg; do
 done < "$HOME/hyprland-dots/hyprdots/flatpak.txt"
 
 # Enable flatpak services
-run_cmd "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo"
+while IFS= read -r pkg; do
+  [[ -z "$pkg" || "$pkg" =~ ^# || "$pkg" =~ ^// ]] && continue
+  if flatpak list --app | grep -qw "$pkg"; then
+    echo "✅ Flatpak $pkg is already installed, skipping."
+  else
+    run_cmd "flatpak install -y --noninteractive --or-update flathub \"$pkg\""
+  fi
+done < "$HOME/hyprland-dots/hyprdots/flatpak.txt"
 
 # NVIDIA packages
 echo "NVIDIA packages: $nvidia"
-read -rp "Install NVIDIA packages? [y/N]: " install_nvidia
 if [[ "$install_nvidia" =~ ^[Yy]$ ]]; then
-  run_cmd "paru -S --noconfirm $nvidia"
+  for pkg in $nvidia; do
+    if pacman -Qq "$pkg" &>/dev/null; then
+      echo "✅ $pkg is already installed, skipping."
+    else
+      run_cmd "paru -S --noconfirm $pkg"
+    fi
+  done
 fi
 
 # Install Dual Boot tools

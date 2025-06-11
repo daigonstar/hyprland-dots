@@ -41,5 +41,6 @@ cava
 sif-git
 papirus-icon-theme-git
 material-black-colors-theme
+openrgb
 ttf-cascadia-mono-nerd
 ttf-cascadia-mono-nerd
