@@ -15,21 +15,21 @@ window#waybar{
     padding:5px;
     margin:5 0 0 0;
     border-radius:20px;
-    background: alpha(@color6,.6);
+    background: alpha(@color4,.6);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
 }
 .modules-left {
     padding:5px;
     margin:5 0 0 0;
     border-radius:10px;
-    background: alpha(@color8,.6);
+    background: alpha(@color4,.6);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
 }
 .modules-right {
     padding: 5px;
     margin:5 0 0 0;
     border-radius:10px;
-    background: alpha(@color8,.6);
+    background: alpha(@color4,.6);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
 }
 #bluetooth-connected {
@@ -41,7 +41,7 @@ window#waybar{
 #workspaces button {
     all:unset;
     padding: 0px 7px;
-    color: alpha(@color4,.8);
+    color: alpha(@color6,.8);
     transition: all .2s ease;
 }
 #workspaces button:hover {
@@ -51,12 +51,12 @@ window#waybar{
     transition: all 1s ease;
 }
 #workspaces button.active {
-    color: @color6;
+    color: @color10;
     border: none;
     text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
 }
 #workspaces button.empty {
-    color: alpha(@color5,.6);
+    color: alpha(@color4,.6);
     border: none;
     text-shadow: 0px 0px 1.5px rgba(0, 0, 0, .2);
 }
@@ -67,7 +67,7 @@ window#waybar{
     transition: all 1s ease;
 }
 #workspaces button.empty.active {
-    color: @color6;
+    color: @color12;
     border: none;
     text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
 }
