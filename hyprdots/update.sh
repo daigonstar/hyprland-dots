@@ -41,9 +41,9 @@ gitdir=~/hyprland-dots
 
 echo "🔄 Pulling latest changes from git..."
 cd "$gitdir"
-git stash
+
 git pull
-git stash pop
+
 
 # Ask user about backup
 read -rp "Do you want to back up your existing config directories before replacing them? [y/N]: " backup_configs
