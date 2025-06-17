@@ -33,6 +33,7 @@ blueman
 vlc
 cosmic-store
 starship
+discord
 thunar-archive-plugin
 gnome-system-monitor
 ghostty
