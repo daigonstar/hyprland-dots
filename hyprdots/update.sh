@@ -112,5 +112,9 @@ EOF
         fi
     fi
 done
-
-echo "✅ Config update complete."
+read -rp "Reboot now? [y/N]: " reboot_now
+if [[ "$reboot_now" =~ ^[Yy]$ ]]; then
+    run_cmd "reboot"
+else
+    echo "Reboot skipped. Please reboot manually to apply all changes."
+fi
