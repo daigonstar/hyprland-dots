@@ -44,3 +44,4 @@ material-black-colors-theme
 openrgb
 ttf-cascadia-mono-nerd
 ttf-cascadia-mono-nerd
+bitwarden
