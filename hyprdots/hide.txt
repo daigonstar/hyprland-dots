@@ -25,3 +25,7 @@ thunar-bulk-rename
 thunar-settings
 xdg-desktop-portal-gtk
 xfce4-about
+electron34
+xgps
+xgpsspeed
+lstopo
