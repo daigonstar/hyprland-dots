@@ -36,7 +36,7 @@ run_cmd() {
 }
 
 dotfiles_dir=~/hyprland-dots/hyprdots/.config
-config_targets=(hypr fastfetch rofi waybar swaync wallust)
+config_targets=(hypr fastfetch rofi waybar swaync wallust ghostty)
 gitdir=~/hyprland-dots
 
 echo "🔄 Pulling latest changes from git..."

@@ -121,7 +121,7 @@ fi
 
 # Symlink config directories
 dotfiles_dir=~/hyprland-dots/hyprdots/.config
-config_targets=(hypr fastfetch rofi waybar swaync wallust)
+config_targets=(hypr fastfetch rofi waybar swaync wallust ghostty)
 gitdir=~/hyprland-dots/hyprdots
 
 # Ask user about backup
