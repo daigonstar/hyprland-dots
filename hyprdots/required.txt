@@ -1,6 +1,5 @@
 hyprland
 rofi-wayland
-kitty
 waybar
 thunar
 nwg-displays
