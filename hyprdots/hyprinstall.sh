@@ -124,6 +124,13 @@ dotfiles_dir=~/hyprland-dots/hyprdots/.config
 config_targets=(hypr fastfetch rofi waybar swaync wallust ghostty)
 gitdir=~/hyprland-dots/hyprdots
 
+#Create home directories
+
+mkdir ~/Pictures
+mkdir ~/Pictures/wallpapers
+mkdir ~/Documents
+mkdir ~/Videos
+
 # Ask user about backup
 read -rp "Do you want to back up your existing config directories before replacing them? [y/N]: " backup_configs
 if [[ "$backup_configs" =~ ^[Yy]$ ]]; then

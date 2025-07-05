@@ -45,3 +45,4 @@ openrgb
 ttf-cascadia-mono-nerd
 bitwarden
 python
+code
