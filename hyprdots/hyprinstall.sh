@@ -251,10 +251,19 @@ done < "$APPS_FILE"
 
 echo "enabling SDDM"
 run_cmd "sudo systemctl enable sddm.service"
+
+echo "installing SDDM theme"
+sudo tar -xzvf $gitdir/SDDM/sugar-dark.tar.gz -C /usr/share/sddm/themes
+sudo cp -R /usr/lib/sddm/sddm.conf.d /etc/sddm.conf.d
+sudo cp $gitconf/SDDM/sddm.conf /etc/sddm.conf.d/sddm.conf
+
+ech "enabling coolercontrol service"
 run_cmd "sudo systemctl enable --now coolercontrold"
+
 echo "enabling bluetooth"
 run_cmd "sudo systemctl enable bluetooth"
 sleep 3
+
 echo "✅ Setup complete. Reboot required"
 read -rp "Reboot now? [y/N]: " reboot_now
 if [[ "$reboot_now" =~ ^[Yy]$ ]]; then

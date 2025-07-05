@@ -1,4 +1,6 @@
 hyprland
+ark
+qt5-graphicaleffects
 rofi-wayland
 waybar
 thunar
