@@ -2,7 +2,7 @@
 
 * {
     font-size:15px;
-    font-family: "CodeNewRoman Nerd Font Propo";
+    font-family: "ttf-cascadia-code-nerd";
 }
 window#waybar{
     all:unset;
@@ -78,13 +78,77 @@ window#waybar{
     background-size: contain;
     padding-right: 18px;
     opacity: 0.8;
-    color: @iconcolor;
+    color: @color7;
+}
+
+#clock {
+    padding: 0px 3px;
+    color: @color7;
 }
 
 #network {
     padding: 0px 4px;
+    color: teal;
+}
+
+#bluetooth {
+    color: @color7;;
+}
+
+#custom-power {
+    padding: 0px 3px;
+    color: red;    
 }
 
 #battery.charging {
     color: rgba(24, 185, 9, 0.5);
+}
+#custom-cava {
+    color: #8FBC8F;
+    border-left: 0px;
+    border-right: 0px;
+    padding-bottom: 6px;
+    font-size: 22px;
+}
+
+#cpu {
+    padding: 0px 5px;
+    background: none;
+    border-radius: 0;
+}
+
+#memory {
+    padding: 0px 5px;
+    background: none;
+    border-radius: 0;
+}
+
+#temperature {
+    padding: 0px 5px;
+    background: alpha(@color4,.6);
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px rgba(0, 0,0, .6);
+}
+
+#tray {
+    padding: 0px 5px;
+    margin: 0px 0px 0px 0px;
+    background: alpha(@color8,.6);
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
+}
+
+#custom-trayicon {
+    padding: 0px 6px;
+    margin: 0px 0px 0px 0px;
+    
+}
+#pulseaudio {
+    padding: 0px 0px;
+    color: @color7;
+}
+
+#pulseaudio.format-icons,
+#pulseaudio.format-muted {
+    padding-right: 10px;
 }

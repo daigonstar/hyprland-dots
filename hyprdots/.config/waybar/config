@@ -1,60 +1,71 @@
 {
-        "layer": "top",
+    // Modules
+
+    "layer": "top",
         "position": "top",
         "reload_style_on_change": true,
         "spacing": 10,
-        "modules-left": ["custom/notification","clock","custom/chatgpt", "hyprland/window"],
-        "modules-center": ["hyprland/workspaces"],
-        "modules-right": ["group/expand","pulseaudio","bluetooth","battery","network","custom/power"],
+        "modules-left": ["clock","custom/weather","custom/chatgpt"],
+        "modules-center": ["hyprland/window", "hyprland/workspaces","cava"],
+        "modules-right": ["group/expand","pulseaudio","bluetooth","battery","network","custom/power","custom/swaync"],
 
+    // Groups
 
-
-         "group/expand": {
+        "group/expand": {
             "orientation": "horizontal",
+            "spacing": 10,
             "drawer": {
                 "transition-duration": 600,
                 "transition-to-left": true,
                 "click-to-reveal": true
             },
-            "modules": ["custom/expand","tray"]
+            "modules": ["custom/trayicon","tray","cpu","memory","temperature"]
         },
-        "hyprland/window": {
-            "max-length": 100, // Characters count
+
+    // Generic Modules
+
+    "hyprland/window": {
+            "max-length": 10, // Characters count
             "separate-outputs": true,
             "icon": true
         },
 
         "hyprland/workspaces": {
-            "format": "{icon}",
-            "format-icons": {
-                "active": "",
-                "default": "",
-                "empty": ""
-            },
-            "persistent-workspaces": {
-                "*": [ 1,2,3,4,5 ]
-            }
+	    "active-only": false,
+	    "all-outputs": false,
+	    "format": "{icon}",
+	    "show-special": false,
+	    "on-click": "activate",
+        "persistent-workspaces": {
+        "*": 3
+	    },
+	    "format-icons": {
+	    	"active": "",
+	    	"default": "",
+	        },
         },
-        "custom/notification": {
-            "tooltip": false,
-            "format": "󰎟",
-            "on-click": "swaync-client -t -sw",
-            "escape": true
-        },
+
         "clock": {
-            "format": "󱑃  {:%I:%M }",
-            "interval": 1,   
-            "tooltip-format": "<tt>{calendar}</tt>",
-            "calendar": {
-                "format": {
-                    "today": "<span color='#fAfBfC'><b>{}</b></span>"
-                }
-            },
-            "actions": {
-                "on-click-right": "shift_down",
-                "on-click": "shift_up"
-            }
+	    "interval": 1,
+        //"format": " {:%I:%M %p}", // AM PM format
+        "format": "  {:%H:%M}", // 24H
+	    "format-alt": " {:%H:%M   %Y, %d %B, %A}",
+	    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+	    "calendar": {
+		    "mode": "year",
+		    "mode-mon-col": 3,
+		    "weeks-pos": "right",
+		    "on-scroll": 1,
+		    "format": {
+			    "months": "<span color='#ffead3'><b>{}</b></span>",
+			    "days": "<span color='#ecc6d9'><b>{}</b></span>",
+			    "weeks": "<span color='#99ffdd'><b>W{:%V}</b></span>",
+			    "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+			    "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+		        }
+	        },      
         },
+
         "network": {
             "format-wifi": "󰖩",
             "format-ethernet":"",
@@ -64,6 +75,7 @@
             "tooltip-format-ethernet": "{ifname} 🖧 ",
             "on-click": "ghostty -e nmtui"
         },
+
         "bluetooth": {
             "format-on": "󰂯",
             "format-off": "BT-off",
@@ -74,8 +86,9 @@
             "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
             "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
             "tooltip-format-enumerate-connected-battery": "{device_alias}\n{device_address}\n{device_battery_percentage}%",
-            "on-click-right": "blueman-manager",
+            "on-click": "blueman-manager",
         }, 
+
         "battery": {
             "interval":30,
             "states": {
@@ -96,55 +109,27 @@
             "󰁹"
             ],
         },
-        "custom/expand": {
-            "format": "󰳝 ",
-            "tooltip": false
-        },
-        "custom/endpoint":{
-            "format": "|",
-            "tooltip": false
-        },
-        "custom/colorpicker": {
-            "format": "{}",
-            "return-type": "json",
-            "interval": "once",
-            "exec": "~/.config/waybar/scripts/colorpicker.sh -j",
-            "on-click": "~/.config/waybar/scripts/colorpicker.sh",
-            "signal": 1
-        },
+
         "cpu": {
-            "format": "󰻠",
+            "format": "",
             "tooltip": true
         },
+
         "memory": {
-            "format": ""
+            "format": ""
         },
+
         "temperature": {
             "critical-threshold": 80,
-            "format": "",
+            "format": "",
         },
+
         "tray": {
             "icon-size": 14,
-            "spacing": 10
+            "spacing": 2
         },
-        "custom/separator": {
-            "format": "|",
-            "interval": "once",
-            "tooltip": false
-        },
-        "custom/power": {
-            "format": "&#xf011; ",
-            "on-click": "~/.config/rofi/powermenu/powermenu.sh",
-            "tooltip":false
-	    },
-         
 
-        "custom/chatgpt": {
-        "format": " ",
-        "on-click": "~/.config/hypr/scripts/ai.sh",
-        "tooltip-format": "AI Support"
-        },
-         "pulseaudio": {
+        "pulseaudio": {
         "format": "{icon}   {volume}%  ",
         "format-bluetooth": "{volume}% {icon} {format_source}",
         "format-bluetooth-muted": " {icon} {format_source}",
@@ -161,6 +146,68 @@
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
-    },
+        },
+
+    // Custom Modules
+
+        
+        "custom/notification": {
+            "tooltip": false,
+            "format": "󰎟",
+            "on-click": "swaync-client -t -sw",
+            "escape": true
+        },
+        "custom/trayicon": {
+            "format": "󱊔",
+            "tooltip": false
+        },        
+        
+        "custom/endpoint":{
+            "format": "|",
+            "tooltip": false
+        },
+
+        "custom/separator": {
+            "format": "|",
+            "interval": "once",
+            "tooltip": false
+        },
+
+        "custom/power": {
+            "format": "&#xf011; ",
+            "on-click": "~/.config/rofi/powermenu/powermenu.sh",
+            "tooltip":false
+	    },
+         
+        "custom/chatgpt": {
+        "format": " ",
+        "on-click": "~/.config/hypr/scripts/ai.sh",
+        "tooltip-format": "AI Support"
+        },
+
+        "cava": {
+        // "cava_config": "$XDG_CONFIG_HOME/cava/cava.conf",
+        "framerate": 30,
+        "autosens": 1,
+        "sensitivity": 100,
+        "bars": 14,
+        "lower_cutoff_freq": 50,
+        "higher_cutoff_freq": 10000,
+        "hide_on_silence": false,
+        // "format_silent": "quiet",
+        "method": "pulse",
+        "source": "auto",
+        "stereo": true,
+        "reverse": false,
+        "bar_delimiter": 0,
+        "monstercat": false,
+        "waves": false,
+        "noise_reduction": 0.77,
+        "input_delay": 2,
+        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
+        "actions": {
+                   "on-click-right": "mode"
+                   }
+        },
 } 
 

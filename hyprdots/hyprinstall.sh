@@ -244,7 +244,7 @@ done < "$APPS_FILE"
 
 echo "enabling SDDM"
 run_cmd "sudo systemctl enable sddm.service"
-
+run_cmd "sudo systemctl enable --now coolercontrold"
 echo "enabling bluetooth"
 run_cmd "sudo systemctl enable bluetooth"
 sleep 3

@@ -13,6 +13,7 @@ sddm
 fastfetch
 swww
 flatpak
+coolercontrol
 ttf-cascadia-code-nerd
 pavucontrol
 playerctl
@@ -42,5 +43,5 @@ papirus-icon-theme-git
 material-black-colors-theme
 openrgb
 ttf-cascadia-mono-nerd
-ttf-cascadia-mono-nerd
 bitwarden
+python
