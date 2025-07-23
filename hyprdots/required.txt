@@ -33,7 +33,7 @@ gvfs
 wallust
 blueman
 vlc
-cosmic-store
+bazaar
 starship
 discord
 thunar-archive-plugin
