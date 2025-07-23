@@ -253,7 +253,7 @@ echo "enabling SDDM"
 run_cmd "sudo systemctl enable sddm.service"
 
 echo "installing SDDM theme"
-sudo tar -xzvf $gitdir/SDDM/sugar-dark.tar.gz -C /usr/share/sddm/themes
+sudo cp -R $gitdir/SDDM/sugar-dark -C /usr/share/sddm/themes
 sudo cp -R /usr/lib/sddm/sddm.conf.d /etc/sddm.conf.d
 sudo cp $gitconf/SDDM/sddm.conf /etc/sddm.conf.d/sddm.conf
 
