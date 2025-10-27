@@ -49,3 +49,4 @@ bitwarden
 python
 code
 sxiv
+qt5-quickcontrols2
