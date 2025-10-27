@@ -127,9 +127,8 @@ gitdir=~/hyprland-dots/hyprdots
 #Create home directories
 
 mkdir ~/Pictures
-mkdir ~/Pictures/wallpapers
-mkdir ~/Documents
 mkdir ~/Videos
+mkdir ~/Documents
 
 # Ask user about backup
 read -rp "Do you want to back up your existing config directories before replacing them? [y/N]: " backup_configs
@@ -253,7 +252,7 @@ echo "enabling SDDM"
 run_cmd "sudo systemctl enable sddm.service"
 
 echo "installing SDDM theme"
-sudo cp -R $gitdir/SDDM/sugar-dark -C /usr/share/sddm/themes
+sudo cp -R $gitdir/SDDM/sugar-dark /usr/share/sddm/themes
 sudo cp -R /usr/lib/sddm/sddm.conf.d /etc/sddm.conf.d
 sudo cp $gitconf/SDDM/sddm.conf /etc/sddm.conf.d/sddm.conf
 

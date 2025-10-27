@@ -1,7 +1,6 @@
 hyprland
 ark
 qt5-graphicaleffects
-qtquickcontrols2
 rofi-wayland
 waybar
 thunar
