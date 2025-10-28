@@ -15,7 +15,6 @@ sddm
 fastfetch
 swww
 flatpak
-
 ttf-cascadia-code-nerd
 pavucontrol
 playerctl
