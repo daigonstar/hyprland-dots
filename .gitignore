@@ -4,3 +4,4 @@ map.txt
 hyprdots/.config/hypr/monitors.conf
 /hyprdots/.creds
 /hyprdots/.config/hypr/workspaces.conf
+/hyprdots/aiapi.conf
