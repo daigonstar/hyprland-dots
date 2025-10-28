@@ -15,7 +15,7 @@ sddm
 fastfetch
 swww
 flatpak
-coolercontrol
+
 ttf-cascadia-code-nerd
 pavucontrol
 playerctl
