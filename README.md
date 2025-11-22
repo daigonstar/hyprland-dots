@@ -10,30 +10,30 @@ I have added some wallpapers I've collected (will probably add more as I go)
 
 ### **Keybinds**
 
-<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + Space = Launcher  
-<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + Q = Quit app  
-<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + T = Terminal (Ghostty as default)  
-<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + E = File Manager (Thunar is default)  
-<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + B = Browser (Zen is default)  
-<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + A = App Store (Cosmic is default)   
-<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> + N = Refresh waybar  
-<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> SHIFT + N = Launch waybar (used if waybar crashes)  
-<img src="/hyprdots/screens/tux.svg" alt="Tux" width="25" height="25" /> SHIFT + W = Launch wallpaper selecter  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + Space = Launcher  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + Q = Quit app  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + T = Terminal (Ghostty as default)  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + E = File Manager (Thunar is default)  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + B = Browser (Zen is default)  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + A = App Store (Cosmic is default)   
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + N = Refresh waybar  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> SHIFT + N = Launch waybar (used if waybar crashes)  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> SHIFT + W = Launch wallpaper selecter  
 
 ### Default Desktop
-![image](/hyprdots/screens/desktop.png)
+![image](/screens/desktop.png)
 
 ### Terminal
-![image](/hyprdots/screens/term.png)
+![image](/screens/term.png)
 
 ### **JaKoolIt** Wallpaper selector
-![image](/hyprdots/screens/wall.png)
+![image](/screens/wall.png)
 
 ### Applauncher (rofi)
-![image](/hyprdots/screens/appl.png)
+![image](/screens/appl.png)
 
 ### Powermenu (JaKoolIt)
-![image](/hyprdots/screens/power.png)
+![image](/screens/power.png)
 
 ### Install:
 ```bash
