@@ -37,7 +37,7 @@ I have added some wallpapers I've collected (will probably add more as I go)
 
 ### Install:
 ```bash
-git clone https://github.com/daigonstar/hyprland-dots.git
+git clone https://github.com/daigonstar/hyprdots.git
 cd hyprland-dots/hyprdots
 chmod +x hyprinstall.sh
 ./hyprinstall.sh
