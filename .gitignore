@@ -1,7 +1,7 @@
-/update.sh
+update.sh
 map.txt
-/hyprdots/paru
-hyprdots/.config/hypr/monitors.conf
-/hyprdots/.creds
-/hyprdots/.config/hypr/workspaces.conf
-/hyprdots/aiapi.conf
+paru
+.config/hypr/monitors.conf
+.creds
+.config/hypr/workspaces.conf
+aiapi.conf

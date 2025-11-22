@@ -268,7 +268,7 @@ fi
 
 # -------------------------
 
-run_cmd "mkdir -p "$HOME/Pictures" "$HOME/Videos" "$HOME/Documents""
+run_cmd "mkdir -p "$HOME/Pictures" "$HOME/Videos" "$HOME/Documents" "$HOME/.config""
 
 # -------------------------
 
@@ -363,7 +363,7 @@ cat >> "$HOME/.bashrc" <<EOF
 # --- hyprinstall additions BEGIN ---
 
 alias update='paru -Syu && flatpak update'
-alias hyprupdate="$HOME/hyprland-dots/hyprdots/update.sh"
+alias hyprupdate="$HOME/hyprdots/update.sh"
 eval "$(starship init bash)"
 command fastfetch
 
@@ -374,6 +374,42 @@ log "OK" "Appended hyprinstall additions to ~/.bashrc"
 else
 log "INFO" "~/.bashrc already contains hyprinstall additions; skipping"
 fi
+
+# Hide unwanted apps from launcher
+echo "🔧 Hiding unwanted apps from launcher..."
+APPS_FILE="$HOME/hyprdots/hide.txt"
+
+if [[ ! -f "$APPS_FILE" ]]; then
+    echo "❌ App list file not found: $APPS_FILE. Skipping app hiding."
+else
+  while IFS= read -r app; do
+      [[ -z "$app" || "$app" =~ ^# ]] && continue
+      desktop_file="/usr/share/applications/$app.desktop"
+      user_desktop_file="$HOME/.local/share/applications/$app.desktop"
+
+      echo "Processing app '$app' for hiding..."
+      if [[ -f "$desktop_file" ]]; then
+          run_cmd "mkdir -p \"$HOME/.local/share/applications\""
+          run_cmd "cp \"$desktop_file\" \"$user_desktop_file\""
+          if grep -q '^NoDisplay=true' "$user_desktop_file"; then
+              echo "✅ App '$app' is already hidden."
+          else
+              echo "Hiding '$app.desktop'"
+              run_cmd "echo \"NoDisplay=true\" >> \"$user_desktop_file\""
+          fi
+      else
+          echo "Could not find desktop file: '$desktop_file', skipping hiding for '$app'."
+      fi
+  done < "$APPS_FILE"
+fi
+
+echo "enabling SDDM"
+run_cmd "sudo systemctl enable sddm.service"
+
+echo "🎨 Installing SDDM theme..."
+run_cmd "sudo cp -R $REPO_DIR/SDDM/sugar-dark /usr/share/sddm/themes"
+run_cmd "sudo mkdir -p /etc/sddm.conf.d" # Ensure directory exists
+run_cmd "sudo cp $REPO_DIR/SDDM/sddm.conf /etc/sddm.conf.d/sddm.conf"
 
 log "INFO" "hyprinstall-final setup completed."
 exit 0
