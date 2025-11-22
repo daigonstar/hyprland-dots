@@ -1,7 +1,0 @@
-com.valvesoftware.Steam
-com.heroicgameslauncher.hgl
-io.github.flattool.Warehouse
-com.nextcloud.desktopclient.nextcloud
-net.retrodeck.retrodeck
-org.remmina.Remmina
-org.filezillaproject.Filezilla
