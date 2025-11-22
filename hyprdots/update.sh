@@ -35,9 +35,9 @@ run_cmd() {
     fi
 }
 
-dotfiles_dir=~/hyprland-dots/hyprdots/.config
+dotfiles_dir=~/hyprdots/hyprdots/.config
 config_targets=(hypr fastfetch rofi waybar swaync wallust ghostty)
-gitdir=~/hyprland-dots
+gitdir=~/hyprdots
 
 echo "🔄 Pulling latest changes from git..."
 cd "$gitdir"

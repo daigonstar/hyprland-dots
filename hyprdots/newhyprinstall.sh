@@ -20,7 +20,7 @@ set -euo pipefail
 
 DEFAULT_LOG="$HOME/.local/share/hyprinstall/hyprinstall.log"
 FALLBACK_LOG="$HOME/hyprinstall.log"
-REPO_DIR="$HOME/hyprland-dots/hyprdots"
+REPO_DIR="$HOME/hyprdots/hyprdots"
 DOTFILES_DIR="$REPO_DIR/.config"
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REQUIRED_FILE="$BASE_DIR/required.txt"
