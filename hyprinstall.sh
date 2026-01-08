@@ -1,265 +1,304 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+#
 
-# Enable dry run mode with --dry-run
+# hyprinstall-final.sh
+
+# Production-ready Hyprland setup installer
+
+# Options: --dry-run, --verbose
+
+# Logging: ~/.local/share/hyprinstall/hyprinstall.log
+
+set -euo pipefail
+
+# Configuration defaults
+
+DEFAULT_LOG="$HOME/.local/share/hyprinstall/hyprinstall.log"
+FALLBACK_LOG="$HOME/hyprinstall.log"
+REPO_DIR="$HOME/hyprdots"
+DOTFILES_DIR="$REPO_DIR/.config"
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REQUIRED_FILE="$BASE_DIR/required.txt"
+NVIDIA_FILE="$BASE_DIR/nvidia.txt"
+FLATPAK_FILE="$BASE_DIR/flatpak.txt"
+LOGFILE="$DEFAULT_LOG"
+EXTRA_DEPENDENCIES=(git base-devel flatpak python rust imagemagick rsync)
+
+# Parse flags
+
 DRY_RUN=false
-if [[ "$1" == "--dry-run" ]]; then
-  DRY_RUN=true
-  echo "🧪 Dry run mode enabled. No changes will be made."
-fi
 VERBOSE=false
 for arg in "$@"; do
-  [[ "$arg" == "--verbose" ]] && VERBOSE=true
+case "$arg" in
+--dry-run) DRY_RUN=true ;;
+--verbose) VERBOSE=true ;;
+esac
 done
-# Helper to run or simulate commands
+# Logging helpers
+
+init_logging() {
+if [[ "$DRY_RUN" == "true" ]]; then
+echo "[DRY RUN] Would initialize logging to $LOGFILE"
+return
+fi
+if touch "$DEFAULT_LOG" >/dev/null 2>&1; then
+LOGFILE="$DEFAULT_LOG"
+else
+LOGFILE="$FALLBACK_LOG"
+mkdir -p "$(dirname "$LOGFILE")"
+touch "$LOGFILE"
+echo "Note: couldn't write to $DEFAULT_LOG; using $LOGFILE"
+fi
+}
+
+log() {
+local level="$1"; shift
+local ts
+ts="$(date +'%Y-%m-%d %H:%M:%S')"
+printf "%s [%s] %s\n" "$ts" "$level" "$*" | tee -a "$LOGFILE"
+}
+
+die() {
+log "ERROR" "$*"
+exit 1
+}
+
+# Command runner
+
 run_cmd() {
-  if $DRY_RUN; then
-    echo "[DRY RUN] $*"
-  else
-    if $VERBOSE; then
-      echo "[VERBOSE] $*"
-      bash -c "$@"
-    else
-      local dot_state=0
-      local dots_output=("   " ".  " ".. " "...")
-      local max_dot_states=${#dots_output[@]}
+local cmd="$*"
+if [[ "$DRY_RUN" == "true" ]]; then
+printf "[DRY RUN] %s\n" "$cmd" | tee -a "$LOGFILE"
+return
+fi
 
-      bash -c "$@" > /dev/null 2>&1 &
-      pid=$!
-      # Loop while the process is still running
-      while kill -0 $pid 2>/dev/null; do
-        # Print the current dot state. \r moves the cursor to the beginning of the line
-        printf "\r%s" "${dots_output[$dot_state]}"
-        dot_state=$(( (dot_state + 1) % max_dot_states ))
-        sleep 0.7 #
-      done
-      wait $pid
-      local cmd_exit_status=$? # Get the exit status of the command that finished
 
-      # Clear the line where the dots were animating by printing spaces and carriage return
-      printf "\\r   \\r"
-      if [[ $cmd_exit_status -eq 0 ]]; then
-        echo " done" # Print " done" on a new line for success
-      else
-        echo " failed (exit code: $cmd_exit_status)" # Print failure message
-      fi
-      return $cmd_exit_status # Return the actual exit status of the command
-    fi
-  fi
+if [[ "$VERBOSE" == "true" ]]; then
+    log "CMD" "$cmd"
+    bash -c "$cmd" 2>&1 | tee -a "$LOGFILE"
+    return ${PIPESTATUS[0]}
+fi
+
+local out
+out=$(mktemp)
+bash -c "$cmd" >"$out" 2>&1 &
+local pid=$!
+local dots=( "   " "*  " "** " "***" )
+local i=0
+while kill -0 "$pid" 2>/dev/null; do
+    printf "\r%s" "${dots[i]}"
+    i=$(( (i + 1) % ${#dots[@]} ))
+    sleep 0.5
+done
+wait "$pid"
+local st=$?
+printf "\r   \r"
+if [[ $st -eq 0 ]]; then
+    log "OK" "$cmd"
+    rm -f "$out"
+else
+    log "FAIL" "$cmd (exit $st)"
+    log "FAIL" "Command output (first 200 lines):"
+    sed -n '1,200p' "$out" | sed "s/^/    /" >> "$LOGFILE"
+    rm -f "$out"
+    return $st
+fi
+
 }
 
-# Function to read package list from file
-read_packages() {
-  local file="$1"
-  if [[ -f "$file" ]]; then
-    tr '\n' ' ' < "$file"
-  else
-    echo "❌ Error: $file not found" >&2
-    exit 1
-  fi
+# Utility functions
+
+read_packages_to_array() {
+local file="$1"
+local -n arr=$2
+arr=()
+if [[ -f "$file" ]]; then
+while IFS= read -r line; do
+line="${line%%#*}"
+line="$(echo "$line" | xargs)"
+[[ -z "$line" ]] && continue
+arr+=("$line")
+done < "$file"
+fi
 }
+
+yesno_prompt() {
+local prompt="$1"
+local default="${2:-N}"
+if [[ "$DRY_RUN" == "true" ]]; then
+printf "[DRY RUN] %s (default %s) -> No\n" "$prompt" "$default"
+return 1
+fi
+read -rp "$prompt [$default]: " ans
+[[ -z "$ans" ]] && ans="$default"
+[[ "$ans" =~ ^[Yy] ]]
+}
+
+# Script start
+
+init_logging
+log "INFO" "Starting hyprinstall-final. Log: $LOGFILE"
+
+# Install core dependencies
+
+log "INFO" "Ensuring extra dependencies: ${EXTRA_DEPENDENCIES[*]}"
+for d in "${EXTRA_DEPENDENCIES[@]}"; do
+if pacman -Qi "$d" &>/dev/null; then
+log "OK" "Dependency present: $d"
+else
+run_cmd "sudo pacman -S --needed --noconfirm "$d""
+fi
+done
 
 # Read package lists
-req=$(read_packages "$(dirname "$0")/required.txt")
-nvidia=$(read_packages "$(dirname "$0")/nvidia.txt")
-flatpak=$(read_packages "$(dirname "$0")/flatpak.txt") # Corrected path
-# Install git and paru
 
-echo "📦 Installing git and paru..."
-run_cmd "sudo pacman -Syu --noconfirm git"
+read_packages_to_array "$REQUIRED_FILE" REQUIRED_PKGS
+read_packages_to_array "$NVIDIA_FILE" NVIDIA_PKGS
+read_packages_to_array "$FLATPAK_FILE" FLATPAK_PKGS
 
-if [[ ! -d "paru" ]]; then
-  run_cmd "git clone https://aur.archlinux.org/paru.git"
+# Install paru (AUR helper)
+
+install_paru() {
+if command -v paru >/dev/null 2>&1; then
+log "OK" "paru already installed"
+return
 fi
-
-if [[ -d "paru" ]]; then
-  cd paru || exit
-  run_cmd "makepkg -si --noconfirm"
-  cd ..
-fi
-
-echo "✅ Paru installed."
+run_cmd "sudo pacman -S --needed --noconfirm git base-devel"
+local tmpdir
+tmpdir="$(mktemp -d)"
+run_cmd "git clone [https://aur.archlinux.org/paru.git](https://aur.archlinux.org/paru.git) "$tmpdir/paru""
+pushd "$tmpdir/paru" >/dev/null
+run_cmd "makepkg -si --noconfirm"
+popd >/dev/null
+rm -rf "$tmpdir"
+log "OK" "paru installed"
+}
+install_paru
 
 # Install required packages
-echo "📦 Installing required packages..."
-for pkg in $req; do
-  if pacman -Qq "$pkg" &>/dev/null; then
-    echo "✅ Package '$pkg' is already installed, skipping."
-  else
-    run_cmd "paru -S --noconfirm $pkg"
-  fi
+
+install_package_list() {
+local pkgs=("$@")
+for pkg in "${pkgs[@]:-}"; do
+if pacman -Qq "$pkg" &>/dev/null; then
+log "OK" "Package $pkg already installed"
+else
+if command -v paru >/dev/null 2>&1; then
+run_cmd "paru -S --noconfirm "$pkg"" || run_cmd "sudo pacman -S --noconfirm "$pkg""
+else
+run_cmd "sudo pacman -S --noconfirm "$pkg""
+fi
+fi
+done
+}
+
+install_package_list "${REQUIRED_PKGS[@]}"
+
+# Flatpak installs
+
+for f in "${FLATPAK_PKGS[@]:-}"; do
+if flatpak list --app | grep -qw "$f"; then
+log "OK" "Flatpak $f already installed"
+else
+run_cmd "flatpak install -y --noninteractive --or-update flathub "$f""
+fi
 done
 
-# Install flatpak packages
-echo "📦 Installing flatpak packages..."
-while IFS= read -r pkg; do
-  [[ -z "$pkg" || "$pkg" =~ ^# || "$pkg" =~ ^// ]] && continue
-  if flatpak list --app | grep -qw "$pkg"; then
-    echo "✅ Flatpak '$pkg' is already installed, skipping."
-  else
-    run_cmd "flatpak install -y --noninteractive --or-update flathub \"$pkg\""
-  fi
-done < "$(dirname "$0")/flatpak.txt" # Corrected path
+# NVIDIA packages (optional)
 
-# NVIDIA packages
-read -rp "Do you want to install NVIDIA packages? [y/N]: " install_nvidia
-if [[ "$install_nvidia" =~ ^[Yy]$ ]]; then
-  echo "📦 Installing NVIDIA packages..."
-  for pkg in $nvidia; do
-    if pacman -Qq "$pkg" &>/dev/null; then
-      echo "✅ NVIDIA package $pkg is already installed, skipping."
-    else
-      run_cmd "paru -S --noconfirm $pkg"
-    fi
-  done
-else
-  echo "Skipping NVIDIA packages installation."
+if [[ ${#NVIDIA_PKGS[@]} -gt 0 ]]; then
+if yesno_prompt "Install NVIDIA packages?"; then
+install_package_list "${NVIDIA_PKGS[@]}"
+fi
 fi
 
-# Install Dual Boot tools
-echo "📦 Dual Boot"
-read -rp "Do you want to install refind? [y/N]: " install_dual_boot
-if [[ "$install_dual_boot" =~ ^[Yy]$ ]]; then
+# Home directories
 
-  run_cmd "sudo pacman -S --noconfirm refind"
-  echo "Installing rEFInd..."
-  run_cmd "sudo refind-install"
-  run_cmd "sudo mkdir -p /boot/EFI/refind/themes"
-  run_cmd "sudo git clone https://github.com/catppuccin/refind.git /boot/EFI/refind/themes/catppuccin"
-  echo 'include themes/catppuccin/mocha.conf' | sudo tee -a /boot/EFI/refind/refind.conf > /dev/null
-else
-  echo "Skipping rEFInd installation."
+run_cmd "mkdir -p "$HOME/Pictures" "$HOME/Videos" "$HOME/Documents" "$HOME/.config""
+
+# Backup existing config (optional)
+
+BACKUP_YES=false
+if yesno_prompt "Back up existing config directories?"; then
+    BACKUP_DIR="$HOME/.config-backup"
+    run_cmd "mkdir -p \"$BACKUP_DIR\""
+    BACKUP_YES=true
 fi
 
 # Symlink config directories
-dotfiles_dir=~/hyprdots/.config
-config_targets=(hypr fastfetch rofi waybar swaync wallust ghostty)
-gitdir=~/hyprdots
 
-#Create home directories
-
-echo "📂 Creating essential home directories..."
-run_cmd "mkdir -p ~/Pictures"
-run_cmd "mkdir -p ~/Videos"
-run_cmd "mkdir -p ~/Documents"
-
-# Ask user about backup
-read -rp "Do you want to back up your existing config directories before replacing them? [y/N]: " backup_configs
-if [[ "$backup_configs" =~ ^[Yy]$ ]]; then
-  backup_dir="$HOME/.config-backup-$(date +%Y%m%d%H%M%S)"
-  mkdir -p "$backup_dir"
-  echo "Backing up configs to $backup_dir"
+CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty)
+for dir in "${CONFIG_TARGETS[@]}"; do
+target="$HOME/.config/$dir"
+source="$DOTFILES_DIR/$dir"
+if [[ ! -d "$source" ]]; then
+log "WARN" "Source missing: $source"
+continue
 fi
-
-echo "🔗 Symlinking config directories..."
-for dir in "${config_targets[@]}"; do
-  target="$HOME/.config/$dir"
-  source="$dotfiles_dir/$dir"
-
-  echo "Processing config for '$dir'..."
-  if [[ -d "$target" || -L "$target" ]]; then
-    if [[ "$backup_configs" =~ ^[Yy]$ ]]; then
-      echo "Backing up existing '$target' to '$backup_dir/'"
-      run_cmd "cp -r \"$target\" \"$backup_dir/\""
-    fi
-    echo "Removing existing config directory: '$target'"
-    run_cmd "rm -rf \"$target\""
-  fi
-
-  if [[ -d "$source" ]]; then
-    echo "Symlinking '$source' to '$target'"
-    run_cmd "ln -sfn \"$source\" \"$target\""
-  else
-    echo "⚠️ Warning: Source directory '$source' not found, skipping symlink for '$dir'."
-  fi
+if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
+log "OK" "Already symlinked: $target"
+continue
+fi
+[[ -e "$target" ]] && $BACKUP_YES && run_cmd cp -r "$target" "$BACKUP_DIR/"
+run_cmd rm -rf "$target"
+run_cmd ln -sfn "$source" "$target"
 done
 
-echo "🔗 Symlinking starship.toml..."
-if [[ -e "$HOME/.config/starship.toml" || -L "$HOME/.config/starship.toml" ]]; then
-  echo "Removing existing starship.toml"
-  run_cmd "rm \"$HOME/.config/starship.toml\""
-fi
-run_cmd "ln -sfn \"$dotfiles_dir/starship.toml\" \"$HOME/.config/starship.toml\""
+# Starship config
 
-# Handle wallpapers separately
-echo "🖼️ Copying wallpapers..."
-if [[ -e "$HOME/Pictures/wallpapers" || -L "$HOME/.Pictures/wallpapers" ]]; then
-  echo "Removing existing wallpapers directory."
-  run_cmd "rm -rf \"$HOME/Pictures/wallpapers\""
-fi
-if [[ -d "$gitdir/wallpapers" ]]; then
-  echo -n "Copying wallpapers to '$HOME/Pictures/wallpapers'" # Initial message, 'run_cmd' will append dots/done/failed
-  if run_cmd "cp -r \"$gitdir/wallpapers\" \"$HOME/Pictures/wallpapers\""; then
-    echo "✅ Wallpapers copied successfully."
-  else
-    echo "❌ Failed to copy wallpapers."
-  fi
-else
-  echo "⚠️ Warning: Wallpapers directory at '$gitdir/wallpapers' was not found, skipping copy."
-fi
+starship_file="$HOME/.config/starship.toml"
+[[ -e "$starship_file" ]] && run_cmd rm "$starship_file"
+run_cmd ln -sfn "$DOTFILES_DIR/starship.toml" "$starship_file"
 
-# Enable scripts
-echo "🔧 Setting execute permissions for scripts..."
-script_files=(
-  "hypr/scripts/ai.sh"
-  "hypr/scripts/browser.sh"
-  "hypr/scripts/gamemode.sh"
-  "hypr/scripts/pywall.sh"
-  "hypr/scripts/rainbowb.sh"
-  "hypr/scripts/refresh.sh"
-  "hypr/scripts/wallust.sh"
-  "rofi/powermenu/powermenu.sh"
-  "rofi/launchers/launcher.sh"
-  "rofi/wallpaper/wallpaper.sh"
-)
+# Wallpapers
 
-for script in "${script_files[@]}"; do
-  script_path="$dotfiles_dir/$script"
-  if [[ -f "$script_path" ]]; then
-    echo "Setting execute permission for '$script'..."
-    run_cmd "chmod +x \"$script_path\""
-  else
-    echo "⚠️ Warning: Script '$script_path' not found, skipping chmod."
-  fi
+wallpaper_src="$REPO_DIR/wallpapers"
+wallpaper_dest="$HOME/Pictures/wallpapers"
+[[ -e "$wallpaper_dest" ]] && run_cmd rm -rf "$wallpaper_dest"
+[[ -d "$wallpaper_src" ]] && run_cmd cp -r "$wallpaper_src" "$wallpaper_dest"
+
+# Make scripts executable
+
+SCRIPT_FILES=(hypr/scripts/ai.sh hypr/scripts/browser.sh hypr/scripts/gamemode.sh hypr/scripts/pywall.sh hypr/scripts/rainbowb.sh hypr/scripts/refresh.sh hypr/scripts/wallust.sh rofi/powermenu/powermenu.sh rofi/launchers/launcher.sh rofi/wallpaper/wallpaper.sh)
+for s in "${SCRIPT_FILES[@]}"; do
+sp="$DOTFILES_DIR/$s"
+[[ -f "$sp" ]] && run_cmd "chmod +x "$sp""
 done
 
-# Install cursor
-echo "Installing cursor"
-run_cmd "sudo cp -r "$gitdir/icons/Future-cursors" /usr/share/icons"
+# Cursor icons + Flatpak overrides
 
-flatpak --user override --filesystem=/home/$USER/.icons/:ro
-flatpak --user override --filesystem=/usr/share/icons/:ro
+if [[ -d "$REPO_DIR/icons/Future-cursors" ]]; then
+run_cmd "sudo cp -r "$REPO_DIR/icons/Future-cursors" /usr/share/icons/Future-cursors"
+run_cmd "flatpak --user override --filesystem=/home/$USER/.icons/:ro"
+run_cmd "flatpak --user override --filesystem=/usr/share/icons/:ro"
+fi
 
+# Bashrc update
 
-# Bashrc
-echo "🔧 Updating .bashrc with aliases and startup commands..."
-bashrc_addition=$(cat <<'EOF'
+BASHRC_MARKER="# --- hyprinstall additions BEGIN ---"
+if ! grep -Fq "$BASHRC_MARKER" "$HOME/.bashrc" 2>/dev/null; then
+cat >> "$HOME/.bashrc" <<EOF
 
-# Custom Aliases and Tools
+# --- hyprinstall additions BEGIN ---
+
 alias update='paru -Syu && flatpak update'
-alias hyprupdate='~/hyprland-dots/hyprdots/update.sh'
+alias hyprupdate="$HOME/hyprdots/update.sh"
 eval "$(starship init bash)"
-fastfetch
-EOF
-)
+command fastfetch
 
-if $DRY_RUN; then
-    echo "[DRY RUN] Would ensure the following lines exist in ~/.bashrc:"
-    echo "$bashrc_addition"
+# --- hyprinstall additions END ---
+
+EOF
+log "OK" "Appended hyprinstall additions to ~/.bashrc"
 else
-    while IFS= read -r line; do
-        # Skip empty lines to avoid appending unnecessary blanks
-        [[ -z "$line" ]] && continue
-        if ! grep -Fxq "$line" "$HOME/.bashrc"; then
-            echo "$line" >> "$HOME/.bashrc"
-        fi
-    done <<< "$bashrc_addition"
+log "INFO" "~/.bashrc already contains hyprinstall additions; skipping"
 fi
 
 # Hide unwanted apps from launcher
+
 echo "🔧 Hiding unwanted apps from launcher..."
-APPS_FILE="$HOME/hyprland-dots/hyprdots/hide.txt"
+APPS_FILE="$HOME/hyprdots/hide.txt"
 
 if [[ ! -f "$APPS_FILE" ]]; then
     echo "❌ App list file not found: $APPS_FILE. Skipping app hiding."
@@ -285,25 +324,20 @@ else
   done < "$APPS_FILE"
 fi
 
+# SDDM Configuration
+
 echo "enabling SDDM"
 run_cmd "sudo systemctl enable sddm.service"
 
 echo "🎨 Installing SDDM theme..."
-run_cmd "sudo cp -R $gitdir/SDDM/sugar-dark /usr/share/sddm/themes"
+run_cmd "sudo cp -R $REPO_DIR/SDDM/sugar-dark /usr/share/sddm/themes"
 run_cmd "sudo mkdir -p /etc/sddm.conf.d" # Ensure directory exists
-run_cmd "sudo cp $gitdir/SDDM/sddm.conf /etc/sddm.conf.d/sddm.conf"
+run_cmd "sudo cp $REPO_DIR/SDDM/sddm.conf /etc/sddm.conf.d/sddm.conf"
 
-echo "enabling coolercontrol service"
-run_cmd "sudo systemctl enable --now coolercontrold"
+# Plymouth Configuration
 
-echo "enabling bluetooth"
-run_cmd "sudo systemctl enable bluetooth"
-sleep 3
+run_cmd "sudo git clone https://github.com/krishnan793/PlymouthTheme-Cat.git /usr/share/plymouth/themes/PlymouthTheme-Cat"
+run_cmd "sudo plymouth-set-default-theme PlymouthTheme-Cat -R"
 
-echo "✅ Setup complete. Reboot required"
-read -rp "Reboot now? [y/N]: " reboot_now
-if [[ "$reboot_now" =~ ^[Yy]$ ]]; then
-    run_cmd "reboot"
-else
-    echo "Reboot skipped. Please reboot manually to apply all changes."
-fi
+log "INFO" "hyprinstall-final setup completed."
+exit 0
