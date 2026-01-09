@@ -167,7 +167,7 @@ fi
 run_cmd "sudo pacman -S --needed --noconfirm git base-devel"
 local tmpdir
 tmpdir="$(mktemp -d)"
-run_cmd "git clone [https://aur.archlinux.org/paru.git](https://aur.archlinux.org/paru.git) "$tmpdir/paru""
+run_cmd "git clone https://aur.archlinux.org/paru.git "$tmpdir/paru""
 pushd "$tmpdir/paru" >/dev/null
 run_cmd "makepkg -si --noconfirm"
 popd >/dev/null
@@ -204,6 +204,8 @@ else
 run_cmd "flatpak install -y --noninteractive --or-update flathub "$f""
 fi
 done
+wget https://github.com/OrcaSlicer/OrcaSlicer/releases/download/v2.3.1/OrcaSlicer-Linux-flatpak_V2.3.1_x86_64.flatpak
+flatpak install OrcaSlicer-Linux-flatpak_V2.3.1_x86_64.flatpak
 
 # NVIDIA packages (optional)
 

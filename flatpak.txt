@@ -5,3 +5,6 @@ com.nextcloud.desktopclient.nextcloud
 net.retrodeck.retrodeck
 org.remmina.Remmina
 org.filezillaproject.Filezilla
+app.zen_browser.zen
+com.github.tchx84.Flatseal
+dev.zed.Zed

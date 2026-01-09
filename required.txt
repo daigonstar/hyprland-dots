@@ -50,5 +50,4 @@ wayland-protocols
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xorg-xwayland
-zed
-zen-browser-bin
+wget
