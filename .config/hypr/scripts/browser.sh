@@ -1,1 +1,1 @@
-zen-browser
+app.zen_browser.zen

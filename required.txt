@@ -2,6 +2,7 @@ ark
 bc
 blueman
 cava
+clipvault
 fastfetch
 ffmpegthumbnailer
 flatpak
