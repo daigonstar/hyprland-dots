@@ -1,10 +1,7 @@
 ark
-bazaar
 bc
-bitwarden
 blueman
 cava
-discord
 fastfetch
 ffmpegthumbnailer
 flatpak
@@ -22,7 +19,6 @@ libnotify
 material-black-colors-theme
 nwg-displays
 nwg-look
-openrgb
 papirus-icon-theme-git
 pavucontrol
 playerctl
@@ -43,7 +39,6 @@ ttf-cascadia-code-nerd
 ttf-cascadia-mono-nerd
 tumbler
 vim
-vlc
 wallust
 waybar
 wayland-protocols
