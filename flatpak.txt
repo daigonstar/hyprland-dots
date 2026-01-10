@@ -5,13 +5,11 @@ net.retrodeck.retrodeck
 org.filezillaproject.Filezilla
 app.zen_browser.zen
 com.github.tchx84.Flatseal
-dev.zed.Zed
 com.collaboraoffice.Office
 md.obsidian.Obsidian
 net.lutris.Lutris
 com.pokemmo.PokeMMO
-io.github.pwr_solaar.solaar
-dev.vencord.Vesktop
+com.discordapp.Discord
 io.github.kolunmi.Bazaar
 org.openrgb.OpenRGB
 org.videolan.VLC
