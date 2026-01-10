@@ -49,7 +49,11 @@ else
   echo "Error: remote branch '$remote/$branch' not found. Aborting." >&2
   exit 2
 fi
-
+# Backup Hyprland monitor and workspace configs
+  echo "Moving Hyprland monitor and workspace configs to backup folder..."
+  mkdir -p "$HOME/.config/backup"
+  mv "$HOME/.config/hypr/monitors.conf" "$HOME/.config/backup/monitors.conf"
+  mv "$HOME/.config/hypr/workspaces.conf" "$HOME/.config/backup/workspaces.conf"
 
   # By default, reapply symlinks and some dotfile tasks so the live system matches the repo.
   # Set SKIP_SYMLINKS=1 to skip this step.
@@ -129,5 +133,10 @@ fi
   }
 
   apply_symlinks
-
+# Move backups to live
+  echo "Restoring Hyprland monitor and workspace configs from backup folder..."
+  mv "$HOME/.config/backup/monitors.conf" "$HOME/.config/hypr/monitors.conf"
+  mv "$HOME/.config/backup/workspaces.conf" "$HOME/.config/hypr/workspaces.conf"
+  rmdir "$HOME/.config/backup"
+  
   exit 0
