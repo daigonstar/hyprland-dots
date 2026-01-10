@@ -140,6 +140,34 @@ read -rp "$prompt [$default]: " ans
 init_logging
 log "INFO" "Starting hyprinstall-final. Log: $LOGFILE"
 
+# Branch selection for repo operations (supports UPDATE_BRANCH env var or .update-branch file)
+BRANCH="${UPDATE_BRANCH:-}"
+if [[ -f "$BASE_DIR/.update-branch" ]]; then
+  BRANCH="$(<$BASE_DIR/.update-branch)"
+fi
+if [[ -z "$BRANCH" && "$DRY_RUN" == "false" && -t 0 ]]; then
+  echo "Select branch to use for repo operations:"
+  echo "  1) main (end users)"
+  echo "  2) 0.3 (development)"
+  echo "  3) Enter branch name"
+  read -rp "Choice [1-3] (default 2): " _choice
+  case "$_choice" in
+    1) BRANCH="main" ;;
+    3) read -rp "Enter branch name: " BRANCH ;;
+    *) BRANCH="0.3" ;;
+  esac
+fi
+BRANCH="${BRANCH:-0.3}"
+log "INFO" "Using branch: $BRANCH"
+
+# If repo exists and is a git repo, attempt to check it out and update to the selected branch
+if git -C "$REPO_DIR" rev-parse --git-dir >/dev/null 2>&1; then
+  run_cmd "git -C \"$REPO_DIR\" fetch --prune origin"
+  # Best-effort checkout and pull; do not abort installer if these fail
+  run_cmd "git -C \"$REPO_DIR\" checkout \"$BRANCH\"" || true
+  run_cmd "git -C \"$REPO_DIR\" pull --ff-only origin \"$BRANCH\"" || true
+fi
+
 # Install core dependencies
 
 log "INFO" "Ensuring extra dependencies: ${EXTRA_DEPENDENCIES[*]}"
