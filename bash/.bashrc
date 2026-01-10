@@ -13,6 +13,6 @@ PS1='[\u@\h \W]\$ '
 
 # Custom Aliases and Tools
 alias update='paru -Syu && flatpak update'
-alias hyprupdate='~/hyprland-dots/hyprdots/update.sh'
+alias hyprupdate='~/hyprdots/update.sh'
 eval "$(starship init bash)"
 fastfetch
