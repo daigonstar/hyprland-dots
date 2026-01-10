@@ -1,4 +1,4 @@
-#  Hyprland Dotfiles
+# <img src="/hyprdots/screens/hypr.svg" alt="hypr" width="25" height="25" /> Hyprland Dotfiles <img src="/hyprdots/screens/hypr.svg" alt="hypr" width="25" height="25" />
 
 This is the configuration I am currently using for Hyprland
 I have tried many dots in the past and I liked them but not ALL of what each one offered so I decided to make my own config
@@ -8,26 +8,39 @@ I have also made an install script that should install everything nicely (I even
 
 I have added some wallpapers I've collected (will probably add more as I go)
 
-Default Desktop
-![image](/hyprdots/screens/desktop.png)
+### **Keybinds**
 
-Terminal
-![image](/hyprdots/screens/term.png)
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + Space = Launcher  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + Q = Quit app  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + T = Terminal (Ghostty as default)  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + E = File Manager (Thunar is default)  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + B = Browser (Zen is default)  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + A = App Store (Cosmic is default)   
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + N = Refresh waybar  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> SHIFT + N = Launch waybar (used if waybar crashes)  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> SHIFT + W = Launch wallpaper selecter  
 
-JaKoolIt Wallpaper selector
-![image](/hyprdots/screens/wall.png)
+### Default Desktop
+![image](/screens/desktop.png)
 
-Applauncher (rofi)
-![image](/hyprdots/screens/appl.png)
+### Terminal
+![image](/screens/term.png)
 
-Powermenu (JaKoolIt)
-![image](/hyprdots/screens/power.png)
+### **JaKoolIt** Wallpaper selector
+![image](/screens/wall.png)
 
-Install:
+### Applauncher (rofi)
+![image](/screens/appl.png)
+
+### Powermenu (JaKoolIt)
+![image](/screens/power.png)
+
+### Install:
 ```bash
-git clone https://github.com/daigonstar/hyprland-dots.git
+git clone https://github.com/daigonstar/hyprdots.git
 cd hyprland-dots/hyprdots
+chmod +x hyprinstall.sh
 ./hyprinstall.sh
 ```
-For my SDDM Greeter I use [SDDM Astronaut Theme](https://github.com/Keyitdev/sddm-astronaut-theme)
+#### For my SDDM Greeter I use [SDDM Astronaut Theme](https://github.com/Keyitdev/sddm-astronaut-theme)
 Please install that for a better greeter theme

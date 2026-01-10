@@ -1,0 +1,16 @@
+com.valvesoftware.Steam
+com.heroicgameslauncher.hgl
+com.nextcloud.desktopclient.nextcloud
+net.retrodeck.retrodeck
+org.filezillaproject.Filezilla
+app.zen_browser.zen
+com.github.tchx84.Flatseal
+com.collaboraoffice.Office
+md.obsidian.Obsidian
+net.lutris.Lutris
+com.pokemmo.PokeMMO
+com.discordapp.Discord
+io.github.kolunmi.Bazaar
+org.openrgb.OpenRGB
+org.videolan.VLC
+com.bitwarden.desktop

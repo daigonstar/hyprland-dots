@@ -1,2 +1,6 @@
-/update.sh
-/hyprdots/map.txt
+/map.txt
+paru/
+/.config/hypr/monitors.conf
+.creds
+/.config/hypr/workspaces.conf
+OrcaSlicer-Linux-flatpak_V2.3.1_x86_64.flatpak
