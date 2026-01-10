@@ -217,7 +217,7 @@ fi
 
 # Home directories
 
-run_cmd "mkdir -p "$HOME/Pictures" "$HOME/Videos" "$HOME/Documents" "$HOME/.config""
+run_cmd "mkdir -p "$HOME/Pictures" "$HOME/Videos" "$HOME/Documents" "$HOME/.config" "$HOME/Downloads""
 
 # Backup existing config (optional)
 

@@ -50,4 +50,59 @@ else
   exit 2
 fi
 
-exit 0
+
+  # By default, reapply symlinks and some dotfile tasks so the live system matches the repo.
+  # Set SKIP_SYMLINKS=1 to skip this step.
+  apply_symlinks() {
+    [[ "${SKIP_SYMLINKS:-0}" == "1" ]] && return 0
+    echo "Reapplying symlinks and dotfile tasks from repo..."
+    REPO_DIR="$repo_root"
+    DOTFILES_DIR="$REPO_DIR/.config"
+
+    # Config directories to symlink
+    CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty)
+    for dir in "${CONFIG_TARGETS[@]}"; do
+      target="$HOME/.config/$dir"
+      source="$DOTFILES_DIR/$dir"
+      if [[ ! -d "$source" ]]; then
+        echo "Source missing: $source (skipping)"
+        continue
+      fi
+      if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
+        echo "Already symlinked: $target"
+        continue
+      fi
+      [[ -e "$target" ]] && echo "Backing up existing $target" && mv "$target" "$target.bak.$timestamp" || true
+      ln -sfn "$source" "$target"
+      echo "Symlinked $target -> $source"
+    done
+
+    # Starship config
+    starship_file="$HOME/.config/starship.toml"
+    if [[ -e "$starship_file" ]]; then
+      mv "$starship_file" "$starship_file.bak.$timestamp" || true
+    fi
+    ln -sfn "$DOTFILES_DIR/starship.toml" "$starship_file" || true
+
+    # Wallpapers: copy if present in repo
+    wallpaper_src="$REPO_DIR/wallpapers"
+    wallpaper_dest="$HOME/Pictures/wallpapers"
+    if [[ -d "$wallpaper_src" ]]; then
+      [[ -e "$wallpaper_dest" ]] && rm -rf "$wallpaper_dest"
+      cp -r "$wallpaper_src" "$wallpaper_dest"
+      echo "Copied wallpapers to $wallpaper_dest"
+    fi
+
+    # Make key scripts executable (best-effort)
+    SCRIPT_FILES=(hypr/scripts/ai.sh hypr/scripts/browser.sh hypr/scripts/gamemode.sh hypr/scripts/pywall.sh hypr/scripts/rainbowb.sh hypr/scripts/refresh.sh hypr/scripts/wallust.sh rofi/powermenu/powermenu.sh rofi/launchers/launcher.sh rofi/wallpaper/wallpaper.sh)
+    for s in "${SCRIPT_FILES[@]}"; do
+      sp="$DOTFILES_DIR/$s"
+      [[ -f "$sp" ]] && chmod +x "$sp" && echo "Chmod +x $sp"
+    done
+
+    echo "Symlink and dotfile tasks complete."
+  }
+
+  apply_symlinks
+
+  exit 0
