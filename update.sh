@@ -3,12 +3,18 @@ set -euo pipefail
 
 # update.sh
 # Safely overwrite this repository with the remote branch state.
-# Usage: ./update.sh [remote]
-# - Defaults to remote 'origin'.
+# Usage: ./update.sh [remote] [branch]
+# - Defaults: remote 'origin', branch '0.3'.
 # Behavior:
-# 1. Creates a local backup branch named backup-before-update-<timestamp>.
-# 2. Fetches the remote and resets --hard to remote/current-branch.
-# 3. Removes untracked files (git clean -fdx).
+# - Fetches the remote and resets --hard to remote/branch.
+# - Removes untracked files (git clean -fdx).
+# Note: This script no longer creates local backup git branches.
+
+# Backup Hyprland monitor and workspace configs
+  echo "Moving Hyprland monitor and workspace configs to backup folder..."
+  mkdir -p "$HOME/.config/backup"
+  mv "$HOME/.config/hypr/monitors.conf" "$HOME/.config/backup/monitors.conf"
+  mv "$HOME/.config/hypr/workspaces.conf" "$HOME/.config/backup/workspaces.conf"
 
 repo_root="$(cd "$(dirname "$0")" && pwd)"
 cd "$repo_root"
@@ -19,15 +25,32 @@ if ! git rev-parse --git-dir >/dev/null 2>&1; then
 fi
 
 remote="${1:-origin}"
-branch="$(git rev-parse --abbrev-ref HEAD)"
+# Branch selection priority: UPDATE_BRANCH env > $repo_root/.update-branch file > arg2 > interactive menu > default 0.3
+branch="${2:-}"
+if [[ -n "${UPDATE_BRANCH:-}" ]]; then
+  branch="$UPDATE_BRANCH"
+elif [[ -f "$repo_root/.update-branch" ]]; then
+  branch="$(<"$repo_root/.update-branch")"
+fi
+# If not provided, offer an interactive menu when running in a terminal
+if [[ -z "$branch" && -t 0 ]]; then
+  echo "Select branch to use:"
+  echo "  1) main (end users)"
+  echo "  2) 0.3 (development)"
+  echo "  3) Enter branch name"
+  read -rp "Choice [1-3] (default 2): " _choice
+  case "$_choice" in
+    1) branch="main" ;;
+    3) read -rp "Enter branch name: " branch ;;
+    *) branch="0.3" ;;
+  esac
+fi
+branch="${branch:-0.3}"
 timestamp="$(date +%Y%m%d-%H%M%S)"
-backup_branch="backup-before-update-$timestamp"
 
 echo "Repository: $repo_root"
-echo "Current branch: $branch"
+echo "Target branch: $branch"
 echo "Remote: $remote"
-echo "Creating backup branch: $backup_branch"
-git branch --force "$backup_branch" || git branch "$backup_branch"
 
 echo "Fetching from $remote..."
 git fetch --prune "$remote"
@@ -44,17 +67,10 @@ if git show-ref --verify --quiet "refs/remotes/$remote/$branch"; then
   git submodule update --init --recursive 2>/dev/null || true
 
   echo "Update complete. Local branch '$branch' now matches '$remote/$branch'."
-  echo "Backup of previous HEAD is on branch: $backup_branch"
 else
   echo "Error: remote branch '$remote/$branch' not found. Aborting." >&2
   exit 2
 fi
-# Backup Hyprland monitor and workspace configs
-  echo "Moving Hyprland monitor and workspace configs to backup folder..."
-  mkdir -p "$HOME/.config/backup"
-  mv "$HOME/.config/hypr/monitors.conf" "$HOME/.config/backup/monitors.conf"
-  mv "$HOME/.config/hypr/workspaces.conf" "$HOME/.config/backup/workspaces.conf"
-
   # By default, reapply symlinks and some dotfile tasks so the live system matches the repo.
   # Set SKIP_SYMLINKS=1 to skip this step.
   apply_symlinks() {
