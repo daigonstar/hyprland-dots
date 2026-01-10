@@ -1,5 +1,5 @@
 update.sh
-map.txt
+/map.txt
 paru/
 /.config/hypr/monitors.conf
 .creds
