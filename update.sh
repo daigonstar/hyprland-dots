@@ -68,6 +68,30 @@ fi
         echo "Source missing: $source (skipping)"
         continue
       fi
+
+      # Special-case 'hypr' to preserve user-local monitor/workspace configs
+      if [[ "$dir" == "hypr" ]]; then
+        if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
+          echo "Already symlinked: $target"
+          continue
+        fi
+        if [[ -e "$target" && ! -d "$target" ]]; then
+          echo "Backing up existing $target"
+          mv "$target" "$target.bak.$timestamp" || true
+        fi
+        # Ensure target dir exists
+        mkdir -p "$target"
+        # Sync files from repo to user config but exclude monitors.conf and workspaces.conf
+        if command -v rsync >/dev/null 2>&1; then
+          rsync -a --delete --exclude='monitors.conf' --exclude='workspaces.conf' "$source/" "$target/"
+        else
+          # Fallback: use tar to copy excluding the two files
+          (cd "$source" && tar cf - --exclude='monitors.conf' --exclude='workspaces.conf' .) | (cd "$target" && tar xpf -)
+        fi
+        echo "Updated $target from $source (excluded: monitors.conf, workspaces.conf). Local copies (if any) were preserved."
+        continue
+      fi
+
       if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
         echo "Already symlinked: $target"
         continue
@@ -76,6 +100,7 @@ fi
       ln -sfn "$source" "$target"
       echo "Symlinked $target -> $source"
     done
+
 
     # Starship config
     starship_file="$HOME/.config/starship.toml"

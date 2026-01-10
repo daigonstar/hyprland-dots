@@ -247,6 +247,11 @@ run_cmd rm -rf "$target"
 run_cmd ln -sfn "$source" "$target"
 done
 
+# Add temp monitor and worspace configs
+
+run_cmd touch "$HOME/.config/hypr/monitors.conf"
+run_cmd touch "$HOME/.config/hypr/workspaces.conf"
+
 # Starship config
 
 starship_file="$HOME/.config/starship.toml"
