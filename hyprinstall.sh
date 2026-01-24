@@ -148,16 +148,16 @@ fi
 if [[ -z "$BRANCH" && "$DRY_RUN" == "false" && -t 0 ]]; then
   echo "Select branch to use for repo operations:"
   echo "  1) main (end users)"
-  echo "  2) 0.3 (development)"
+  echo "  2) dev (development)"
   echo "  3) Enter branch name"
   read -rp "Choice [1-3] (default 2): " _choice
   case "$_choice" in
     1) BRANCH="main" ;;
     3) read -rp "Enter branch name: " BRANCH ;;
-    *) BRANCH="0.3" ;;
+    *) BRANCH="dev" ;;
   esac
 fi
-BRANCH="${BRANCH:-0.3}"
+BRANCH="${BRANCH:-dev}"
 log "INFO" "Using branch: $BRANCH"
 
 # If repo exists and is a git repo, attempt to check it out and update to the selected branch
