@@ -175,7 +175,7 @@ for d in "${EXTRA_DEPENDENCIES[@]}"; do
 if pacman -Qi "$d" &>/dev/null; then
 log "OK" "Dependency present: $d"
 else
-run_cmd "sudo pacman -S --needed --noconfirm "$d""
+run_cmd "sudo pacman -S --needed --noconfirm \"$d\""
 fi
 done
 
@@ -232,8 +232,6 @@ else
 run_cmd "flatpak install -y --noninteractive --or-update flathub "$f""
 fi
 done
-wget https://github.com/OrcaSlicer/OrcaSlicer/releases/download/v2.3.1/OrcaSlicer-Linux-flatpak_V2.3.1_x86_64.flatpak
-flatpak install OrcaSlicer-Linux-flatpak_V2.3.1_x86_64.flatpak
 
 # NVIDIA packages (optional)
 
@@ -245,7 +243,7 @@ fi
 
 # Home directories
 
-run_cmd "mkdir -p "$HOME/Pictures" "$HOME/Videos" "$HOME/Documents" "$HOME/.config" "$HOME/Downloads""
+run_cmd "mkdir -p \"$HOME/Pictures\" \"$HOME/Videos\" \"$HOME/Documents\" \"$HOME/.config\" \"$HOME/Downloads\""
 
 # Backup existing config (optional)
 
@@ -258,7 +256,7 @@ fi
 
 # Symlink config directories
 
-CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty)
+CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty hypr-dock)
 for dir in "${CONFIG_TARGETS[@]}"; do
 target="$HOME/.config/$dir"
 source="$DOTFILES_DIR/$dir"
@@ -270,7 +268,7 @@ if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
 log "OK" "Already symlinked: $target"
 continue
 fi
-[[ -e "$target" ]] && $BACKUP_YES && run_cmd cp -r "$target" "$BACKUP_DIR/"
+[[ -e "$target" ]] && [[ "$BACKUP_YES" == "true" ]] && run_cmd cp -r "$target" "$BACKUP_DIR/"
 run_cmd rm -rf "$target"
 run_cmd ln -sfn "$source" "$target"
 done
@@ -293,6 +291,11 @@ wallpaper_dest="$HOME/Pictures/wallpapers"
 [[ -e "$wallpaper_dest" ]] && run_cmd rm -rf "$wallpaper_dest"
 [[ -d "$wallpaper_src" ]] && run_cmd cp -r "$wallpaper_src" "$wallpaper_dest"
 
+#hypr-dock installation
+
+run_cmd "git clone https://github.com/lotos-linux/hypr-dock.git && cd hypr-dock && make get && mv ./install /install.sh && ./install.sh && cd .."
+
+
 # Make scripts executable
 
 SCRIPT_FILES=(hypr/scripts/ai.sh hypr/scripts/browser.sh hypr/scripts/gamemode.sh hypr/scripts/pywall.sh hypr/scripts/rainbowb.sh hypr/scripts/refresh.sh hypr/scripts/wallust.sh rofi/powermenu/powermenu.sh rofi/launchers/launcher.sh rofi/wallpaper/wallpaper.sh)
@@ -304,8 +307,8 @@ done
 # Cursor icons + Flatpak overrides
 
 if [[ -d "$REPO_DIR/icons/Future-cursors" ]]; then
-run_cmd "sudo cp -r "$REPO_DIR/icons/Future-cursors" /usr/share/icons/Future-cursors"
-run_cmd "flatpak --user override --filesystem=/home/$USER/.icons/:ro"
+run_cmd "sudo cp -r \"$REPO_DIR/icons/Future-cursors\" /usr/share/icons/Future-cursors"
+run_cmd "flatpak --user override --filesystem=/home/\"$USER\"/.icons/:ro"
 run_cmd "flatpak --user override --filesystem=/usr/share/icons/:ro"
 fi
 

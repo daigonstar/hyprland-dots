@@ -10,6 +10,7 @@ ghostty
 gnome-system-monitor
 gnome-keyring
 gnome-themes-extra
+go
 gvfs
 hypridle
 hyprland

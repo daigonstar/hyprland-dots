@@ -80,7 +80,7 @@ fi
     DOTFILES_DIR="$REPO_DIR/.config"
 
     # Config directories to symlink
-    CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty)
+    CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty hypr-dock)
     for dir in "${CONFIG_TARGETS[@]}"; do
       target="$HOME/.config/$dir"
       source="$DOTFILES_DIR/$dir"
