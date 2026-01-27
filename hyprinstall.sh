@@ -291,11 +291,6 @@ wallpaper_dest="$HOME/Pictures/wallpapers"
 [[ -e "$wallpaper_dest" ]] && run_cmd rm -rf "$wallpaper_dest"
 [[ -d "$wallpaper_src" ]] && run_cmd cp -r "$wallpaper_src" "$wallpaper_dest"
 
-#hypr-dock installation
-
-run_cmd "git clone https://github.com/lotos-linux/hypr-dock.git && cd hypr-dock && make get && mv ./install /install.sh && ./install.sh && cd .."
-
-
 # Make scripts executable
 
 SCRIPT_FILES=(hypr/scripts/ai.sh hypr/scripts/browser.sh hypr/scripts/gamemode.sh hypr/scripts/pywall.sh hypr/scripts/rainbowb.sh hypr/scripts/refresh.sh hypr/scripts/wallust.sh rofi/powermenu/powermenu.sh rofi/launchers/launcher.sh rofi/wallpaper/wallpaper.sh)
