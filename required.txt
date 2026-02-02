@@ -47,4 +47,5 @@ wayland-protocols
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xorg-xwayland
+xorg-xrandr
 wget

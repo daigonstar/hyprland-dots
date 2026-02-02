@@ -42,6 +42,8 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
+command = TERM=xterm-256color /usr/bin/bash
+
 clipboard-read = allow
 clipboard-write = allow
 copy-on-select = true
