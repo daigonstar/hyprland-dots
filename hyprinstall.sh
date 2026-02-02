@@ -328,6 +328,24 @@ else
 log "INFO" "~/.bashrc already contains hyprinstall additions; skipping"
 fi
 
+# If the bashrc update included the DisplayPort xrandr line, ensure SDDM's
+# Xsetup also contains the necessary xrandr commands so the display is set
+# correctly at the greeter/session start.
+XSETUP_FILE="/usr/share/sddm/scripts/Xsetup"
+XRANDR_LINE1='xrandr --output DisplayPort-0 --primary'
+XRANDR_LINE2='xrandr --output HDMI-2 --off'
+if grep -qF "$XRANDR_LINE1" "$HOME/.bashrc" 2>/dev/null; then
+    run_cmd "sudo cp \"$XSETUP_FILE\" \"$XSETUP_FILE.bak\""
+    run_cmd "sudo bash -c 'grep -q -F \"$XRANDR_LINE1\" \"$XSETUP_FILE\" || cat >> \"$XSETUP_FILE\" <<EOF
+$XRANDR_LINE1
+$XRANDR_LINE2
+EOF'"
+    run_cmd "sudo chmod +x \"$XSETUP_FILE\""
+    log "OK" "Ensured xrandr lines present in $XSETUP_FILE (backup created)."
+else
+    log "INFO" "Skipping adding xrandr lines to $XSETUP_FILE; ~/.bashrc lacks marker."
+fi
+
 # Hide unwanted apps from launcher
 
 echo "🔧 Hiding unwanted apps from launcher..."
@@ -372,5 +390,11 @@ run_cmd "sudo cp $REPO_DIR/SDDM/sddm.conf /etc/sddm.conf.d/sddm.conf"
 run_cmd "sudo git clone https://github.com/krishnan793/PlymouthTheme-Cat.git /usr/share/plymouth/themes/PlymouthTheme-Cat"
 run_cmd "sudo plymouth-set-default-theme PlymouthTheme-Cat -R"
 
-log "INFO" "hyprinstall-final setup completed."
+log "INFO" "DaigonStar Hyprdots setup completed."
+echo "DaigonStar Hyprdots setup completed."
+sleep 3
+echo "Restarting SDDM to apply changes..."
+sleep 2
+sudo systemctl restart sddm
+
 exit 0

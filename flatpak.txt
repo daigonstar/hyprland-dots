@@ -4,6 +4,7 @@ org.filezillaproject.Filezilla
 com.github.tchx84.Flatseal
 io.github.kolunmi.Bazaar
 com.heroicgameslauncher.hgl
+org.localsend.localsend_app
 net.lutris.Lutris
 com.nextcloud.desktopclient.nextcloud
 md.obsidian.Obsidian
