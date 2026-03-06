@@ -96,7 +96,7 @@ window#waybar{
 }
 
 #custom-power {
-    padding: 0px 3px;
+    padding: 0px 0px;
     color: red;    
 }
 
@@ -151,4 +151,13 @@ window#waybar{
 #pulseaudio.format-icons,
 #pulseaudio.format-muted {
     padding-right: 10px;
+}
+#custom-noti {
+    font-family: "NotoSansMono Nerd Font";
+    margin-right: 15px;
+    padding-top: 1px; /* Fine-tune the vertical position if it looks off */
+    color: @color7
+}
+#custom-noti.notification {
+    color: @color16
 }
