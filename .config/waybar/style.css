@@ -15,25 +15,22 @@ window#waybar{
     padding:5px;
     margin:5 0 0 0;
     border-radius:20px;
-    background: alpha(@color4,.6);
+    background: alpha(@color2,.6);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
 }
 .modules-left {
     padding:5px;
     margin:5 0 0 0;
     border-radius:10px;
-    background: alpha(@color4,.6);
+    background: alpha(@color2,.6);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
 }
 .modules-right {
     padding: 5px;
     margin:5 0 0 0;
     border-radius:10px;
-    background: alpha(@color4,.6);
+    background: alpha(@color2,.6);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
-}
-#bluetooth-connected {
-    color: #5254e9;
 }
 #workspaces {
     padding: 0px 5px;
@@ -78,12 +75,12 @@ window#waybar{
     background-size: contain;
     padding-right: 18px;
     opacity: 0.8;
-    color: @color7;
+    color: @color15;
 }
 
 #clock {
     padding: 0px 3px;
-    color: @color7;
+    color: @color15;
 }
 
 #network {
@@ -92,7 +89,10 @@ window#waybar{
 }
 
 #bluetooth {
-    color: @color7;;
+    color: @color15;;
+}
+#bluetooth-connected {
+    color: #5254e9;
 }
 
 #custom-power {
@@ -104,7 +104,7 @@ window#waybar{
     color: rgba(24, 185, 9, 0.5);
 }
 #custom-cava {
-    color: #8FBC8F;
+    color: @color7;
     border-left: 0px;
     border-right: 0px;
     padding-bottom: 6px;
@@ -125,9 +125,7 @@ window#waybar{
 
 #temperature {
     padding: 0px 5px;
-    background: alpha(@color4,.6);
-    border-radius: 10px;
-    box-shadow: 0px 0px 2px rgba(0, 0,0, .6);
+    background: none;
 }
 
 #tray {
@@ -145,7 +143,7 @@ window#waybar{
 }
 #pulseaudio {
     padding: 0px 0px;
-    color: @color7;
+    color: @color15;
 }
 
 #pulseaudio.format-icons,
@@ -156,8 +154,8 @@ window#waybar{
     font-family: "NotoSansMono Nerd Font";
     margin-right: 15px;
     padding-top: 1px; /* Fine-tune the vertical position if it looks off */
-    color: @color7
+    color: @color15
 }
 #custom-noti.notification {
-    color: @color16
+    color: @color14
 }
