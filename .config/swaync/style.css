@@ -1,3 +1,9 @@
 @import "wallust/colors-wallust.css";
 @import "themes/nova-dark/notifications.css";
 @import "themes/nova-dark/central_control.css";
+
+:root {
+  --swaync-bg: rgba(34, 33, 33, 0.70);
+}
+
+@import "overrides.css";
