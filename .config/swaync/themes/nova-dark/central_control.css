@@ -21,7 +21,7 @@
 /* CONTROL CENTER ------------------------------------------------------------------------ */
 
 .control-center {
-    background: alpha(@background, 0.55);
+    background: var(--swaync-bg) !important;
     border-radius: 24px;
     border: 1px solid @selected;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.6);
