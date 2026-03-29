@@ -12,12 +12,12 @@ wallpaper_current="$HOME/.config/rofi/wallpaper/.wallpaper_current"
 iDIR="$HOME/.config/rofi/images"
 iDIRi="$HOME/.config/rofi/icons"
 
-# swww transition config
+# awww transition config
 FPS=60
 TYPE="any"
 DURATION=2
 BEZIER=".43,1.19,1,.4"
-SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
+AWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
 
 # Check if package bc exists
 if ! command -v bc &>/dev/null; then
@@ -44,7 +44,7 @@ rofi_override="element-icon{size:${adjusted_icon_size}%;}"
 
 # Kill existing wallpaper daemons
 kill_wallpaper_for_video() {
-  swww kill 2>/dev/null
+  awww kill 2>/dev/null
   pkill mpvpaper 2>/dev/null
   pkill swaybg 2>/dev/null
   pkill hyprpaper 2>/dev/null
@@ -87,13 +87,12 @@ apply_image_wallpaper() {
   local image_path="$1"
   kill_wallpaper_for_image
 
-  if ! pgrep -x "swww-daemon" >/dev/null; then
-    swww-daemon --format xrgb &
+  if ! pgrep -x "awww-daemon" >/dev/null; then
+    awww-daemon --format xrgb &
     sleep 0.5
   fi
 
-  # Apply to ALL monitors by removing the -o flag
-  swww img "$image_path" $SWWW_PARAMS
+  awww img "$image_path" $AWWW_PARAMS
 
   # Run wallust and pass the path directly
   if [ -f "$SCRIPTSDIR/wallust.sh" ]; then
