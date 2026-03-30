@@ -11,7 +11,9 @@ io.elementary.granite.demo
 kitty
 kitty-open
 linguist
+micro
 mimeinfo
+org.gnome.Meld
 org.freedesktop.Xwayland
 org.gnupg.pinentry-qt5
 org.gnupg.pinentry-qt
@@ -21,6 +23,7 @@ qv4l2
 qvidcap
 rofi
 rofi-theme-selector
+shelly
 thunar-bulk-rename
 thunar-settings
 xdg-desktop-portal-gtk

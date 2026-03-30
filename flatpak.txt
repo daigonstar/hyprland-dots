@@ -1,5 +1,6 @@
 com.bitwarden.desktop
 com.collaboraoffice.Office
+com.discordapp.Discord
 org.filezillaproject.Filezilla
 com.github.tchx84.Flatseal
 io.github.kolunmi.Bazaar

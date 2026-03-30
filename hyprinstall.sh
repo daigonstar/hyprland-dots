@@ -375,6 +375,10 @@ else
   done < "$APPS_FILE"
 fi
 
+#Git Setup
+
+
+
 # SDDM Configuration
 
 echo "enabling SDDM"
