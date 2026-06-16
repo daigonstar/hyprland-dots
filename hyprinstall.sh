@@ -256,7 +256,7 @@ fi
 
 # Symlink config directories
 
-CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty hypr-dock)
+CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty hypr-dock vesktop)
 for dir in "${CONFIG_TARGETS[@]}"; do
 target="$HOME/.config/$dir"
 source="$DOTFILES_DIR/$dir"
