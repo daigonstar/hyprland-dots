@@ -1,0 +1,56 @@
+/* Overrides to make backgrounds less transparent and persist across wallust updates */
+
+@define-color swaync-bg rgba(34, 33, 33, 0.90);
+@define-color swaync-bg-soft rgba(34, 33, 33, 0.88);
+
+/* Control center and primary widgets */
+.control-center,
+.control-center .notification-row .notification-background .notification,
+.widget-mpris,
+.widget-buttons-grid,
+.widget-volume,
+.widget-dnd > switch,
+.widget-title button {
+  background: @swaync-bg;
+  background-color: @swaync-bg;
+}
+
+/* Notification action/buttons use a slightly softer background */
+.control-center .notification-row .notification-background .notification .notification-action {
+  background: @swaync-bg-soft;
+  color: #EEEEEE;
+}
+
+/* Ensure rounded panels keep opaque shadows */
+.control-center {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* Floating notifications (override theme's var(--swaync-bg) usage) */
+.floating-notifications.background .notification-row .notification-background {
+  background: @swaync-bg;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.6);
+  border: 1px solid @selected;
+  border-radius: 24px;
+  margin: 16px;
+  padding: 0;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification {
+  background: @swaync-bg-soft;
+  padding: 6px;
+  border-radius: 12px;
+}
+
+.floating-notifications.background .notification-row .notification-background .notification .notification-action {
+  background-color: @swaync-bg-soft;
+  border: 1px solid transparent;
+  margin: 6px;
+}
+
+.floating-notifications.background .notification-row .notification-background .close-button {
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+/* Avoid forcing unsupported properties here; GTK parser is strict. */

@@ -5,9 +5,9 @@
         "position": "top",
         "reload_style_on_change": true,
         "spacing": 10,
-        "modules-left": ["clock","custom/weather","custom/chatgpt"],
+        "modules-left": ["clock","custom/chatgpt","group/expand2"],
         "modules-center": ["hyprland/window", "hyprland/workspaces","cava"],
-        "modules-right": ["group/expand","pulseaudio","bluetooth","battery","network","custom/power","custom/swaync"],
+        "modules-right": ["group/expand","pulseaudio","bluetooth","battery","network","custom/power","custom/noti"],
 
     // Groups
 
@@ -21,7 +21,23 @@
             },
             "modules": ["custom/trayicon","tray","cpu","memory","temperature"]
         },
-
+        "group/expand2": {
+            "orientation": "horizontal",
+            "spacing": 10,
+            "drawer": {
+                "transition-duration": 600,
+                "transition-to-left": false,
+                "click-to-reveal": true
+            },
+            "modules": [
+                "custom/settingsicon",
+                "custom/settings/display",
+                "custom/settings/wallpaper",
+                "custom/gtk",
+                "custom/drive",
+                "custom/keys"
+            ]
+        },
     // Generic Modules
 
     "hyprland/window": {
@@ -63,12 +79,12 @@
 			    "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
 			    "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
 		        }
-	        },      
+	        },
         },
 
         "network": {
             "format-wifi": "󰖩",
-            "format-ethernet":"",
+            "format-ethernet":"",
             "format-disconnected": "",
             "tooltip-format-disconnected": "Error",
             "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
@@ -87,7 +103,7 @@
             "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
             "tooltip-format-enumerate-connected-battery": "{device_alias}\n{device_address}\n{device_battery_percentage}%",
             "on-click": "blueman-manager",
-        }, 
+        },
 
         "battery": {
             "interval":30,
@@ -150,7 +166,7 @@
 
     // Custom Modules
 
-        
+
         "custom/notification": {
             "tooltip": false,
             "format": "󰎟",
@@ -160,8 +176,11 @@
         "custom/trayicon": {
             "format": "󱊔",
             "tooltip": false
-        },        
-        
+        },
+        "custom/settingsicon": {
+            "format": "",
+            "tooltip": false
+        },
         "custom/endpoint":{
             "format": "|",
             "tooltip": false
@@ -178,7 +197,7 @@
             "on-click": "~/.config/rofi/powermenu/powermenu.sh",
             "tooltip":false
 	    },
-         
+
         "custom/chatgpt": {
         "format": " ",
         "on-click": "~/.config/hypr/scripts/ai.sh",
@@ -209,5 +228,56 @@
                    "on-click-right": "mode"
                    }
         },
-} 
+          "custom/noti": {
+        "tooltip": true,
+        "format": "<span size='16pt'>{icon}</span>",
+        "format-icons": {
+        "notification": "󱅫",
+        "none": "󰂜",
+        "dnd-notification": "󰂠",
+        "dnd-none": "󰪓",
+        "inhibited-notification": "󰂛",
+        "inhibited-none": "󰪑",
+        "dnd-inhibited-notification": "󰂛",
+        "dnd-inhibited-none": "󰪑"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+        },
+        "custom/settings/display": {
+            "format": "🖥️",
+            "tooltip": "Display (hyprmon)",
+            "on-click": "ghostty -e hyprmon"
+        },
 
+        "custom/settings/wallpaper": {
+            "format": "🖼️",
+            "tooltip": "Wallpaper (rofi)",
+            "on-click": "~/.config/rofi/wallpaper/wallpaper.sh"
+        },
+        "custom/gtk": {
+            "format": "🖌️",
+            "tooltip": "GTK (rofi)",
+            "on-click": "nwg-look"
+        },
+        "custom/drive": {
+            "format": "💾",
+            "tooltip": "Format/Partition",
+            "on-click": "partitionmanager"
+        },
+
+        "custom/settings/tui": {
+            "format": "⚙",
+            "tooltip": "Open Hypr Settings (TUI)",
+            "on-click": "~/.config/hypr/settings/run_tui.sh"
+        },
+        "custom/keys": {
+            "format": "🔑",
+            "tooltip": "Open Hyprkeys",
+            "on-click": "ghostty -e ~/.config/hypr/settings/run_tui.sh --inside"
+        }
+}

@@ -1,0 +1,31 @@
+# Autostart necessary processes (like notifications daemons, status bars, etc.)
+# Or execute your favorite apps at launch like this:
+
+#Applications
+exec-once = [workspace 2 silent] discord
+exec-once = com.nextcloud.desktopclient.nextcloud --background
+exec-once = openrgb --startminimized -p Ice.orp
+exec-once = coolercontrol
+exec-once = [workspace 7 silent] solaar -w hide
+exec-once = [workspace 3 silent] com.bitwarden.desktop --hidden
+exec-once = org.localsend.localsend_app --hidden
+exec-once = [worspace 9 silent] sudo timeshift --scripted
+
+#Theming
+exec-once = hyprctl setcursor Future-cursors 24
+
+#Deamons
+exec-once = awww-daemon --format xrgb &
+exec-once = systemctl --user start hyprpolkitagent
+exec-once = systemctl --user enable --now hyprpolkitagent.service
+exec-once = waybar
+exec-once = nm-applet
+exec-once = swaync
+exec-once = hypridle
+exec-once = wl-paste --watch clipvault store
+exec-once = arch-update --tray
+
+#Fixes
+
+exec-once = hyprctl dispatch focusmonitor DP-1
+exec-once = ~/.config/hypr/scripts/portal-fix.sh

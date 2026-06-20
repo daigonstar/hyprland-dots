@@ -148,16 +148,16 @@ fi
 if [[ -z "$BRANCH" && "$DRY_RUN" == "false" && -t 0 ]]; then
   echo "Select branch to use for repo operations:"
   echo "  1) main (end users)"
-  echo "  2) 0.3 (development)"
+  echo "  2) dev (development)"
   echo "  3) Enter branch name"
   read -rp "Choice [1-3] (default 2): " _choice
   case "$_choice" in
     1) BRANCH="main" ;;
     3) read -rp "Enter branch name: " BRANCH ;;
-    *) BRANCH="0.3" ;;
+    *) BRANCH="dev" ;;
   esac
 fi
-BRANCH="${BRANCH:-0.3}"
+BRANCH="${BRANCH:-dev}"
 log "INFO" "Using branch: $BRANCH"
 
 # If repo exists and is a git repo, attempt to check it out and update to the selected branch
@@ -175,7 +175,7 @@ for d in "${EXTRA_DEPENDENCIES[@]}"; do
 if pacman -Qi "$d" &>/dev/null; then
 log "OK" "Dependency present: $d"
 else
-run_cmd "sudo pacman -S --needed --noconfirm "$d""
+run_cmd "sudo pacman -S --needed --noconfirm \"$d\""
 fi
 done
 
@@ -232,8 +232,6 @@ else
 run_cmd "flatpak install -y --noninteractive --or-update flathub "$f""
 fi
 done
-wget https://github.com/OrcaSlicer/OrcaSlicer/releases/download/v2.3.1/OrcaSlicer-Linux-flatpak_V2.3.1_x86_64.flatpak
-flatpak install OrcaSlicer-Linux-flatpak_V2.3.1_x86_64.flatpak
 
 # NVIDIA packages (optional)
 
@@ -245,7 +243,7 @@ fi
 
 # Home directories
 
-run_cmd "mkdir -p "$HOME/Pictures" "$HOME/Videos" "$HOME/Documents" "$HOME/.config" "$HOME/Downloads""
+run_cmd "mkdir -p \"$HOME/Pictures\" \"$HOME/Videos\" \"$HOME/Documents\" \"$HOME/.config\" \"$HOME/Downloads\""
 
 # Backup existing config (optional)
 
@@ -258,7 +256,7 @@ fi
 
 # Symlink config directories
 
-CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty)
+CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty hypr-dock vesktop)
 for dir in "${CONFIG_TARGETS[@]}"; do
 target="$HOME/.config/$dir"
 source="$DOTFILES_DIR/$dir"
@@ -270,7 +268,7 @@ if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
 log "OK" "Already symlinked: $target"
 continue
 fi
-[[ -e "$target" ]] && $BACKUP_YES && run_cmd cp -r "$target" "$BACKUP_DIR/"
+[[ -e "$target" ]] && [[ "$BACKUP_YES" == "true" ]] && run_cmd cp -r "$target" "$BACKUP_DIR/"
 run_cmd rm -rf "$target"
 run_cmd ln -sfn "$source" "$target"
 done
@@ -304,8 +302,8 @@ done
 # Cursor icons + Flatpak overrides
 
 if [[ -d "$REPO_DIR/icons/Future-cursors" ]]; then
-run_cmd "sudo cp -r "$REPO_DIR/icons/Future-cursors" /usr/share/icons/Future-cursors"
-run_cmd "flatpak --user override --filesystem=/home/$USER/.icons/:ro"
+run_cmd "sudo cp -r \"$REPO_DIR/icons/Future-cursors\" /usr/share/icons/Future-cursors"
+run_cmd "flatpak --user override --filesystem=/home/\"$USER\"/.icons/:ro"
 run_cmd "flatpak --user override --filesystem=/usr/share/icons/:ro"
 fi
 
@@ -328,6 +326,24 @@ EOF
 log "OK" "Appended hyprinstall additions to ~/.bashrc"
 else
 log "INFO" "~/.bashrc already contains hyprinstall additions; skipping"
+fi
+
+# If the bashrc update included the DisplayPort xrandr line, ensure SDDM's
+# Xsetup also contains the necessary xrandr commands so the display is set
+# correctly at the greeter/session start.
+XSETUP_FILE="/usr/share/sddm/scripts/Xsetup"
+XRANDR_LINE1='xrandr --output DisplayPort-0 --primary'
+XRANDR_LINE2='xrandr --output HDMI-2 --off'
+if grep -qF "$XRANDR_LINE1" "$HOME/.bashrc" 2>/dev/null; then
+    run_cmd "sudo cp \"$XSETUP_FILE\" \"$XSETUP_FILE.bak\""
+    run_cmd "sudo bash -c 'grep -q -F \"$XRANDR_LINE1\" \"$XSETUP_FILE\" || cat >> \"$XSETUP_FILE\" <<EOF
+$XRANDR_LINE1
+$XRANDR_LINE2
+EOF'"
+    run_cmd "sudo chmod +x \"$XSETUP_FILE\""
+    log "OK" "Ensured xrandr lines present in $XSETUP_FILE (backup created)."
+else
+    log "INFO" "Skipping adding xrandr lines to $XSETUP_FILE; ~/.bashrc lacks marker."
 fi
 
 # Hide unwanted apps from launcher
@@ -359,6 +375,10 @@ else
   done < "$APPS_FILE"
 fi
 
+#Git Setup
+
+
+
 # SDDM Configuration
 
 echo "enabling SDDM"
@@ -374,5 +394,11 @@ run_cmd "sudo cp $REPO_DIR/SDDM/sddm.conf /etc/sddm.conf.d/sddm.conf"
 run_cmd "sudo git clone https://github.com/krishnan793/PlymouthTheme-Cat.git /usr/share/plymouth/themes/PlymouthTheme-Cat"
 run_cmd "sudo plymouth-set-default-theme PlymouthTheme-Cat -R"
 
-log "INFO" "hyprinstall-final setup completed."
+log "INFO" "DaigonStar Hyprdots setup completed."
+echo "DaigonStar Hyprdots setup completed."
+sleep 3
+echo "Restarting SDDM to apply changes..."
+sleep 2
+sudo systemctl restart sddm
+
 exit 0

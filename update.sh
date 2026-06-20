@@ -4,7 +4,7 @@ set -euo pipefail
 # update.sh
 # Safely overwrite this repository with the remote branch state.
 # Usage: ./update.sh [remote] [branch]
-# - Defaults: remote 'origin', branch '0.3'.
+# - Defaults: remote 'origin', branch 'dev'.
 # Behavior:
 # - Fetches the remote and resets --hard to remote/branch.
 # - Removes untracked files (git clean -fdx).
@@ -25,7 +25,7 @@ if ! git rev-parse --git-dir >/dev/null 2>&1; then
 fi
 
 remote="${1:-origin}"
-# Branch selection priority: UPDATE_BRANCH env > $repo_root/.update-branch file > arg2 > interactive menu > default 0.3
+# Branch selection priority: UPDATE_BRANCH env > $repo_root/.update-branch file > arg2 > interactive menu > default dev
 branch="${2:-}"
 if [[ -n "${UPDATE_BRANCH:-}" ]]; then
   branch="$UPDATE_BRANCH"
@@ -36,16 +36,16 @@ fi
 if [[ -z "$branch" && -t 0 ]]; then
   echo "Select branch to use:"
   echo "  1) main (end users)"
-  echo "  2) 0.3 (development)"
+  echo "  2) dev (unstable)"
   echo "  3) Enter branch name"
   read -rp "Choice [1-3] (default 2): " _choice
   case "$_choice" in
     1) branch="main" ;;
     3) read -rp "Enter branch name: " branch ;;
-    *) branch="0.3" ;;
+    *) branch="dev" ;;
   esac
 fi
-branch="${branch:-0.3}"
+branch="${branch:-dev}"
 timestamp="$(date +%Y%m%d-%H%M%S)"
 
 echo "Repository: $repo_root"
@@ -80,7 +80,7 @@ fi
     DOTFILES_DIR="$REPO_DIR/.config"
 
     # Config directories to symlink
-    CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty)
+    CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty hypr-dock)
     for dir in "${CONFIG_TARGETS[@]}"; do
       target="$HOME/.config/$dir"
       source="$DOTFILES_DIR/$dir"

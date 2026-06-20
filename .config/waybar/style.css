@@ -1,75 +1,72 @@
-@import url('colors/colors.css');
+@import url("colors/colors.css");
 
 * {
-    font-size:15px;
+    font-size: 15px;
     font-family: "ttf-cascadia-code-nerd";
 }
-window#waybar{
-    all:unset;
+window#waybar {
+    all: unset;
 }
 .expand {
     margin-left: 2px;
     margin-right: 2px;
 }
 .modules-center {
-    padding:5px;
-    margin:5 0 0 0;
-    border-radius:20px;
-    background: alpha(@color4,.6);
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
+    padding: 5px;
+    margin: 5 0 0 0;
+    border-radius: 20px;
+    background: alpha(@color2, 0.6);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
 }
 .modules-left {
-    padding:5px;
-    margin:5 0 0 0;
-    border-radius:10px;
-    background: alpha(@color4,.6);
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
+    padding: 5px;
+    margin: 5 0 0 0;
+    border-radius: 10px;
+    background: alpha(@color2, 0.6);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
 }
 .modules-right {
     padding: 5px;
-    margin:5 0 0 0;
-    border-radius:10px;
-    background: alpha(@color4,.6);
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
-}
-#bluetooth-connected {
-    color: #5254e9;
+    margin: 5 0 0 0;
+    border-radius: 10px;
+    background: alpha(@color2, 0.6);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
 }
 #workspaces {
     padding: 0px 5px;
 }
 #workspaces button {
-    all:unset;
+    all: unset;
     padding: 0px 7px;
-    color: alpha(@color6,.8);
-    transition: all .2s ease;
+    color: alpha(@color6, 0.8);
+    transition: all 0.2s ease;
 }
 #workspaces button:hover {
-    color:rgba(167, 91, 190, 0);
+    color: rgba(167, 91, 190, 0);
     border: none;
-    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, .5);
+    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, 0.5);
     transition: all 1s ease;
 }
 #workspaces button.active {
     color: @color10;
     border: none;
-    text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 }
 #workspaces button.empty {
-    color: alpha(@color4,.6);
+    color: alpha(@color4, 0.6);
     border: none;
-    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, .2);
+    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, 0.2);
 }
 #workspaces button.empty:hover {
-    color: rgba(0,0,0,0);
+    color: rgba(0, 0, 0, 0);
     border: none;
-    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, .5);
+    text-shadow: 0px 0px 1.5px rgba(0, 0, 0, 0.5);
     transition: all 1s ease;
 }
 #workspaces button.empty.active {
     color: @color12;
     border: none;
-    text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 }
 #custom-chatgpt {
     background-image: url("assets/openai-white.svg");
@@ -78,12 +75,12 @@ window#waybar{
     background-size: contain;
     padding-right: 18px;
     opacity: 0.8;
-    color: @color7;
+    color: @color15;
 }
 
 #clock {
     padding: 0px 3px;
-    color: @color7;
+    color: @color15;
 }
 
 #network {
@@ -92,19 +89,22 @@ window#waybar{
 }
 
 #bluetooth {
-    color: @color7;;
+    color: @color15;
+}
+#bluetooth-connected {
+    color: #5254e9;
 }
 
 #custom-power {
-    padding: 0px 3px;
-    color: red;    
+    padding: 0px 0px;
+    color: red;
 }
 
 #battery.charging {
     color: rgba(24, 185, 9, 0.5);
 }
 #custom-cava {
-    color: #8FBC8F;
+    color: @color7;
     border-left: 0px;
     border-right: 0px;
     padding-bottom: 6px;
@@ -125,30 +125,42 @@ window#waybar{
 
 #temperature {
     padding: 0px 5px;
-    background: alpha(@color4,.6);
-    border-radius: 10px;
-    box-shadow: 0px 0px 2px rgba(0, 0,0, .6);
+    background: none;
 }
 
 #tray {
     padding: 0px 5px;
     margin: 0px 0px 0px 0px;
-    background: alpha(@color8,.6);
+    background: alpha(@color8, 0.6);
     border-radius: 10px;
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, .6);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
 }
 
 #custom-trayicon {
     padding: 0px 6px;
     margin: 0px 0px 0px 0px;
-    
 }
 #pulseaudio {
     padding: 0px 0px;
-    color: @color7;
+    color: @color15;
 }
 
 #pulseaudio.format-icons,
 #pulseaudio.format-muted {
     padding-right: 10px;
+}
+#custom-noti {
+    font-family: "NotoSansMono Nerd Font";
+    margin-right: 15px;
+    padding-top: 1px; /* Fine-tune the vertical position if it looks off */
+    color: @color15;
+}
+#custom-settingsicon {
+    font-family: "NotoSansMono Nerd Font";
+    margin-right: 5px;
+    padding-top: 1px; /* Fine-tune the vertical position if it looks off */
+    color: @color15;
+}
+#custom-noti.notification {
+    color: @color14;
 }

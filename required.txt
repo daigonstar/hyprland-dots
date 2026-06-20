@@ -7,6 +7,7 @@ fastfetch
 ffmpegthumbnailer
 flatpak
 ghostty
+gh-cli
 gnome-system-monitor
 gnome-keyring
 gnome-themes-extra
@@ -38,6 +39,7 @@ thunar
 thunar-archive-plugin
 ttf-cascadia-code-nerd
 ttf-cascadia-mono-nerd
+ttf-font-awesome
 tumbler
 vim
 wallust
@@ -46,4 +48,5 @@ wayland-protocols
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xorg-xwayland
+xorg-xrandr
 wget

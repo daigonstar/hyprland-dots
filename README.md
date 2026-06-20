@@ -13,6 +13,7 @@ I have added some wallpapers I've collected (will probably add more as I go)
 <img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + Space = Launcher  
 <img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + Q = Quit app  
 <img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + T = Terminal (Ghostty as default)  
+<img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + C = Open clipboard  
 <img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + E = File Manager (Thunar is default)  
 <img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + B = Browser (Zen is default)  
 <img src="/screens/tux.svg" alt="Tux" width="25" height="25" /> + A = App Store (Cosmic is default)   

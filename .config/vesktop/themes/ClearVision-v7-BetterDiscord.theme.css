@@ -1,0 +1,405 @@
+/**
+ * @name ClearVision V7 for BetterDiscord
+ * @author ClearVision Team
+ * @version 7.0.1
+ * @description Highly customizable theme for BetterDiscord.
+ * @source https://github.com/ClearVision/ClearVision-v7
+ * @website https://clearvision.github.io
+ * @invite dHaSxn3
+ */
+/* IMPORT CSS */
+@import url("https://clearvision.github.io/ClearVision-v7/main.css");
+@import url("https://clearvision.github.io/ClearVision-v7/betterdiscord.css");
+/* SETTINGS */
+:root {
+    /* ACCENT COLORS */
+    --main-color: #2780e6; /* main accent color (hex, rgb or hsl) [default: #2780e6] */
+    --hover-color: #1e63b3; /* hover accent color (hex, rgb or hsl) [default: #1e63b3] */
+    --success-color: #43b581; /* positive accent color (hex, rgb or hsl) [default: #43b581] */
+    --danger-color: #982929; /* danger accent color (hex, rgb or hsl) [default: #982929] */
+    /* STATUS COLORS */
+    --online-color: #43b581; /* online status color (hex, rgb or hsl) [default: #43b581] */
+    --idle-color: #faa61a; /* idle status color (hex, rgb or hsl) [default: #faa61a] */
+    --dnd-color: #982929; /* dnd status color (hex, rgb or hsl) [default: #982929] */
+    --streaming-color: #593695; /* streaming status color (hex, rgb or hsl) [default: #593695] */
+    --offline-color: #808080; /* offline/invisible status color (hex, rgb or hsl) [default: #808080] */
+    /* APP BACKGROUND */
+    --background-shading-percent: 100%; /* app background shading amount (0 for complete smoothness) [default: 100%] */
+    /*--background-image: url(https://clearvision.github.io/images/sapphire.jpg); /* app background image (link must be HTTPS) [default: url(https://clearvision.github.io/images/sapphire.jpg)]*/
+    --background-position: center; /* app background position [default: center] */
+    --background-size: cover; /* app background size (px) [default: cover] */
+    --background-attachment: fixed; /* app background attachment [default: fixed] */
+    --background-filter: saturate(
+        calc(var(--saturation-factor, 1) * 1)
+    ); /* app background adjustments (ex: blur, saturation, brightness) (more info: https://developer.mozilla.org/en-US/docs/Web/CSS/filter) [default: saturate(calc(var(--saturation-factor, 1) * 1))] */
+    /* USER POPOUT BACKGROUND */
+    --user-popout-image: var(
+        --background-image
+    ); /* user popout background image (link must be HTTPS) (not applied to nitro users) [default: var(--background-image)] */
+    --user-popout-position: var(
+        --background-position
+    ); /* user popout position [default: var(--background-position)] */
+    --user-popout-size: var(
+        --background-size
+    ); /* user popout size (px) [default: var(--background-size)] */
+    --user-popout-attachment: var(
+        --background-attachment
+    ); /* user popout background attachment [default: var(--background-attachment)] */
+    --user-popout-filter: var(
+        --background-filter
+    ); /* user popout background adjustments (ex: blur, saturation, brightness) (more info: https://developer.mozilla.org/en-US/docs/Web/CSS/filter) [default: var(--background-filter);] */
+    /* USER MODAL BACKGROUND */
+    --user-modal-image: var(
+        --background-image
+    ); /* user modal background image (link must be HTTPS) (not applied to nitro users) [default: var(--background-image)] */
+    --user-modal-position: var(
+        --background-position
+    ); /* user modal position [default: var(--background-position)] */
+    --user-modal-size: var(
+        --background-size
+    ); /* user modal size (px) [default: var(--background-size)] */
+    --user-modal-attachment: var(
+        --background-attachment
+    ); /* user modal background attachment [default: var(--background-attachment)] */
+    --user-modal-filter: var(
+        --background-filter
+    ); /* user modal background adjustments (ex: blur, saturation, brightness) (more info: https://developer.mozilla.org/en-US/docs/Web/CSS/filter) [default: var(--background-filter);] */
+    /* HOME ICON */
+    --home-icon: url(https://clearvision.github.io/icons/discord.svg); /* home button icon (link must be HTTPS) [default: url(https://clearvision.github.io/icons/discord.svg)]*/
+    --home-size: cover; /* home button icon size (px) [default:cover] */
+    /* FONTS */
+    --main-font:
+        "gg sans", "Helvetica Neue", Helvetica, Arial, sans-serif; /* main font for app (font must be installed) [default: gg sans, Helvetica Neue, Helvetica, Arial, sans-serif] */
+    --code-font:
+        Consolas, "gg mono", "Liberation Mono", Menlo, Courier, monospace; /* font for codeblocks (font must be installed) [default: Consolas, Liberation Mono, Menlo, Courier, monospace] */
+    /* CHANNEL COLORS */
+    --channel-normal: var(
+        --interactive-text-default
+    ); /* channel text color [default: var(--interactive-text-default)] */
+    --channel-muted: var(
+        --interactive-muted
+    ); /* muted channel text color [default: var(--interactive-muted)] */
+    --channel-hover: var(
+        --interactive-text-hover
+    ); /* hovered channel text color [default: var(--interactive-text-hover)] */
+    --channel-selected: var(
+        --interactive-text-active
+    ); /* selected channel text color [default: var(--interactive-text-active)] */
+    --channel-selected-bg: var(
+        --main-color
+    ); /* selected channel background [default: var(--main-color)] */
+    --channel-unread: var(
+        --main-color
+    ); /* unread channel text color [default: var(--main-color)] */
+    --channel-unread-hover: var(
+        --hover-color
+    ); /* unread channel hover color [default: var(--hover-color)] */
+    /* ACCESSIBILITY */
+    --focus-color: var(
+        --main-color
+    ); /* outline when pressing TAB key [default: var(--main-color)] */
+}
+
+/* THEME SPECIFIC SHADING */
+/* LIGHT THEME */
+:is(.theme-light, .theme-dark .theme-light) {
+    --background-shading: rgba(
+        252,
+        252,
+        252,
+        0.3
+    ); /* app background shading color [default: rgba(252, 252, 252, 0.3)] */
+    --card-shading: rgba(
+        252,
+        252,
+        252,
+        0.3
+    ); /* cards background shading color [default: rgba(252, 252, 252, 0.3)] */
+    --popout-shading: rgba(
+        252,
+        252,
+        252,
+        0.7
+    ); /* popouts background shading color [default: rgba(252, 252, 252, 0.7)] */
+    --modal-shading: rgba(
+        252,
+        252,
+        252,
+        0.5
+    ); /* modals background shading color [default: rgba(0, 0, 0, 0.6)] */
+    --input-shading: rgba(
+        0,
+        0,
+        0,
+        0.3
+    ); /* inputs background shading color [default: rgba(0, 0, 0, 0.6)] */
+    --normal-text: #36363c; /* text color [default: #36363c] */
+    --muted-text: #75757e; /* muted text color [default: #75757e] */
+}
+
+/* ASH THEME */
+:is(.theme-dark, .theme-light .theme-dark) {
+    --background-shading: rgba(
+        0,
+        0,
+        0,
+        0.4
+    ); /* app background shading color [default: rgba(0, 0, 0, 0.4)] */
+    --card-shading: rgba(
+        0,
+        0,
+        0,
+        0.2
+    ); /* cards background shading color [default: rgba(0, 0, 0, 0.2)] */
+    --popout-shading: rgba(
+        0,
+        0,
+        0,
+        0.6
+    ); /* popouts background shading color [default: rgba(0, 0, 0, 0.6)] */
+    --modal-shading: rgba(
+        0,
+        0,
+        0,
+        0.4
+    ); /* modals background shading color [default: rgba(0, 0, 0, 0.4)] */
+    --input-shading: rgba(
+        255,
+        255,
+        255,
+        0.05
+    ); /* inputs background shading color [default: rgba(255, 255, 255, 0.05)] */
+    --normal-text: #d8d8db; /* text color [default: #d8d8db] */
+    --muted-text: #aeaeb4; /* muted text color [default: #aeaeb4] */
+}
+
+/* DARK THEME */
+:is(.theme-darker, .theme-light .theme-darker) {
+    --background-shading: rgba(
+        0,
+        0,
+        0,
+        0.6
+    ); /* app background shading color [default: rgba(0, 0, 0, 0.6)] */
+    --card-shading: rgba(
+        0,
+        0,
+        0,
+        0.3
+    ); /* cards background shading color [default: rgba(0, 0, 0, 0.3)] */
+    --popout-shading: rgba(
+        0,
+        0,
+        0,
+        0.7
+    ); /* popouts background shading color [default: rgba(0, 0, 0, 0.7)] */
+    --modal-shading: rgba(
+        0,
+        0,
+        0,
+        0.5
+    ); /* modals background shading color [default: rgba(0, 0, 0, 0.6)] */
+    --input-shading: rgba(
+        255,
+        255,
+        255,
+        0.05
+    ); /* inputs background shading color [default: rgba(255, 255, 255, 0.05)] */
+    --normal-text: #fbfbfb; /* text color [default: #fbfbfb] */
+    --muted-text: #94949c; /* muted text color [default: #94949c] */
+}
+
+/* ONYX THEME */
+:is(.theme-midnight, .theme-light .theme-midnight) {
+    --background-shading: rgba(
+        0,
+        0,
+        0,
+        0.8
+    ); /* app background shading color [default: rgba(0, 0, 0, 0.8)] */
+    --card-shading: rgba(
+        0,
+        0,
+        0,
+        0.4
+    ); /* cards background shading color [default: rgba(0, 0, 0, 0.4)] */
+    --popout-shading: rgba(
+        0,
+        0,
+        0,
+        0.8
+    ); /* popouts background shading color [default: rgba(0, 0, 0, 0.8)] */
+    --modal-shading: rgba(
+        0,
+        0,
+        0,
+        0.6
+    ); /* modals background shading color [default: rgba(0, 0, 0, 0.6)] */
+    --input-shading: rgba(
+        255,
+        255,
+        255,
+        0.05
+    ); /* inputs background shading color [default: rgba(255, 255, 255, 0.05)] */
+    --normal-text: #dcdcde; /* text color [default: #dcdcde] */
+    --muted-text: #86868e; /* muted text color [default: #86868e] */
+}
+
+/* ADD ADDITIONAL CSS BELOW HERE */
+
+:root {
+    /* Removes the theme's built-in image */
+    --background-image: none !important;
+
+    /* Adjust shading: 0% is clear, 100% is dark.
+       A little shading (30-50%) usually makes the blur look better. */
+    --background-shading-percent: 20% !important;
+}
+
+/* This targets the main app container */
+.appMount_ea7e65,
+.app_bd26cc {
+    background-color: transparent !important;
+    /* ADJUST BLUR HERE: Change '10px' to a higher number for more blur */
+    backdrop-filter: blur(10px) !important;
+}
+
+/* Ensure the background layers don't block the blur */
+.bg_d4b111 {
+    background-color: transparent !important;
+}
+
+/* Makes the shading color consistent */
+:is(.theme-dark, .theme-light, .theme-darker, .theme-midnight) {
+    --background-shading: rgba(0, 0, 0, 0.5) !important;
+}
+/* --- DARKEN MEMBER LIST SIDEBAR --- */
+/* This targets the member list container */
+[class*="membersWrap"] {
+    background-color: rgba(
+        0,
+        0,
+        0,
+        0.2
+    ) !important; /* Tints it with 15% black */
+}
+
+/* This ensures the actual list inside doesn't have a conflicting background */
+[class*="membersWrap"] [class*="members_"],
+[class*="membersWrap"] [class*="content_"] {
+    background-color: transparent !important;
+}
+
+/* Optional: Add a thin border to separate it from the chat */
+[class*="membersWrap"] {
+    border-left: 1px solid rgba(0, 0, 0, 0.3);
+}
+/* --- 1. POLISHED MESSAGE BOX --- */
+/* This makes the typing area look like a clean "pod" */
+#app-mount [class*="channelTextArea_"] [class*="scrollableContainer_"] {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* --- 2. MINIMALIST SCROLLBARS --- */
+/* Makes scrollbars thin and rounded so they don't block the view */
+#app-mount ::-webkit-scrollbar {
+    width: 6px !important;
+}
+#app-mount ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 20px !important;
+}
+#app-mount ::-webkit-scrollbar-track {
+    background-color: transparent !important;
+}
+
+/* --- 3. REMOVE GRADIENT "SMUDGES" --- */
+/* Removes the dark shadows at the top of the chat and member list */
+#app-mount [class*="chat_"]::before,
+#app-mount [class*="content_"]::before,
+#app-mount [class*="membersWrap_"]::before {
+    display: none !important;
+    content: none !important;
+}
+
+/* --- 4. CLEANER HOVER EFFECTS --- */
+/* Adds a soft highlight when you hover over channels or people */
+#app-mount [class*="interactive_"]:hover,
+#app-mount [class*="member_"]:hover {
+    background-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+/* --- 5. DARKENED SIDEBARS --- */
+/* This ensures your Member List and Server List have that slightly darker tint */
+#app-mount [class*="membersWrap_"],
+#app-mount [class*="guilds_"] {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* --- 6. USER PANEL FIX --- */
+/* The area where your name and mic settings are (bottom left) */
+#app-mount [class*="panels_"] {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+/* --- MATCH CHAT BAR TO SEARCH BAR STYLE --- */
+
+/* 1. Remove the outer "ghost" box (the source of the double border) */
+#app-mount [class*="channelTextArea_"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* 2. Style the chat bar to match your search bar image */
+#app-mount [class*="scrollableContainer_"] {
+    /* This matches the dark-grey semi-transparent look from your photo */
+    background-color: rgba(0, 0, 0, 0.3) !important;
+
+    /* A single, very subtle light border */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+
+    /* Rounded corners like the search bar */
+    border-radius: 8px !important;
+
+    min-height: 44px;
+    box-shadow: none !important;
+}
+
+/* 3. Make the icons and placeholder text match the silver/grey look */
+#app-mount [class*="placeholder_"],
+#app-mount [class*="attachButton_"] svg,
+#app-mount [class*="buttonContainer_"] svg {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 4. Ensure no extra lines or borders appear when typing */
+#app-mount [class*="scrollableContainer_"]:focus-within {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+/* --- PROMINENT MENTION COLORS ONLY --- */
+
+/* 1. The background highlight of the message */
+#app-mount [class*="mentioned_"] {
+    background-color: rgba(0, 110, 255, 0.25) !important; /* Deeper blue tint */
+}
+
+/* 2. The vertical bar on the left */
+#app-mount [class*="mentioned_"]::before {
+    background-color: #0084ff !important; /* Vibrant "Electric" Blue */
+}
+
+/* 3. The @mention tag/pill inside the text */
+#app-mount [class*="mention"] {
+    background-color: rgba(0, 110, 255, 0.35) !important; /* Darker blue pill */
+    color: #ffffff !important; /* White text on the pill for maximum contrast */
+}
+
+/* 4. Hover state for the message */
+#app-mount [class*="mentioned_"]:hover {
+    background-color: rgba(0, 110, 255, 0.3) !important;
+}

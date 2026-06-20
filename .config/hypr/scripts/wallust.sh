@@ -1,39 +1,36 @@
 #!/bin/bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  ##
-# Wallust Colors for current wallpaper
+# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */ ##
 
-# Define the path to the swww cache directory
-cache_dir="$HOME/.cache/swww/"
-
-# Get a list of monitor outputs
-monitor_outputs=($(ls "$cache_dir"))
-
-# Initialize a flag to determine if the ln command was executed
-ln_success=false
-
-# Get current focused monitor
-current_monitor=$(hyprctl monitors | awk '/^Monitor/{name=$2} /focused: yes/{print name}')
-echo $current_monitor
-# Construct the full path to the cache file
-cache_file="$cache_dir$current_monitor"
-echo $cache_file
-# Check if the cache file exists for the current monitor output
-if [ -f "$cache_file" ]; then
-    # Get the wallpaper path from the cache file
-    wallpaper_path=$(grep -v 'Lanczos3' "$cache_file" | head -n 1)
-    echo $wallpaper_path
-    # symlink the wallpaper to the location Rofi can access
-    if ln -sf "$wallpaper_path" "$HOME/.config/rofi/.current_wallpaper"; then
-        ln_success=true  # Set the flag to true upon successful execution
-    fi
-    # copy the wallpaper for wallpaper effects
-	cp -r "$wallpaper_path" "$HOME/.config/rofi/.wallpaper_current"
+# 1. Determine which image to use
+if [ -n "$1" ]; then
+    # Use the image passed from the selector script
+    wallpaper_path="$1"
+else
+    # Fallback: Get the first path from swww query (for manual runs)
+    wallpaper_path=$(swww query | head -1 | awk '{print $NF}')
 fi
 
-# Check the flag before executing further commands
-if [ "$ln_success" = true ]; then
-    # execute wallust
-	echo 'about to execute wallust'
-    # execute wallust skipping tty and terminal changes
-    wallust run "$wallpaper_path" -s &
+# 2. Safety check: Ensure it's a real file
+if [ -f "$wallpaper_path" ]; then
+    echo "Wallust processing: $wallpaper_path"
+
+    # Symlinks for Rofi and Styles
+    ln -sf "$wallpaper_path" "$HOME/.config/rofi/.current_wallpaper"
+    cp "$wallpaper_path" "$HOME/.config/rofi/.wallpaper_current"
+
+    # 3. Execute Wallust 3.0+ (Flags BEFORE the path)
+    # -s: skip terminal sequences for speed
+    wallust run -s "$wallpaper_path"
+
+    # 4. Refresh Waybar live
+    # SIGUSR2 tells Waybar to re-read CSS without restarting
+    killall -SIGUSR2 waybar
+    
+    # Optional: If you use SwayNC, refresh it too
+    # swaync-client -rs
+    
+    echo "Success! Waybar colors updated."
+else
+    echo "Error: Invalid wallpaper path: $wallpaper_path"
+    exit 1
 fi
