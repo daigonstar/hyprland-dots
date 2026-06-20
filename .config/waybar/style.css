@@ -85,7 +85,7 @@ window#waybar {
 
 #network {
     padding: 0px 4px;
-    color: teal;
+    color: @color15;
 }
 
 #bluetooth {
