@@ -28,3 +28,4 @@ exec-once = arch-update --tray
 #Fixes
 
 exec-once = hyprctl dispatch focusmonitor DP-1
+exec-once = ~/.config/hypr/scripts/portal-fix.sh
