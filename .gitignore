@@ -1,4 +1,6 @@
 /map.txt
+*.bak
+*.bak.*
 paru/
 /.config/hypr/monitors.conf
 .creds
