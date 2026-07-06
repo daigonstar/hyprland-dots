@@ -3,11 +3,11 @@ bc
 blueman
 cava
 clipvault
+discord
 fastfetch
 ffmpegthumbnailer
 flatpak
 ghostty
-gh-cli
 gnome-system-monitor
 gnome-keyring
 gnome-themes-extra
@@ -43,10 +43,11 @@ ttf-font-awesome
 tumbler
 vim
 wallust
-waybar
+waybar-cava
 wayland-protocols
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xorg-xwayland
 xorg-xrandr
 wget
+zen-browser-bin

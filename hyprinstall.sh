@@ -21,6 +21,7 @@ DOTFILES_DIR="$REPO_DIR/.config"
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REQUIRED_FILE="$BASE_DIR/required.txt"
 NVIDIA_FILE="$BASE_DIR/nvidia.txt"
+OPTIONAL_FILE="$BASE_DIR/optional.txt"
 FLATPAK_FILE="$BASE_DIR/flatpak.txt"
 LOGFILE="$DEFAULT_LOG"
 EXTRA_DEPENDENCIES=(git base-devel flatpak python rust imagemagick rsync)
@@ -183,6 +184,7 @@ done
 
 read_packages_to_array "$REQUIRED_FILE" REQUIRED_PKGS
 read_packages_to_array "$NVIDIA_FILE" NVIDIA_PKGS
+read_packages_to_array "$OPTIONAL_FILE" OPTIONAL_PKGS
 read_packages_to_array "$FLATPAK_FILE" FLATPAK_PKGS
 
 # Install paru (AUR helper)
@@ -241,6 +243,14 @@ install_package_list "${NVIDIA_PKGS[@]}"
 fi
 fi
 
+# Optional packages (peripheral/RGB tooling, etc.)
+
+if [[ ${#OPTIONAL_PKGS[@]} -gt 0 ]]; then
+if yesno_prompt "Install optional packages (${OPTIONAL_PKGS[*]})?"; then
+install_package_list "${OPTIONAL_PKGS[@]}"
+fi
+fi
+
 # Home directories
 
 run_cmd "mkdir -p \"$HOME/Pictures\" \"$HOME/Videos\" \"$HOME/Documents\" \"$HOME/.config\" \"$HOME/Downloads\""
@@ -256,7 +266,7 @@ fi
 
 # Symlink config directories
 
-CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty hypr-dock vesktop)
+CONFIG_TARGETS=(hypr fastfetch rofi waybar swaync wallust ghostty hypr-dock)
 for dir in "${CONFIG_TARGETS[@]}"; do
 target="$HOME/.config/$dir"
 source="$DOTFILES_DIR/$dir"
@@ -293,7 +303,7 @@ wallpaper_dest="$HOME/Pictures/wallpapers"
 
 # Make scripts executable
 
-SCRIPT_FILES=(hypr/scripts/ai.sh hypr/scripts/browser.sh hypr/scripts/gamemode.sh hypr/scripts/pywall.sh hypr/scripts/rainbowb.sh hypr/scripts/refresh.sh hypr/scripts/wallust.sh rofi/powermenu/powermenu.sh rofi/launchers/launcher.sh rofi/wallpaper/wallpaper.sh)
+SCRIPT_FILES=(hypr/scripts/ai.sh hypr/scripts/browser.sh hypr/scripts/gamemode.sh hypr/scripts/pywall.sh hypr/scripts/rainbowb.sh hypr/scripts/refresh.sh hypr/scripts/wallust.sh rofi/powermenu/powermenu.sh rofi/launchers/launcher.sh rofi/launchers/categorized/launcher.sh rofi/launchers/categorized/category-mode.sh rofi/launchers/categorized/applist.sh rofi/cheatsheet/cheatsheet.sh rofi/cheatsheet/generate.sh rofi/wallpaper/wallpaper.sh)
 for s in "${SCRIPT_FILES[@]}"; do
 sp="$DOTFILES_DIR/$s"
 [[ -f "$sp" ]] && run_cmd "chmod +x "$sp""
@@ -328,22 +338,92 @@ else
 log "INFO" "~/.bashrc already contains hyprinstall additions; skipping"
 fi
 
-# If the bashrc update included the DisplayPort xrandr line, ensure SDDM's
-# Xsetup also contains the necessary xrandr commands so the display is set
-# correctly at the greeter/session start.
+# SDDM: restrict the login greeter to a single monitor
+#
+# Detect connected outputs via xrandr, ask the user which one is the main
+# display, then generate an Xsetup script that sets that output as primary
+# and turns every other connected output off for the greeter session only.
+# (This has no effect on Hyprland's own monitor layout at session start.)
+#
+# IMPORTANT: this script runs the detection step from inside the running
+# Hyprland (Wayland/Xwayland) session, where outputs are named the DRM way
+# (e.g. "DP-1", "HDMI-A-1"). SDDM's greeter, however, runs a real Xorg X
+# server which names the very same physical outputs differently (e.g.
+# "DisplayPort-0", "HDMI-A-0" for the amdgpu/modesetting drivers - same
+# connector, zero-indexed, different prefix for DisplayPort). If we don't
+# translate names, the xrandr commands baked into Xsetup silently do
+# nothing because the "DP-1" output simply doesn't exist under Xorg.
+translate_to_xorg_output_name() {
+    local name="$1"
+    if [[ "$name" =~ ^DP-([0-9]+)$ ]]; then
+        echo "DisplayPort-$(( BASH_REMATCH[1] - 1 ))"
+    elif [[ "$name" =~ ^HDMI-A-([0-9]+)$ ]]; then
+        echo "HDMI-A-$(( BASH_REMATCH[1] - 1 ))"
+    else
+        # Unknown/other connector types (eDP, VGA, DVI, etc.) are typically
+        # named the same way under both Wayland and Xorg; pass through as-is.
+        echo "$name"
+    fi
+}
+
+echo "🖥️  Configuring SDDM to only show the login screen on your main monitor..."
+
 XSETUP_FILE="/usr/share/sddm/scripts/Xsetup"
-XRANDR_LINE1='xrandr --output DisplayPort-0 --primary'
-XRANDR_LINE2='xrandr --output HDMI-2 --off'
-if grep -qF "$XRANDR_LINE1" "$HOME/.bashrc" 2>/dev/null; then
-    run_cmd "sudo cp \"$XSETUP_FILE\" \"$XSETUP_FILE.bak\""
-    run_cmd "sudo bash -c 'grep -q -F \"$XRANDR_LINE1\" \"$XSETUP_FILE\" || cat >> \"$XSETUP_FILE\" <<EOF
-$XRANDR_LINE1
-$XRANDR_LINE2
-EOF'"
-    run_cmd "sudo chmod +x \"$XSETUP_FILE\""
-    log "OK" "Ensured xrandr lines present in $XSETUP_FILE (backup created)."
+XSETUP_TEMPLATE="$REPO_DIR/SDDM/Xsetup"
+
+mapfile -t CONNECTED_MONITORS < <(xrandr --query 2>/dev/null | awk '/ connected/ {print $1}')
+
+if [[ "${#CONNECTED_MONITORS[@]}" -eq 0 ]]; then
+    log "WARN" "No connected monitors detected via xrandr; skipping SDDM monitor restriction."
+elif [[ "${#CONNECTED_MONITORS[@]}" -eq 1 ]]; then
+    log "INFO" "Only one connected monitor (${CONNECTED_MONITORS[0]}); skipping SDDM monitor restriction."
 else
-    log "INFO" "Skipping adding xrandr lines to $XSETUP_FILE; ~/.bashrc lacks marker."
+    echo "Detected connected monitors:"
+    for i in "${!CONNECTED_MONITORS[@]}"; do
+        printf "  %d) %s\n" "$((i + 1))" "${CONNECTED_MONITORS[$i]}"
+    done
+
+    MAIN_MONITOR=""
+    if [[ "$DRY_RUN" == "true" ]]; then
+        MAIN_MONITOR="${CONNECTED_MONITORS[0]}"
+        echo "[DRY RUN] Would prompt for main monitor; assuming ${MAIN_MONITOR}"
+    else
+        while [[ -z "$MAIN_MONITOR" ]]; do
+            read -rp "Which monitor should show the SDDM login screen (number)? " choice
+            if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#CONNECTED_MONITORS[@]} )); then
+                MAIN_MONITOR="${CONNECTED_MONITORS[$((choice - 1))]}"
+            else
+                echo "Invalid choice, please enter a number between 1 and ${#CONNECTED_MONITORS[@]}."
+            fi
+        done
+    fi
+
+    log "INFO" "Selected '$MAIN_MONITOR' as the main monitor for SDDM."
+
+    MAIN_MONITOR_XORG="$(translate_to_xorg_output_name "$MAIN_MONITOR")"
+    if [[ "$MAIN_MONITOR_XORG" != "$MAIN_MONITOR" ]]; then
+        log "INFO" "Translated '$MAIN_MONITOR' (Wayland naming) to '$MAIN_MONITOR_XORG' (Xorg naming) for the SDDM greeter."
+    fi
+
+    XRANDR_BLOCK="xrandr --output $MAIN_MONITOR_XORG --primary --auto"
+    for mon in "${CONNECTED_MONITORS[@]}"; do
+        if [[ "$mon" != "$MAIN_MONITOR" ]]; then
+            mon_xorg="$(translate_to_xorg_output_name "$mon")"
+            XRANDR_BLOCK+=$'\n'"xrandr --output $mon_xorg --off"
+        fi
+    done
+
+    GENERATED_XSETUP="$(mktemp)"
+    awk -v block="$XRANDR_BLOCK" '{
+        if ($0 ~ /__HYPRINSTALL_XRANDR_BLOCK__/) print block
+        else print
+    }' "$XSETUP_TEMPLATE" > "$GENERATED_XSETUP"
+
+    run_cmd "sudo cp \"$XSETUP_FILE\" \"$XSETUP_FILE.bak\" 2>/dev/null || true"
+    run_cmd "sudo cp \"$GENERATED_XSETUP\" \"$XSETUP_FILE\""
+    run_cmd "sudo chmod +x \"$XSETUP_FILE\""
+    rm -f "$GENERATED_XSETUP"
+    log "OK" "SDDM Xsetup configured: '$MAIN_MONITOR' primary, others disabled at greeter (backup at $XSETUP_FILE.bak)."
 fi
 
 # Hide unwanted apps from launcher
@@ -399,6 +479,6 @@ echo "DaigonStar Hyprdots setup completed."
 sleep 3
 echo "Restarting SDDM to apply changes..."
 sleep 2
-sudo systemctl restart sddm
+run_cmd "sudo systemctl restart sddm"
 
 exit 0

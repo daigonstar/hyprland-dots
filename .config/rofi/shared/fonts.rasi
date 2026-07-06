@@ -1,0 +1,11 @@
+/**
+ *
+ * Shared font definition for rofi sub-themes (launchers/, categorized/) that
+ * @import "shared/fonts.rasi". Kept consistent with the main rice font used
+ * in ~/.config/rofi/0-shared-fonts.rasi.
+ *
+ **/
+
+* {
+    font: "JetBrainsMono Nerd Font SemiBold 13";
+}

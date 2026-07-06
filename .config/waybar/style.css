@@ -103,12 +103,13 @@ window#waybar {
 #battery.charging {
     color: rgba(24, 185, 9, 0.5);
 }
-#custom-cava {
+#cava {
     color: @color7;
     border-left: 0px;
     border-right: 0px;
-    padding-bottom: 6px;
-    font-size: 22px;
+    padding: 0px;
+    font-size: 20px;
+    font-family: "CaskaydiaCove Nerd Font Mono";
 }
 
 #cpu {
