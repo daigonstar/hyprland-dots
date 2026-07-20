@@ -26,6 +26,8 @@ pavucontrol
 playerctl
 python
 plymouth
+qt5-wayland
+qt6-wayland
 qt5-graphicaleffects
 qt5-quickcontrols2
 rofi-wayland
