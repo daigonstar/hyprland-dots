@@ -21,6 +21,7 @@ if [ -f "$wallpaper_path" ]; then
     # 3. Execute Wallust 3.0+ (Flags BEFORE the path)
     # -s: skip terminal sequences for speed
     wallust run -s "$wallpaper_path"
+    hyprctl reload
 
     # 4. Refresh Waybar live
     # SIGUSR2 tells Waybar to re-read CSS without restarting
