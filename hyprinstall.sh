@@ -16,9 +16,9 @@ set -euo pipefail
 
 DEFAULT_LOG="$HOME/.local/share/hyprinstall/hyprinstall.log"
 FALLBACK_LOG="$HOME/hyprinstall.log"
-REPO_DIR="$HOME/hyprdots"
-DOTFILES_DIR="$REPO_DIR/.config"
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$BASE_DIR"
+DOTFILES_DIR="$REPO_DIR/.config"
 REQUIRED_FILE="$BASE_DIR/required.txt"
 NVIDIA_FILE="$BASE_DIR/nvidia.txt"
 OPTIONAL_FILE="$BASE_DIR/optional.txt"
@@ -114,14 +114,13 @@ read_packages_to_array() {
 local file="$1"
 local -n arr=$2
 arr=()
-if [[ -f "$file" ]]; then
-while IFS= read -r line; do
+[[ -f "$file" ]] || die "Package list not found: $file"
+while IFS= read -r line || [[ -n "$line" ]]; do
 line="${line%%#*}"
 line="$(echo "$line" | xargs)"
 [[ -z "$line" ]] && continue
 arr+=("$line")
 done < "$file"
-fi
 }
 
 yesno_prompt() {
@@ -176,7 +175,8 @@ for d in "${EXTRA_DEPENDENCIES[@]}"; do
 if pacman -Qi "$d" &>/dev/null; then
 log "OK" "Dependency present: $d"
 else
-run_cmd "sudo pacman -S --needed --noconfirm \"$d\""
+run_cmd "sudo pacman -S --needed --noconfirm \"$d\"" ||
+  die "Failed to install required dependency: $d. See $LOGFILE for details."
 fi
 done
 
@@ -197,7 +197,7 @@ fi
 run_cmd "sudo pacman -S --needed --noconfirm git base-devel"
 local tmpdir
 tmpdir="$(mktemp -d)"
-run_cmd "git clone https://aur.archlinux.org/paru.git "$tmpdir/paru""
+run_cmd "git clone https://aur.archlinux.org/paru.git \"$tmpdir/paru\""
 pushd "$tmpdir/paru" >/dev/null
 run_cmd "makepkg -si --noconfirm"
 popd >/dev/null
@@ -213,11 +213,17 @@ local pkgs=("$@")
 for pkg in "${pkgs[@]:-}"; do
 if pacman -Qq "$pkg" &>/dev/null; then
 log "OK" "Package $pkg already installed"
+elif pacman -Si "$pkg" &>/dev/null; then
+log "INFO" "Installing official package: $pkg"
+run_cmd "sudo pacman -S --needed --noconfirm \"$pkg\"" ||
+  die "Failed to install official package: $pkg. See $LOGFILE for details."
 else
 if command -v paru >/dev/null 2>&1; then
-run_cmd "paru -S --noconfirm "$pkg"" || run_cmd "sudo pacman -S --noconfirm "$pkg""
+log "INFO" "Installing AUR package: $pkg"
+run_cmd "paru -S --needed --noconfirm \"$pkg\"" ||
+  die "Failed to install AUR package: $pkg. See $LOGFILE for details."
 else
-run_cmd "sudo pacman -S --noconfirm "$pkg""
+die "Package $pkg is not in the official repositories and paru is unavailable."
 fi
 fi
 done
@@ -227,11 +233,15 @@ install_package_list "${REQUIRED_PKGS[@]}"
 
 # Flatpak installs
 
+run_cmd "flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo" ||
+  die "Failed to configure the Flathub remote. See $LOGFILE for details."
+
 for f in "${FLATPAK_PKGS[@]:-}"; do
 if flatpak list --app | grep -qw "$f"; then
 log "OK" "Flatpak $f already installed"
 else
-run_cmd "flatpak install -y --noninteractive --or-update flathub "$f""
+run_cmd "flatpak install -y --noninteractive --or-update flathub \"$f\"" ||
+  die "Failed to install Flatpak: $f. See $LOGFILE for details."
 fi
 done
 
@@ -326,7 +336,7 @@ cat >> "$HOME/.bashrc" <<EOF
 # --- hyprinstall additions BEGIN ---
 
 alias update='paru -Syu && flatpak update'
-alias hyprupdate="$HOME/hyprdots/update.sh"
+alias hyprupdate="$REPO_DIR/update.sh"
 eval "$(starship init bash)"
 command fastfetch
 
@@ -429,7 +439,7 @@ fi
 # Hide unwanted apps from launcher
 
 echo "🔧 Hiding unwanted apps from launcher..."
-APPS_FILE="$HOME/hyprdots/hide.txt"
+APPS_FILE="$REPO_DIR/hide.txt"
 
 if [[ ! -f "$APPS_FILE" ]]; then
     echo "❌ App list file not found: $APPS_FILE. Skipping app hiding."

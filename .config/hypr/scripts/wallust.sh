@@ -6,8 +6,8 @@ if [ -n "$1" ]; then
     # Use the image passed from the selector script
     wallpaper_path="$1"
 else
-    # Fallback: Get the first path from swww query (for manual runs)
-    wallpaper_path=$(swww query | head -1 | awk '{print $NF}')
+    # Fall back to the wallpaper symlink maintained by the selector.
+    wallpaper_path="$HOME/.config/rofi/.current_wallpaper"
 fi
 
 # 2. Safety check: Ensure it's a real file
