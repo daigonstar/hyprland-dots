@@ -44,7 +44,8 @@ ttf-cascadia-mono-nerd
 ttf-font-awesome-5
 tumbler
 vim
-wallust
+# The wallust 3.5.2 AUR release recipe has a stale source checksum.
+wallust-git
 waybar-cava
 wayland-protocols
 xdg-desktop-portal-gtk
